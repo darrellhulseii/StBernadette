@@ -1,0 +1,2250 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>I Am Bernadette — The Sacred Journey of Lourdes</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;overflow:hidden;font-family:'IM Fell English',Georgia,serif}
+#gameCanvas{display:block;position:fixed;top:0;left:0}
+#ui{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10}
+
+/* TITLE SCREEN */
+#titleScreen{
+position:fixed;top:0;left:0;width:100%;height:100%;
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+background:radial-gradient(ellipse at center,rgba(10,5,30,0.6) 0%,rgba(0,0,0,0.92) 100%);
+z-index:100;pointer-events:all;transition:opacity 1.5s;
+}
+#titleScreen h1{
+font-family:‘Cinzel Decorative’,serif;font-size:clamp(22px,4vw,52px);
+color:#f5e6c0;text-shadow:0 0 40px rgba(255,200,80,0.8),0 0 80px rgba(255,160,40,0.4);
+letter-spacing:0.08em;text-align:center;line-height:1.3;margin-bottom:10px;
+}
+#titleScreen h2{
+font-family:‘Cinzel’,serif;font-size:clamp(12px,2vw,22px);color:#c4a882;
+letter-spacing:0.2em;margin-bottom:6px;text-align:center;
+}
+#titleScreen .subtitle{
+font-family:‘IM Fell English’,serif;font-style:italic;font-size:clamp(10px,1.5vw,17px);
+color:#a08060;margin-bottom:50px;text-align:center;
+}
+#titleScreen .cross{font-size:clamp(30px,5vw,70px);color:#f0d080;text-shadow:0 0 30px rgba(255,220,80,1);margin-bottom:30px;animation:glow 2s infinite alternate}
+@keyframes glow{from{text-shadow:0 0 20px rgba(255,220,80,0.6)}to{text-shadow:0 0 60px rgba(255,220,80,1),0 0 120px rgba(255,180,40,0.6)}}
+#startBtn{
+font-family:‘Cinzel’,serif;font-size:clamp(12px,1.8vw,18px);letter-spacing:0.15em;
+color:#f5e6c0;background:rgba(255,200,80,0.12);border:1px solid rgba(255,200,80,0.5);
+padding:14px 44px;cursor:pointer;pointer-events:all;
+transition:all 0.4s;text-transform:uppercase;
+}
+#startBtn:hover{background:rgba(255,200,80,0.25);border-color:rgba(255,200,80,0.9);box-shadow:0 0 30px rgba(255,200,80,0.4)}
+
+/* CHAPTER TITLE */
+#chapterBanner{
+position:fixed;top:0;left:0;width:100%;padding:20px;text-align:center;
+background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,transparent 100%);
+opacity:0;transition:opacity 1s;pointer-events:none;
+}
+#chapterBanner.show{opacity:1}
+#chapterTitle{font-family:‘Cinzel Decorative’,serif;font-size:clamp(12px,2.2vw,26px);color:#f5e6c0;text-shadow:0 0 20px rgba(255,200,80,0.6);letter-spacing:0.1em}
+#chapterDate{font-family:‘Cinzel’,serif;font-size:clamp(10px,1.4vw,15px);color:#c4a870;letter-spacing:0.2em;margin-top:4px}
+
+/* DIALOGUE — centred card */
+#dialogue{
+position:fixed;
+top:50%; left:50%;
+transform:translate(-50%,-50%);
+width:min(92vw, 780px);
+background:rgba(4,2,16,0.97);
+border:2px solid rgba(200,160,60,0.6);
+border-radius:6px;
+box-shadow:0 0 60px rgba(0,0,0,0.95), 0 0 30px rgba(200,140,40,0.18), inset 0 0 40px rgba(0,0,10,0.5);
+padding:32px 36px 24px;
+display:none;
+pointer-events:all;
+z-index:500;
+/* thin gold corner accents via outline trick */
+}
+/* decorative corner lines */
+#dialogue::before,#dialogue::after{
+content:’’;position:absolute;width:18px;height:18px;
+border-color:rgba(200,160,60,0.8);border-style:solid;
+}
+#dialogue::before{top:-1px;left:-1px;border-width:2px 0 0 2px;border-radius:4px 0 0 0;}
+#dialogue::after {bottom:-1px;right:-1px;border-width:0 2px 2px 0;border-radius:0 0 4px 0;}
+
+/* speaker name strip */
+#dialogueSpeaker{
+font-family:‘Cinzel’,serif;
+font-size:clamp(10px,2.2vw,14px);
+color:#f0c060;
+letter-spacing:0.18em;
+text-transform:uppercase;
+margin-bottom:14px;
+padding-bottom:10px;
+border-bottom:1px solid rgba(200,160,60,0.25);
+text-align:center;
+text-shadow:0 0 14px rgba(255,200,60,0.5);
+min-height:1.3em;
+}
+
+/* main text */
+#dialogueText{
+font-family:‘IM Fell English’,serif;
+font-size:clamp(16px,3vw,22px);
+color:#f8f0e0;
+line-height:1.75;
+text-align:center;
+text-shadow:0 1px 3px rgba(0,0,0,0.8);
+padding:0 4px;
+}
+
+/* continue hint */
+#dialogueContinue{
+font-family:‘Cinzel’,serif;
+font-size:clamp(9px,1.8vw,12px);
+color:rgba(200,160,60,0.7);
+text-align:center;
+margin-top:20px;
+letter-spacing:0.14em;
+animation:blink 1.2s infinite;
+}
+@keyframes blink{0%,100%{opacity:0.35}50%{opacity:1}}
+
+/* TASKS */
+#taskPanel{
+position:fixed;top:100px;right:20px;
+background:rgba(5,3,20,0.85);border:1px solid rgba(200,160,60,0.3);
+padding:16px 20px;min-width:200px;display:none;
+}
+#taskPanel h3{font-family:‘Cinzel’,serif;font-size:13px;color:#f0c060;letter-spacing:0.1em;margin-bottom:12px;text-transform:uppercase}
+.task-item{font-family:‘IM Fell English’,serif;font-size:14px;color:#c0b090;margin:6px 0;padding-left:22px;position:relative;transition:color 0.5s}
+.task-item::before{content:‘○’;position:absolute;left:0;color:#6a5830}
+.task-item.done{color:#80c080;text-decoration:line-through;}
+.task-item.done::before{content:‘✓’;color:#80c080}
+
+/* INTERACT PROMPT */
+#interactPrompt{
+position:fixed;bottom:200px;left:50%;transform:translateX(-50%);
+font-family:‘Cinzel’,serif;font-size:clamp(10px,1.3vw,14px);letter-spacing:0.15em;
+color:#f0e0a0;background:rgba(5,3,20,0.8);border:1px solid rgba(200,160,60,0.4);
+padding:8px 24px;display:none;text-transform:uppercase;
+animation:pulse 1.5s infinite;
+z-index:200;
+}
+@keyframes pulse{0%,100%{border-color:rgba(200,160,60,0.4)}50%{border-color:rgba(200,160,60,0.9)}}
+
+/* CONTROLS */
+#controls{
+position:fixed;bottom:10px;left:50%;transform:translateX(-50%);
+font-family:‘Cinzel’,serif;font-size:clamp(8px,1vw,11px);color:rgba(180,160,100,0.5);
+letter-spacing:0.1em;text-align:center;pointer-events:none;
+}
+
+/* NOTIFICATION */
+#notification{
+position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+font-family:‘Cinzel Decorative’,serif;font-size:clamp(12px,2vw,22px);
+color:#f5e6c0;text-shadow:0 0 30px rgba(255,200,80,0.8);
+text-align:center;display:none;pointer-events:none;padding:20px;
+}
+
+/* TRANSITION */
+#fade{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:#000;opacity:0;pointer-events:none;z-index:99;transition:opacity 1.5s;
+}
+#fade.in{opacity:1;pointer-events:all}
+
+/* HEALTH/SPRING */
+#springGlow{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:radial-gradient(ellipse at 50% 60%,rgba(0,180,255,0.15) 0%,transparent 70%);
+display:none;pointer-events:none;animation:springPulse 3s infinite;
+}
+@keyframes springPulse{0%,100%{opacity:0.3}50%{opacity:1}}
+
+/* HOLY GLOW */
+#holyGlow{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:radial-gradient(ellipse at 50% 30%,rgba(255,255,200,0.2) 0%,transparent 60%);
+display:none;pointer-events:none;animation:holyPulse 2s infinite;
+}
+@keyframes holyPulse{0%,100%{opacity:0.5}50%{opacity:1}}
+
+/* ── VIRTUAL JOYSTICK — floating, appears where you touch ── */
+#joystickWrap{
+position:fixed;
+bottom:28px;left:28px;        /* default resting position (shown on desktop) */
+width:150px;height:150px;
+pointer-events:all;
+user-select:none;-webkit-user-select:none;
+z-index:50;
+/* on touch devices we reposition it dynamically */
+transition:opacity 0.15s;
+}
+/* Hide the static position on touch-primary devices until touched */
+@media (hover:none){
+#joystickWrap{ opacity:0; pointer-events:none; }
+#joystickWrap.active{ opacity:1; pointer-events:all; }
+}
+#joystickBase{
+position:absolute;inset:0;
+border-radius:50%;
+background:radial-gradient(circle at 38% 35%,rgba(255,220,120,0.18),rgba(10,5,30,0.72));
+border:2px solid rgba(200,160,60,0.5);
+box-shadow:0 0 18px rgba(200,160,60,0.18),inset 0 0 20px rgba(0,0,0,0.4);
+backdrop-filter:blur(4px);
+}
+/* 8 direction tick marks */
+#joystickBase::before{
+content:’’;position:absolute;inset:10px;border-radius:50%;
+border:1px dashed rgba(200,160,60,0.25);
+}
+/* Cardinal cross hair */
+#joystickBase::after{
+content:’’;position:absolute;inset:0;
+background:
+linear-gradient(rgba(200,160,60,0.15) 0,rgba(200,160,60,0.15) 100%) center/1px 100% no-repeat,
+linear-gradient(rgba(200,160,60,0.15) 0,rgba(200,160,60,0.15) 100%) center/100% 1px no-repeat;
+border-radius:50%;
+}
+#joystickKnob{
+position:absolute;
+width:54px;height:54px;
+top:50%;left:50%;
+transform:translate(-50%,-50%);
+border-radius:50%;
+background:radial-gradient(circle at 35% 30%,rgba(255,230,140,0.95),rgba(160,100,20,0.85));
+border:2px solid rgba(255,210,80,0.9);
+box-shadow:0 4px 18px rgba(0,0,0,0.6),0 0 14px rgba(255,200,60,0.35);
+transition:box-shadow 0.1s;
+cursor:grab;
+display:grid;place-items:center;
+font-size:18px;color:rgba(255,240,180,0.75);
+}
+#joystickKnob:active{cursor:grabbing}
+
+/* Dir arrows around base */
+.jDir{
+position:absolute;font-size:11px;color:rgba(200,160,60,0.5);
+line-height:1;pointer-events:none;
+}
+.jDir.up   {top:4px;left:50%;transform:translateX(-50%)}
+.jDir.down {bottom:4px;left:50%;transform:translateX(-50%)}
+.jDir.left {left:4px;top:50%;transform:translateY(-50%)}
+.jDir.right{right:4px;top:50%;transform:translateY(-50%)}
+
+/* ── ACTION BUTTONS (right side) ── */
+#actionButtons{
+position:fixed;
+bottom:28px;right:28px;
+display:flex;flex-direction:column;align-items:center;gap:14px;
+pointer-events:all;z-index:50;
+user-select:none;-webkit-user-select:none;
+}
+.actBtn{
+width:68px;height:68px;border-radius:50%;
+display:grid;place-items:center;
+font-family:‘Cinzel’,serif;font-weight:600;
+cursor:pointer;border:none;outline:none;
+transition:transform 0.08s,box-shadow 0.08s,filter 0.08s;
+-webkit-tap-highlight-color:transparent;
+touch-action:manipulation;
+position:relative;overflow:hidden;
+}
+.actBtn:active{transform:scale(0.88);filter:brightness(1.3)}
+
+/* E — Interact (gold) */
+#btnE{
+background:radial-gradient(circle at 38% 32%,rgba(255,230,120,0.95),rgba(160,90,10,0.9));
+border:2.5px solid rgba(255,210,70,0.9);
+box-shadow:0 4px 20px rgba(0,0,0,0.7),0 0 18px rgba(255,190,40,0.4),inset 0 1px 0 rgba(255,255,200,0.3);
+font-size:22px;color:#3a1a00;
+text-shadow:0 1px 0 rgba(255,220,100,0.5);
+}
+#btnE::before{
+content:’’;position:absolute;inset:0;border-radius:50%;
+background:linear-gradient(135deg,rgba(255,255,200,0.25) 0%,transparent 55%);
+}
+#btnE span{position:relative;z-index:1;font-size:20px;letter-spacing:0.05em}
+
+/* ⏩ Continue dialogue (blue-silver) */
+#btnContinue{
+background:radial-gradient(circle at 38% 32%,rgba(180,210,255,0.9),rgba(40,60,120,0.88));
+border:2.5px solid rgba(140,180,255,0.8);
+box-shadow:0 4px 20px rgba(0,0,0,0.7),0 0 18px rgba(100,140,255,0.3),inset 0 1px 0 rgba(255,255,255,0.2);
+font-size:24px;color:#f5f0ff;
+}
+#btnContinue::before{
+content:’’;position:absolute;inset:0;border-radius:50%;
+background:linear-gradient(135deg,rgba(255,255,255,0.2) 0%,transparent 55%);
+}
+#btnContinue span{position:relative;z-index:1}
+
+/* Ripple on press */
+.actBtn::after{
+content:’’;position:absolute;inset:0;border-radius:50%;
+background:rgba(255,255,255,0.25);
+transform:scale(0);opacity:0;
+transition:transform 0.3s,opacity 0.3s;
+}
+.actBtn:active::after{transform:scale(2.5);opacity:0}
+
+/* Label under buttons */
+.actLabel{
+font-family:‘Cinzel’,serif;font-size:9px;letter-spacing:0.12em;
+color:rgba(200,170,80,0.7);text-transform:uppercase;
+margin-top:-8px;pointer-events:none;
+}
+</style>
+
+</head>
+<body>
+<canvas id="gameCanvas"></canvas>
+<div id="ui">
+  <!-- TITLE -->
+  <div id="titleScreen">
+    <div class="cross">✝</div>
+    <h1>I Am Bernadette</h1>
+    <h2>The Sacred Journey of Lourdes</h2>
+    <div class="subtitle">Based on the apparitions of Our Lady at Massabielle · 1858</div>
+    <button id="startBtn" onclick="startGame()">Begin the Sacred Journey</button>
+  </div>
+
+  <!-- CHAPTER BANNER -->
+
+  <div id="chapterBanner">
+    <div id="chapterTitle"></div>
+    <div id="chapterDate"></div>
+  </div>
+
+  <!-- DIALOGUE DIMMER -->
+
+  <div id="dialogueDimmer" style="
+    position:fixed;inset:0;background:rgba(0,0,0,0.55);
+    display:none;z-index:499;pointer-events:none;
+    backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+  "></div>
+
+  <!-- DIALOGUE -->
+
+  <div id="dialogue">
+    <div id="dialogueSpeaker"></div>
+    <div id="dialogueText"></div>
+    <div id="dialogueContinue">⏩ Continue &nbsp;|&nbsp; Space / Enter</div>
+  </div>
+
+  <!-- TASKS -->
+
+  <div id="taskPanel">
+    <h3>✝ Today's Duties</h3>
+    <div id="taskList"></div>
+  </div>
+
+  <!-- INTERACT -->
+
+  <div id="interactPrompt">[ E ] Interact</div>
+
+  <!-- NOTIFICATION -->
+
+  <div id="notification"></div>
+
+  <!-- CONTROLS -->
+
+  <div id="controls">WASD · Arrows · Joystick to Move &nbsp;|&nbsp; E / Button to Interact &nbsp;|&nbsp; ⏩ / Space to Continue</div>
+
+  <!-- FADE -->
+
+  <div id="fade" id="fade"></div>
+
+  <!-- EFFECTS -->
+
+  <div id="springGlow"></div>
+  <div id="holyGlow"></div>
+
+  <!-- ── VIRTUAL JOYSTICK ── -->
+
+  <div id="joystickWrap">
+    <div id="joystickBase">
+      <span class="jDir up">▲</span>
+      <span class="jDir down">▼</span>
+      <span class="jDir left">◀</span>
+      <span class="jDir right">▶</span>
+    </div>
+    <div id="joystickKnob"></div>
+  </div>
+
+  <!-- ── ACTION BUTTONS ── -->
+
+  <div id="actionButtons">
+    <button class="actBtn" id="btnContinue" title="Continue Dialogue">
+      <span>⏩</span>
+    </button>
+    <div class="actLabel">Continue</div>
+    <button class="actBtn" id="btnE" title="Interact">
+      <span>E</span>
+    </button>
+    <div class="actLabel">Interact</div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+// ============================================================
+//  I AM BERNADETTE — 3D RPG Engine
+//  St. Bernadette Soubirous & Our Lady of Lourdes 1858
+// ============================================================
+
+const canvas = document.getElementById('gameCanvas');
+let W = window.innerWidth, H = window.innerHeight;
+
+// Three.js Core
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, powerPreference:'high-performance'});
+renderer.setSize(W, H);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(58, W/H, 0.1, 1000);
+camera.position.set(0, 10, 14);
+const clock = new THREE.Clock();
+
+// ============================================================
+//  GAME STATE
+// ============================================================
+const G = {
+  chapter: -1,
+  dialogueActive: false,
+  dialogueQueue: [],
+  dialogueIdx: 0,
+  dialogueCb: null,
+  tasks: {},
+  completedTasks: {},
+  player: { mesh:null, vel:new THREE.Vector3(), facing:new THREE.Vector3(0,0,-1), canMove:true },
+  camera: { offset:new THREE.Vector3(0,9,13), shake:0 },
+  nearbyInteractable: null,
+  interactables: [],
+  npcs: [],
+  chapterObjects: [],
+  particles: [],
+  ourLady: null,
+  ourLadyParticles: [],
+  keys: {},
+  springWater: null,
+  springParticles: [],
+  stars: null,
+  time: 0,
+};
+
+// Input
+window.addEventListener('keydown', e => {
+  G.keys[e.code] = true;
+  if(e.code==='Space'||e.code==='Enter') advanceDialogue();
+});
+window.addEventListener('keyup', e => { G.keys[e.code] = false; });
+window.addEventListener('resize', () => {
+  W=window.innerWidth; H=window.innerHeight;
+  renderer.setSize(W,H);
+  camera.aspect=W/H;
+  camera.updateProjectionMatrix();
+});
+
+// ============================================================
+//  VIRTUAL JOYSTICK — floating, spawns at touch origin
+// ============================================================
+(function initJoystick(){
+  const wrap = document.getElementById('joystickWrap');
+  const knob = document.getElementById('joystickKnob');
+  const RADIUS = 52;   // max knob travel px
+  const DEAD   = 0.15; // dead zone fraction
+  const SIZE   = 150;  // wrap diameter px
+
+  G.joy = { x: 0, y: 0 };
+
+  // The virtual origin — set when finger first touches
+  let originX = 0, originY = 0;
+  let touchId  = null;   // which touch we're tracking
+  let active   = false;
+
+  // ── Position the wrap centred on (ox, oy) ──────────────────
+  function placeWrap(ox, oy){
+    const half = SIZE / 2;
+    let left = ox - half;
+    let top  = oy - half;
+    // Clamp inside viewport with small margin
+    left = Math.max(10, Math.min(window.innerWidth  - SIZE - 10, left));
+    top  = Math.max(10, Math.min(window.innerHeight - SIZE - 10, top));
+    wrap.style.left   = left + 'px';
+    wrap.style.top    = top  + 'px';
+    wrap.style.bottom = 'auto';
+    wrap.style.right  = 'auto';
+  }
+
+  // ── Move knob relative to origin ──────────────────────────
+  function moveKnob(cx, cy){
+    const dx = cx - originX;
+    const dy = cy - originY;
+    const dist    = Math.sqrt(dx*dx + dy*dy);
+    const clamped = Math.min(dist, RADIUS);
+    const angle   = Math.atan2(dy, dx);
+    const kx = Math.cos(angle) * clamped;
+    const ky = Math.sin(angle) * clamped;
+
+    // Visual: offset from wrap centre
+    knob.style.transform = `translate(calc(-50% + ${kx}px), calc(-50% + ${ky}px))`;
+    knob.style.boxShadow = dist > 8
+      ? '0 2px 10px rgba(0,0,0,0.9), 0 0 28px rgba(255,200,60,0.85)'
+      : '0 4px 18px rgba(0,0,0,0.6), 0 0 14px rgba(255,200,60,0.35)';
+
+    // Normalise to -1..1
+    const nx = kx / RADIUS;
+    const ny = ky / RADIUS;
+
+    // Apply dead zone, then snap to 8 directions
+    if(Math.abs(nx) < DEAD && Math.abs(ny) < DEAD){
+      G.joy.x = 0; G.joy.y = 0;
+    } else {
+      const a8  = Math.round(Math.atan2(ny, nx) / (Math.PI/4)) * (Math.PI/4);
+      const mag = Math.min(Math.sqrt(nx*nx + ny*ny), 1);
+      G.joy.x = Math.cos(a8) * mag;
+      G.joy.y = Math.sin(a8) * mag;
+    }
+  }
+
+  function resetKnob(){
+    active  = false;
+    touchId = null;
+    G.joy.x = 0; G.joy.y = 0;
+    knob.style.transform = 'translate(-50%,-50%)';
+    knob.style.boxShadow = '';
+    wrap.classList.remove('active');
+  }
+
+  // ── Touch events — left 65% of screen activates joystick ──
+  window.addEventListener('touchstart', e => {
+    if(active) return;               // already tracking a touch
+    const t = e.changedTouches[0];
+    // Only activate if touching the left side (not on action buttons)
+    if(t.clientX > window.innerWidth * 0.68) return;
+    e.preventDefault();
+    active    = true;
+    touchId   = t.identifier;
+    originX   = t.clientX;
+    originY   = t.clientY;
+    placeWrap(originX, originY);
+    wrap.classList.add('active');
+    moveKnob(originX, originY);
+  }, {passive:false});
+
+  window.addEventListener('touchmove', e => {
+    if(!active) return;
+    e.preventDefault();
+    for(let i=0; i<e.changedTouches.length; i++){
+      const t = e.changedTouches[i];
+      if(t.identifier === touchId){
+        moveKnob(t.clientX, t.clientY);
+        break;
+      }
+    }
+  }, {passive:false});
+
+  window.addEventListener('touchend', e => {
+    for(let i=0;i<e.changedTouches.length;i++){
+      if(e.changedTouches[i].identifier === touchId){ resetKnob(); break; }
+    }
+  });
+  window.addEventListener('touchcancel', () => resetKnob());
+
+  // ── Mouse fallback (desktop — fixed at wrap position) ──────
+  const baseEl = document.getElementById('joystickBase');
+  baseEl.addEventListener('mousedown', e => {
+    if(active) return;
+    e.preventDefault();
+    active  = true;
+    const r = wrap.getBoundingClientRect();
+    originX = r.left + r.width  / 2;
+    originY = r.top  + r.height / 2;
+    wrap.classList.add('active');
+    moveKnob(e.clientX, e.clientY);
+  });
+  window.addEventListener('mousemove', e => {
+    if(!active) return;
+    moveKnob(e.clientX, e.clientY);
+  });
+  window.addEventListener('mouseup', () => { if(active) resetKnob(); });
+})();
+
+// ============================================================
+//  ACTION BUTTONS — E and Continue
+// ============================================================
+(function initActionButtons(){
+  const btnE    = document.getElementById('btnE');
+  const btnCont = document.getElementById('btnContinue');
+
+  // ── E / Interact button ──────────────────────────
+  function pressE(e){
+    e.preventDefault();
+    if(G.nearbyInteractable && !G.dialogueActive){
+      G.nearbyInteractable.onInteract();
+    }
+  }
+  btnE.addEventListener('touchstart', pressE, {passive:false});
+  btnE.addEventListener('mousedown',  pressE);
+
+  // ── Continue / ⏩ button ─────────────────────────
+  function pressContinue(e){
+    e.preventDefault();
+    advanceDialogue();
+  }
+  btnCont.addEventListener('touchstart', pressContinue, {passive:false});
+  btnCont.addEventListener('mousedown',  pressContinue);
+
+  // Highlight continue button when dialogue is active
+  function tickBtnVisibility(){
+    const active = G.dialogueActive;
+    btnCont.style.opacity  = active ? '1'   : '0.45';
+    btnCont.style.transform= active ? 'scale(1)' : 'scale(0.92)';
+    btnE.style.opacity     = (!active && G.nearbyInteractable) ? '1' : '0.5';
+    btnE.style.transform   = (!active && G.nearbyInteractable) ? 'scale(1)' : 'scale(0.92)';
+    requestAnimationFrame(tickBtnVisibility);
+  }
+  tickBtnVisibility();
+})();
+
+// ============================================================
+//  UTILITY
+// ============================================================
+function rand(a,b){return a+(b-a)*Math.random()}
+function lerp(a,b,t){return a+(b-a)*t}
+
+function notify(txt, dur=3000){
+  const n=document.getElementById('notification');
+  n.textContent=txt; n.style.display='block';
+  setTimeout(()=>n.style.display='none',dur);
+}
+
+function fadeOut(cb){
+  const f=document.getElementById('fade');
+  f.classList.add('in');
+  setTimeout(cb,1500);
+}
+function fadeIn(cb){
+  const f=document.getElementById('fade');
+  setTimeout(()=>{ f.classList.remove('in'); if(cb)cb(); },400);
+}
+
+function showChapter(title,date,cb){
+  const b=document.getElementById('chapterBanner');
+  document.getElementById('chapterTitle').textContent=title;
+  document.getElementById('chapterDate').textContent=date;
+  b.classList.add('show');
+  setTimeout(()=>{ b.classList.remove('show'); if(cb)cb(); },3000);
+}
+
+// ============================================================
+//  DIALOGUE SYSTEM
+// ============================================================
+function speak(queue, cb){
+  G.dialogueQueue = queue;
+  G.dialogueIdx = 0;
+  G.dialogueCb = cb;
+  G.dialogueActive = true;
+  G.player.canMove = false;
+  const d=document.getElementById('dialogue');
+  const dm=document.getElementById('dialogueDimmer');
+  d.style.display='block';
+  if(dm) dm.style.display='block';
+  showDialogueAt(0);
+}
+
+function showDialogueAt(i){
+  if(i>=G.dialogueQueue.length){ endDialogue(); return; }
+  const line=G.dialogueQueue[i];
+  document.getElementById('dialogueSpeaker').textContent=line.speaker||'';
+  document.getElementById('dialogueText').textContent=line.text;
+}
+
+function advanceDialogue(){
+  if(!G.dialogueActive) return;
+  G.dialogueIdx++;
+  if(G.dialogueIdx>=G.dialogueQueue.length){ endDialogue(); return; }
+  showDialogueAt(G.dialogueIdx);
+}
+
+function endDialogue(){
+  G.dialogueActive=false;
+  G.player.canMove=true;
+  document.getElementById('dialogue').style.display='none';
+  const dm=document.getElementById('dialogueDimmer');
+  if(dm) dm.style.display='none';
+  if(G.dialogueCb){ const c=G.dialogueCb; G.dialogueCb=null; c(); }
+}
+
+// ============================================================
+//  TASK SYSTEM
+// ============================================================
+function initTasks(tasks){
+  G.tasks={};
+  G.completedTasks={};
+  tasks.forEach(t=>{ G.tasks[t.id]=t; });
+  renderTaskPanel();
+  document.getElementById('taskPanel').style.display='block';
+}
+
+function completeTask(id){
+  if(!G.completedTasks[id]){
+    G.completedTasks[id]=true;
+    renderTaskPanel();
+    notify('✓ '+G.tasks[id].label, 2500);
+    checkAllTasks();
+  }
+}
+
+function renderTaskPanel(){
+  const list=document.getElementById('taskList');
+  list.innerHTML='';
+  Object.values(G.tasks).forEach(t=>{
+    const div=document.createElement('div');
+    div.className='task-item'+(G.completedTasks[t.id]?' done':'');
+    div.textContent=t.label;
+    list.appendChild(div);
+  });
+}
+
+function checkAllTasks(){
+  const ids=Object.keys(G.tasks);
+  if(ids.every(id=>G.completedTasks[id])) setTimeout(onAllTasksDone,1000);
+}
+let onAllTasksDone=()=>{};
+
+function hideTasks(){ document.getElementById('taskPanel').style.display='none'; }
+
+// ============================================================
+//  PROCEDURAL CHARACTER BUILDER
+// ============================================================
+function buildCharacter(opts){
+  // opts: { bodyColor, clothColor, hairColor, height, name }
+  const g=new THREE.Group();
+  const skin=opts.skin||0xf3c99a;
+  const cloth=opts.cloth||0x8b4513;
+  const hair=opts.hair||0x3d2b1f;
+
+  // Legs
+  const legGeo=new THREE.CylinderGeometry(0.1,0.1,0.65,8);
+  const legMat=new THREE.MeshPhongMaterial({color:cloth});
+  const legL=new THREE.Mesh(legGeo,legMat); legL.position.set(-0.15,0.33,0); legL.castShadow=true;
+  const legR=new THREE.Mesh(legGeo,legMat); legR.position.set(0.15,0.33,0); legR.castShadow=true;
+  g.add(legL,legR);
+
+  // Feet
+  const footMat=new THREE.MeshPhongMaterial({color:0x3d2b1f});
+  const footGeo=new THREE.BoxGeometry(0.14,0.1,0.2);
+  [-0.15,0.15].forEach(x=>{ const f=new THREE.Mesh(footGeo,footMat); f.position.set(x,0.05,0.05); f.castShadow=true; g.add(f); });
+
+  // Body/Torso
+  const bodyGeo=new THREE.CylinderGeometry(0.26,0.22,0.8,10);
+  const bodyMat=new THREE.MeshPhongMaterial({color:cloth});
+  const body=new THREE.Mesh(bodyGeo,bodyMat); body.position.y=0.95; body.castShadow=true;
+  g.add(body);
+
+  // Apron (if female)
+  if(opts.apron){
+    const apronGeo=new THREE.BoxGeometry(0.35,0.5,0.05);
+    const apronMat=new THREE.MeshPhongMaterial({color:opts.apronColor||0xe8d5b0});
+    const apron=new THREE.Mesh(apronGeo,apronMat); apron.position.set(0,0.85,0.24); apron.castShadow=true;
+    g.add(apron);
+  }
+
+  // Arms
+  const armGeo=new THREE.CylinderGeometry(0.09,0.07,0.65,8);
+  const armMat=new THREE.MeshPhongMaterial({color:cloth});
+  const armL=new THREE.Mesh(armGeo,armMat); armL.position.set(-0.38,0.95,0); armL.rotation.z=0.3; armL.castShadow=true;
+  const armR=new THREE.Mesh(armGeo,armMat); armR.position.set(0.38,0.95,0); armR.rotation.z=-0.3; armR.castShadow=true;
+  g.add(armL,armR);
+  g._armL=armL; g._armR=armR;
+
+  // Hands
+  const handGeo=new THREE.SphereGeometry(0.1,8,8);
+  const handMat=new THREE.MeshPhongMaterial({color:skin});
+  const hL=new THREE.Mesh(handGeo,handMat); hL.position.set(-0.5,0.73,0.1); g.add(hL);
+  const hR=new THREE.Mesh(handGeo,handMat); hR.position.set(0.5,0.73,0.1); g.add(hR);
+
+  // Neck
+  const neckGeo=new THREE.CylinderGeometry(0.12,0.13,0.18,8);
+  const neck=new THREE.Mesh(neckGeo,new THREE.MeshPhongMaterial({color:skin}));
+  neck.position.y=1.38; neck.castShadow=true; g.add(neck);
+
+  // Head
+  const headGeo=new THREE.SphereGeometry(0.3,16,14);
+  const head=new THREE.Mesh(headGeo,new THREE.MeshPhongMaterial({color:skin}));
+  head.scale.y=1.1; head.position.y=1.72; head.castShadow=true;
+  g.add(head); g._head=head;
+
+  // Hair
+  const hairGeo=new THREE.SphereGeometry(0.33,12,10,0,Math.PI*2,0,Math.PI*0.65);
+  const hairMesh=new THREE.Mesh(hairGeo,new THREE.MeshPhongMaterial({color:hair,side:THREE.BackSide}));
+  hairMesh.position.y=1.72; g.add(hairMesh);
+
+  // Eyes (painted on)
+  const eyeGeo=new THREE.SphereGeometry(0.04,6,6);
+  const eyeMat=new THREE.MeshBasicMaterial({color:0x2a1a0a});
+  [-0.1,0.1].forEach(x=>{ const e=new THREE.Mesh(eyeGeo,eyeMat); e.position.set(x,1.75,0.27); g.add(e); });
+
+  // Hair covering/veil for women
+  if(opts.veil){
+    const veilGeo=new THREE.ConeGeometry(0.35,0.2,12,1,true);
+    const veilMat=new THREE.MeshPhongMaterial({color:opts.veilColor||0xd4c090,side:THREE.DoubleSide});
+    const veil=new THREE.Mesh(veilGeo,veilMat); veil.position.y=1.9; veil.rotation.x=0.1; g.add(veil);
+  }
+
+  // Shadow
+  g.traverse(m=>{ if(m.isMesh){ m.castShadow=true; m.receiveShadow=true; } });
+
+  g._armL=armL; g._armR=armR;
+  g._walkT=0;
+  g._name=opts.name||'NPC';
+  return g;
+}
+
+function animateWalk(char, delta, walking){
+  if(!char._armL) return;
+  char._walkT = (char._walkT||0) + (walking ? delta*3 : 0);
+  const sw=Math.sin(char._walkT);
+  char._armL.rotation.x=walking?sw*0.4:0;
+  char._armR.rotation.x=walking?-sw*0.4:0;
+  if(char._head) char._head.rotation.x=walking?Math.abs(sw)*0.05:0;
+}
+
+// ============================================================
+//  BERNADETTE (player) 
+// ============================================================
+function createBernadette(){
+  const b=buildCharacter({
+    skin:0xf0c89a, cloth:0x6b5040, hair:0x2a1a0a,
+    apron:true, apronColor:0xd8c8a0,
+    veil:true, veilColor:0xc8b880, name:'Bernadette'
+  });
+  b.scale.set(0.9,0.9,0.9);
+  // Cap
+  const capGeo=new THREE.SphereGeometry(0.35,12,8,0,Math.PI*2,0,Math.PI*0.4);
+  const cap=new THREE.Mesh(capGeo,new THREE.MeshPhongMaterial({color:0xd8ccaa}));
+  cap.position.y=1.98; b.add(cap);
+  return b;
+}
+
+// ============================================================
+//  OUR LADY OF LOURDES
+// ============================================================
+function createOurLady(){
+  const g=new THREE.Group();
+
+  // Flowing white robe (cylinder widening at bottom)
+  const robeGeo=new THREE.CylinderGeometry(0.05,0.55,1.8,16);
+  const robeMat=new THREE.MeshPhongMaterial({
+    color:0xffffff, emissive:0x8888ff, emissiveIntensity:0.4, transparent:true, opacity:0.95
+  });
+  const robe=new THREE.Mesh(robeGeo,robeMat); robe.position.y=1.1; g.add(robe);
+
+  // Blue sash
+  const sashGeo=new THREE.TorusGeometry(0.28,0.05,8,24);
+  const sashMat=new THREE.MeshPhongMaterial({color:0x4488dd,emissive:0x2244aa,emissiveIntensity:0.5});
+  const sash=new THREE.Mesh(sashGeo,sashMat); sash.position.y=1.35; sash.rotation.x=Math.PI/2; g.add(sash);
+
+  // Body
+  const bodyGeo=new THREE.CylinderGeometry(0.22,0.25,0.75,12);
+  const body=new THREE.Mesh(bodyGeo,new THREE.MeshPhongMaterial({color:0xffffff,emissive:0x9999ff,emissiveIntensity:0.5}));
+  body.position.y=1.7; g.add(body);
+
+  // Head
+  const headGeo=new THREE.SphereGeometry(0.3,16,14);
+  const head=new THREE.Mesh(headGeo,new THREE.MeshPhongMaterial({color:0xfff5f0,emissive:0xaaaaff,emissiveIntensity:0.4}));
+  head.scale.y=1.1; head.position.y=2.2; g.add(head);
+
+  // Veil (white)
+  const veilGeo=new THREE.ConeGeometry(0.38,0.25,16,1,true);
+  const veil=new THREE.Mesh(veilGeo,new THREE.MeshPhongMaterial({color:0xffffff,emissive:0x9999ff,emissiveIntensity:0.4,side:THREE.DoubleSide}));
+  veil.position.y=2.45; g.add(veil);
+
+  // Veil back (flowing)
+  const veilBackGeo=new THREE.PlaneGeometry(0.7,1.0,4,8);
+  const veilBack=new THREE.Mesh(veilBackGeo,new THREE.MeshPhongMaterial({color:0xffffff,emissive:0x8888ff,emissiveIntensity:0.3,side:THREE.DoubleSide,transparent:true,opacity:0.9}));
+  veilBack.position.set(0,2.0,0.25); veilBack.rotation.x=-0.2; g.add(veilBack);
+
+  // Hands joined in prayer
+  const handGeo=new THREE.SphereGeometry(0.09,8,8);
+  const handMat=new THREE.MeshPhongMaterial({color:0xfff5f0,emissive:0xaaaaff,emissiveIntensity:0.3});
+  const hL=new THREE.Mesh(handGeo,handMat); hL.position.set(-0.07,1.85,0.28); g.add(hL);
+  const hR=new THREE.Mesh(handGeo,handMat); hR.position.set(0.07,1.85,0.28); g.add(hR);
+
+  // Rosary
+  const rosaryMat=new THREE.MeshPhongMaterial({color:0xf0d060,emissive:0xffaa00,emissiveIntensity:0.6});
+  for(let i=0;i<12;i++){
+    const a=i/12*Math.PI*1.2-0.6;
+    const r=0.22;
+    const beadGeo=new THREE.SphereGeometry(0.028,6,6);
+    const bead=new THREE.Mesh(beadGeo,rosaryMat);
+    bead.position.set(Math.sin(a)*r+0.08,1.65+Math.cos(a)*r*0.5,0.25);
+    g.add(bead);
+  }
+
+  // Golden roses on feet
+  const roseMat=new THREE.MeshPhongMaterial({color:0xffdd00,emissive:0xffaa00,emissiveIntensity:0.8});
+  [-0.18,0.18].forEach(x=>{
+    for(let i=0;i<5;i++){
+      const a=i/5*Math.PI*2, r=0.06;
+      const petal=new THREE.Mesh(new THREE.SphereGeometry(0.045,6,6),roseMat);
+      petal.position.set(x+Math.cos(a)*r,0.08,0.1+Math.sin(a)*r*0.5);
+      g.add(petal);
+    }
+  });
+
+  // Eyes (serene, downcast slightly)
+  const eyeGeo=new THREE.SphereGeometry(0.035,8,8);
+  const eyeMat=new THREE.MeshBasicMaterial({color:0x1a1040});
+  [-0.1,0.1].forEach(x=>{ const e=new THREE.Mesh(eyeGeo,eyeMat); e.position.set(x,2.22,0.26); g.add(e); });
+
+  // Inner light
+  const light=new THREE.PointLight(0xaabbff,3,8);
+  light.position.set(0,2,0); g.add(light);
+  g._innerLight=light;
+
+  // Outer radiance
+  const outerLight=new THREE.PointLight(0xffffff,2,15);
+  outerLight.position.set(0,1.5,0); g.add(outerLight);
+  g._outerLight=outerLight;
+
+  // Halo ring
+  const haloGeo=new THREE.TorusGeometry(0.5,0.025,8,40);
+  const haloMat=new THREE.MeshBasicMaterial({color:0xffffaa});
+  const halo=new THREE.Mesh(haloGeo,haloMat); halo.position.y=2.6; halo.rotation.x=Math.PI/2;
+  g.add(halo); g._halo=halo;
+
+  // Particle system around Our Lady
+  const pCount=300;
+  const pGeo=new THREE.BufferGeometry();
+  const pPos=new Float32Array(pCount*3);
+  const pCol=new Float32Array(pCount*3);
+  for(let i=0;i<pCount;i++){
+    const angle=Math.random()*Math.PI*2;
+    const radius=0.5+Math.random()*2.5;
+    const h=Math.random()*3;
+    pPos[i*3]=Math.cos(angle)*radius;
+    pPos[i*3+1]=h;
+    pPos[i*3+2]=Math.sin(angle)*radius;
+    // golden white sparkles
+    pCol[i*3]=0.9+Math.random()*0.1;
+    pCol[i*3+1]=0.9+Math.random()*0.1;
+    pCol[i*3+2]=0.7+Math.random()*0.3;
+  }
+  pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
+  pGeo.setAttribute('color',new THREE.BufferAttribute(pCol,3));
+  const pMat=new THREE.PointsMaterial({size:0.04,vertexColors:true,transparent:true,opacity:0.9,sizeAttenuation:true});
+  const particles=new THREE.Points(pGeo,pMat);
+  g.add(particles);
+  g._particles=particles;
+  g._pPos=pPos;
+  g._pCount=pCount;
+
+  g.traverse(m=>{ if(m.isMesh){m.castShadow=true;} });
+  return g;
+}
+
+function animateOurLady(lady, t){
+  if(!lady) return;
+  // Gentle float
+  lady.position.y=Math.sin(t*0.8)*0.12+0.15;
+  // Halo spin
+  if(lady._halo) lady._halo.rotation.z=t*0.5;
+  // Inner light pulse
+  if(lady._innerLight) lady._innerLight.intensity=2+Math.sin(t*2)*1;
+  if(lady._outerLight) lady._outerLight.intensity=1.5+Math.sin(t*1.3)*0.8;
+  // Particle orbit
+  if(lady._pPos){
+    const pos=lady._particles.geometry.attributes.position.array;
+    for(let i=0;i<lady._pCount;i++){
+      const angle=Math.atan2(pos[i*3+2],pos[i*3])+0.008;
+      const radius=Math.sqrt(pos[i*3]*pos[i*3]+pos[i*3+2]*pos[i*3+2]);
+      pos[i*3]=Math.cos(angle)*radius;
+      pos[i*3+2]=Math.sin(angle)*radius;
+      pos[i*3+1]+=(Math.random()-0.5)*0.01;
+      if(pos[i*3+1]>3) pos[i*3+1]=0;
+      if(pos[i*3+1]<0) pos[i*3+1]=2;
+    }
+    lady._particles.geometry.attributes.position.needsUpdate=true;
+  }
+}
+
+// ============================================================
+//  STARFIELD
+// ============================================================
+function createStars(){
+  const geo=new THREE.BufferGeometry();
+  const count=2000;
+  const pos=new Float32Array(count*3);
+  for(let i=0;i<count;i++){
+    pos[i*3]=(Math.random()-0.5)*400;
+    pos[i*3+1]=50+Math.random()*200;
+    pos[i*3+2]=(Math.random()-0.5)*400;
+  }
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  const mat=new THREE.PointsMaterial({color:0xffffff,size:0.3,sizeAttenuation:true,transparent:true,opacity:0.85});
+  return new THREE.Points(geo,mat);
+}
+
+// ============================================================
+//  TERRAIN
+// ============================================================
+function createPyreneesTerrain(){
+  const geo=new THREE.PlaneGeometry(200,200,60,60);
+  geo.rotateX(-Math.PI/2);
+  const pos=geo.attributes.position;
+  for(let i=0;i<pos.count;i++){
+    const x=pos.getX(i), z=pos.getZ(i);
+    let h=0;
+    h+=Math.sin(x*0.08)*3+Math.sin(z*0.06)*2.5;
+    h+=Math.sin(x*0.15+z*0.12)*1.5;
+    h+=Math.sin(x*0.3)*0.8+Math.sin(z*0.25)*0.6;
+    h=Math.max(h,-0.5);
+    pos.setY(i,h);
+  }
+  geo.computeVertexNormals();
+  const mat=new THREE.MeshPhongMaterial({color:0x4a6e3a,shininess:5});
+  const mesh=new THREE.Mesh(geo,mat);
+  mesh.receiveShadow=true;
+  return mesh;
+}
+
+function createMountains(){
+  const g=new THREE.Group();
+  const peaks=[
+    {x:-60,z:-80,h:55,r:22},{x:-30,z:-90,h:48,r:18},
+    {x:20,z:-85,h:62,r:25},{x:60,z:-75,h:40,r:16},
+    {x:90,z:-70,h:30,r:14},{x:-90,z:-60,h:35,r:16},
+    {x:40,z:-100,h:70,r:28},{x:-50,z:-110,h:65,r:24},
+  ];
+  peaks.forEach(p=>{
+    const geo=new THREE.ConeGeometry(p.r,p.h,10);
+    const mat=new THREE.MeshPhongMaterial({color:0x8a9a8a});
+    const m=new THREE.Mesh(geo,mat); m.position.set(p.x,p.h/2-2,p.z);
+    m.castShadow=true; g.add(m);
+    // Snow cap
+    const snowGeo=new THREE.ConeGeometry(p.r*0.3,p.h*0.2,10);
+    const snowMat=new THREE.MeshPhongMaterial({color:0xffffff});
+    const snow=new THREE.Mesh(snowGeo,snowMat); snow.position.set(p.x,p.h*0.9,p.z); g.add(snow);
+  });
+  return g;
+}
+
+function createWater(w,d,color=0x2255aa){
+  const geo=new THREE.PlaneGeometry(w,d,20,20);
+  geo.rotateX(-Math.PI/2);
+  const mat=new THREE.MeshPhongMaterial({
+    color, transparent:true, opacity:0.75, shininess:100,
+    emissive:new THREE.Color(color).multiplyScalar(0.3)
+  });
+  const mesh=new THREE.Mesh(geo,mat);
+  mesh._waterT=0;
+  return mesh;
+}
+
+function animateWater(water, delta){
+  if(!water) return;
+  water._waterT+=delta;
+  const pos=water.geometry.attributes.position;
+  for(let i=0;i<pos.count;i++){
+    const x=pos.getX(i),z=pos.getZ(i);
+    pos.setY(i,Math.sin(x*0.8+water._waterT*1.5)*0.08+Math.sin(z*0.6+water._waterT*1.2)*0.06);
+  }
+  pos.needsUpdate=true;
+  water.geometry.computeVertexNormals();
+}
+
+// ============================================================
+//  INTERACTABLE OBJECTS
+// ============================================================
+function createInteractable(obj, label, onInteract){
+  const item={mesh:obj, label, onInteract, glowMat:null, id:Math.random()};
+  // Glow indicator
+  const glowGeo=new THREE.SphereGeometry(0.18,8,8);
+  const glowMat=new THREE.MeshBasicMaterial({color:0xffee88,transparent:true,opacity:0.7});
+  const glow=new THREE.Mesh(glowGeo,glowMat);
+  glow.position.copy(obj.position);
+  glow.position.y+=1.5;
+  item.glowMesh=glow;
+  item.glowMat=glowMat;
+  scene.add(glow);
+  G.interactables.push(item);
+  return item;
+}
+
+function removeInteractable(item){
+  const idx=G.interactables.indexOf(item);
+  if(idx>=0) G.interactables.splice(idx,1);
+  scene.remove(item.glowMesh);
+}
+
+// ============================================================
+//  SCENE CLEARING
+// ============================================================
+function clearChapter(){
+  G.chapterObjects.forEach(o=>{ scene.remove(o); });
+  G.chapterObjects=[];
+  G.interactables=[];
+  G.npcs=[];
+  G.ourLady=null;
+  G.springWater=null;
+  document.getElementById('holyGlow').style.display='none';
+  document.getElementById('springGlow').style.display='none';
+  hideTasks();
+}
+
+function addC(obj){ scene.add(obj); G.chapterObjects.push(obj); return obj; }
+
+// ============================================================
+//  CHAPTER 1: THE CACHOT — HOME INTERIOR
+// ============================================================
+function loadChapterHome(){
+  clearChapter();
+
+  // Background sky (indoor night->dawn)
+  scene.background=new THREE.Color(0x0a0815);
+  scene.fog=new THREE.Fog(0x0a0815,15,60);
+
+  // Floor
+  const floor=new THREE.Mesh(
+    new THREE.PlaneGeometry(12,14,1,1),
+    new THREE.MeshPhongMaterial({color:0x5a4535,shininess:5})
+  ); floor.rotation.x=-Math.PI/2; floor.receiveShadow=true; addC(floor);
+
+  // Stone walls
+  function wall(w,h,d,x,y,z,ry=0){
+    const m=new THREE.Mesh(
+      new THREE.BoxGeometry(w,h,d),
+      new THREE.MeshPhongMaterial({color:0x7a6a5a})
+    ); m.position.set(x,y,z); m.rotation.y=ry; m.castShadow=true; m.receiveShadow=true; addC(m);
+    return m;
+  }
+  wall(12,4,0.3, 0,2,-7);  // back
+  wall(0.3,4,14, -6,2,0);  // left
+  wall(0.3,4,14,  6,2,0);  // right
+  wall(12,0.3,14, 0,4,0);  // ceiling
+
+  // Ceiling beams
+  for(let i=-4;i<=4;i+=4){
+    const beam=new THREE.Mesh(new THREE.BoxGeometry(12,0.2,0.25),new THREE.MeshPhongMaterial({color:0x4a3828}));
+    beam.position.set(0,3.9,i); addC(beam);
+  }
+
+  // Fireplace
+  const fp=new THREE.Mesh(new THREE.BoxGeometry(2,2,0.5),new THREE.MeshPhongMaterial({color:0x6a5545}));
+  fp.position.set(-3.5,1,-6.75); addC(fp);
+  const fireGeo=new THREE.BoxGeometry(1.2,0.8,0.3);
+  const fireMat=new THREE.MeshPhongMaterial({color:0x111111});
+  const firebox=new THREE.Mesh(fireGeo,fireMat); firebox.position.set(-3.5,0.6,-6.7); addC(firebox);
+  // Fire light
+  const fireLight=new THREE.PointLight(0xff6600,3,8);
+  fireLight.position.set(-3.5,1.2,-6.2); addC(fireLight);
+  G._fireLight=fireLight;
+  // Embers
+  const embMat=new THREE.MeshBasicMaterial({color:0xff4400});
+  for(let i=0;i<5;i++){
+    const e=new THREE.Mesh(new THREE.SphereGeometry(0.05,4,4),embMat);
+    e.position.set(-3.5+rand(-0.4,0.4),0.55+rand(0,0.15),-6.6); addC(e);
+  }
+
+  // Pot on fire
+  const potGeo=new THREE.CylinderGeometry(0.3,0.25,0.4,10);
+  const pot=new THREE.Mesh(potGeo,new THREE.MeshPhongMaterial({color:0x333333,shininess:20}));
+  pot.position.set(-3.5,1.2,-6.6); addC(pot);
+  // Steam particles
+  G._steamPos={x:-3.5,y:1.4,z:-6.6};
+
+  // Candle on table
+  const table=new THREE.Mesh(new THREE.BoxGeometry(1.6,0.1,0.9),new THREE.MeshPhongMaterial({color:0x5a3e2a}));
+  table.position.set(2,0.7,0); addC(table);
+  const tableLeg=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.7,8),new THREE.MeshPhongMaterial({color:0x5a3e2a}));
+  tableLeg.position.set(2,0.35,0); addC(tableLeg);
+  const candleBody=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.25,8),new THREE.MeshPhongMaterial({color:0xf0e8d0}));
+  candleBody.position.set(2,0.87,0.3); addC(candleBody);
+  const candleLight=new THREE.PointLight(0xffaa44,1.5,5);
+  candleLight.position.set(2,1.05,0.3); addC(candleLight);
+  G._candleLight=candleLight;
+
+  // Straw bed
+  const bedGeo=new THREE.BoxGeometry(2.5,0.2,1.2);
+  const bed=new THREE.Mesh(bedGeo,new THREE.MeshPhongMaterial({color:0xa08040}));
+  bed.position.set(3.5,0.12,-5); addC(bed);
+
+  // Ambient
+  const ambLight=new THREE.AmbientLight(0x2a1a10,0.8); addC(ambLight);
+  const dirLight=new THREE.DirectionalLight(0x604020,0.5);
+  dirLight.position.set(2,5,2); addC(dirLight);
+
+  // === BERNADETTE PLAYER ===
+  G.player.mesh=createBernadette();
+  G.player.mesh.position.set(0,0,2);
+  G.player.canMove=true;
+  addC(G.player.mesh);
+
+  // Camera
+  camera.position.set(0,10,14);
+  G.camera.offset.set(0,9,13);
+
+  // === FAMILY NPCs ===
+  // Louise (mother) — sitting, sick
+  const mother=buildCharacter({skin:0xd4a870,cloth:0x4a3828,hair:0x2a1a0a,veil:true,veilColor:0x8a7a6a,name:'Louise (Mother)'});
+  mother.position.set(-1.5,0,-4.5);
+  addC(mother); G.npcs.push(mother);
+
+  // Toinette (sister) with frizzy hair represented by bigger hair
+  const toinette=buildCharacter({skin:0xf0c89a,cloth:0x7a5a40,hair:0x3d2b1f,name:'Toinette',apron:true});
+  toinette.position.set(2.5,0,-1); toinette.rotation.y=-0.5;
+  addC(toinette); G.npcs.push(toinette);
+  G._toinette=toinette;
+  // Frizzy hair effect
+  for(let i=0;i<8;i++){
+    const frizz=new THREE.Mesh(
+      new THREE.SphereGeometry(0.08,4,4),
+      new THREE.MeshPhongMaterial({color:0x3d2b1f})
+    );
+    const a=i/8*Math.PI*2;
+    frizz.position.set(2.5+Math.cos(a)*0.28,1.72+Math.abs(Math.sin(a))*0.2,Math.sin(a)*0.28-1);
+    addC(frizz);
+  }
+  toinette._frizzMeshes=[];
+
+  // Jean-Marie (brother)
+  const jm=buildCharacter({skin:0xf0c89a,cloth:0x5a4830,hair:0x2a1a0a,name:'Jean-Marie'});
+  jm.position.set(-4,0,1); jm.rotation.y=0.8; addC(jm); G.npcs.push(jm);
+
+  // Water bucket near door
+  const bucketGeo=new THREE.CylinderGeometry(0.22,0.18,0.35,10);
+  const bucket=new THREE.Mesh(bucketGeo,new THREE.MeshPhongMaterial({color:0x4a3020}));
+  bucket.position.set(5.2,0.18,5); addC(bucket);
+
+  // TASKS
+  initTasks([
+    {id:'hair', label:'Comb Toinette\'s hair'},
+    {id:'food', label:'Stir the morning porridge'},
+    {id:'water', label:'Fetch water from the bucket'},
+  ]);
+
+  onAllTasksDone=()=>{
+    hideTasks();
+    speak([
+      {speaker:'Louise Soubirous — Mother',text:'Bernadette, my dear child. You have been such a help to our family. The cold is bitter today, but we need firewood. You may go with Toinette and Jeanne to gather some — but wrap your capulet tightly, child. Your asthma...'},
+      {speaker:'Bernadette Soubirous',text:'Yes, Maman. I will take care, I promise.'},
+      {speaker:'Louise Soubirous — Mother',text:'Be back before dark. And pray your rosary on the way, as your father taught you.'},
+    ], ()=>{ G._homeDone=true; transitionTo(2); });
+  };
+
+  // Interactables
+  // Toinette hair
+  createInteractable(toinette, 'Comb Toinette\'s hair', ()=>{
+    if(G.completedTasks['hair']) return;
+    speak([
+      {speaker:'Bernadette',text:'Toinette, come here — your hair is all tangled and wild as a briar patch! Sit still so I can comb it.'},
+      {speaker:'Toinette',text:'Ow! Be gentle, Bernadette! You pull like a fisherman hauling nets!'},
+      {speaker:'Bernadette',text:'(laughing softly) There now... see? Smooth and neat. You look like a proper young lady.'},
+      {speaker:'Toinette',text:'(sighing contentedly) Merci, Bernarde. It does feel better.'},
+    ],()=>{ completeTask('hair'); });
+  });
+
+  // Pot
+  createInteractable(pot, 'Stir the porridge', ()=>{
+    if(G.completedTasks['food']) return;
+    speak([
+      {speaker:'Narrator',text:'Bernadette kneels before the fire, her small hands working the wooden spoon through the thick porridge. It is little — just cornmeal and water — but she stirs it with the same care as if it were a great feast.'},
+      {speaker:'Bernadette',text:'(whispering) Lord, bless this food. Though it be poor, let it strengthen those I love.'},
+    ],()=>{ completeTask('food'); });
+  });
+
+  // Bucket
+  createInteractable(bucket, 'Fetch the water bucket', ()=>{
+    if(G.completedTasks['water']) return;
+    speak([
+      {speaker:'Bernadette',text:'(lifting the heavy bucket with both arms) The water is cold and heavy, but Maman needs it for the washing. Come now, arms — do not give up!'},
+      {speaker:'Louise Soubirous — Mother',text:'Thank you, my little one. You are worth a thousand servants.'},
+    ],()=>{ completeTask('water'); });
+  });
+
+  // Opening dialogue
+  setTimeout(()=>{
+    speak([
+      {speaker:'Narrator',text:'Lourdes, France. February 11, 1858. The Soubirous family lives in wretched poverty in the cachot — a former jail cell, damp and cold. François Soubirous, once a miller, is without work. His wife Louise tends the children as best she can, coughing through the bitter winter.'},
+      {speaker:'Narrator',text:'Bernadette Marie Soubirous, fourteen years old, small and gentle-faced, rises before dawn. Asthmatic since childhood, she is considered by some to be the simplest of the children. Yet there is something luminous in her dark eyes.'},
+      {speaker:'Bernadette',text:'(quietly, pressing her hands to her heart) Lord, I offer You this day — this cold, this hunger, and whatever else You send. Let me serve my family well.'},
+      {speaker:'Narrator',text:'Help your family with the morning chores before you may leave for the day.'},
+    ],null);
+  },1200);
+}
+
+// ============================================================
+//  CHAPTER 2: PATH TO MASSABIELLE
+// ============================================================
+function loadChapterPath(){
+  clearChapter();
+
+  scene.background=new THREE.Color(0xa8c4e0);
+  scene.fog=new THREE.Fog(0xb0cce0,30,120);
+
+  // Terrain
+  addC(createPyreneesTerrain());
+  addC(createMountains());
+  addC(createStars());
+
+  // Sun
+  const sun=new THREE.DirectionalLight(0xfff0d0,1.2);
+  sun.position.set(30,50,20);
+  sun.castShadow=true;
+  sun.shadow.mapSize.set(2048,2048);
+  sun.shadow.camera.near=0.5;
+  sun.shadow.camera.far=200;
+  sun.shadow.camera.left=-50; sun.shadow.camera.right=50;
+  sun.shadow.camera.top=50; sun.shadow.camera.bottom=-50;
+  addC(sun);
+  addC(new THREE.AmbientLight(0x9ab5cc,0.6));
+
+  // Gave river
+  const river=createWater(4,80,0x3d7faa);
+  river.position.set(8,0.05,0); addC(river);
+  G.springWater=river;
+
+  // River rocks
+  for(let z=-30;z<30;z+=3+Math.random()*2){
+    const r=new THREE.Mesh(
+      new THREE.SphereGeometry(0.2+Math.random()*0.4,6,5),
+      new THREE.MeshPhongMaterial({color:0x6a7a7a})
+    );
+    r.position.set(8+rand(-2,2),0.1,z);
+    r.scale.y=0.5; addC(r);
+  }
+
+  // Trees (path to grotto)
+  for(let i=0;i<40;i++){
+    const x=rand(-20,20);
+    const z=rand(-50,20);
+    if(Math.abs(x)<3) continue; // Keep path clear
+    const trunkH=rand(2,5);
+    const trunk=new THREE.Mesh(
+      new THREE.CylinderGeometry(0.15,0.2,trunkH,8),
+      new THREE.MeshPhongMaterial({color:0x5a3e2a})
+    );
+    trunk.position.set(x,trunkH/2,z); trunk.castShadow=true; addC(trunk);
+    const foliage=new THREE.Mesh(
+      new THREE.ConeGeometry(rand(1,2),rand(3,5),8),
+      new THREE.MeshPhongMaterial({color:new THREE.Color(0.15+Math.random()*0.15,0.45+Math.random()*0.2,0.1)})
+    );
+    foliage.position.set(x,trunkH+1.5,z); foliage.castShadow=true; addC(foliage);
+  }
+
+  // Path (gravel)
+  const path=new THREE.Mesh(
+    new THREE.PlaneGeometry(2.5,80,1,20),
+    new THREE.MeshPhongMaterial({color:0x9a8a70})
+  );
+  path.rotation.x=-Math.PI/2; path.position.y=0.02; addC(path);
+
+  // Companion NPCs
+  const toinette2=buildCharacter({skin:0xf0c89a,cloth:0x7a5a40,hair:0x3d2b1f,name:'Toinette',apron:true});
+  toinette2.position.set(-1.5,0,3); addC(toinette2); G.npcs.push(toinette2); G._companion1=toinette2;
+
+  const jeanne=buildCharacter({skin:0xe8b870,cloth:0x5a6840,hair:0x4a2a10,name:'Jeanne',apron:true});
+  jeanne.position.set(1.5,0,3); addC(jeanne); G.npcs.push(jeanne); G._companion2=jeanne;
+
+  // PLAYER
+  G.player.mesh=createBernadette();
+  G.player.mesh.position.set(0,0,8);
+  G.player.canMove=true;
+  addC(G.player.mesh);
+
+  camera.position.set(0,10,20);
+  G.camera.offset.set(0,9,13);
+
+  // Destination marker (Massabielle)
+  const grottoSignGeo=new THREE.BoxGeometry(0.2,1.5,0.1);
+  const grottoSign=new THREE.Mesh(grottoSignGeo,new THREE.MeshPhongMaterial({color:0x5a3e2a}));
+  grottoSign.position.set(0,0.75,-25); addC(grottoSign);
+
+  // Giant grotto rock ahead
+  const grottoRock=new THREE.Mesh(
+    new THREE.SphereGeometry(12,10,8),
+    new THREE.MeshPhongMaterial({color:0x787878})
+  );
+  grottoRock.scale.y=0.7; grottoRock.position.set(-4,5,-40); grottoRock.castShadow=true; addC(grottoRock);
+  const grottoRock2=new THREE.Mesh(
+    new THREE.SphereGeometry(8,10,8),
+    new THREE.MeshPhongMaterial({color:0x686868})
+  );
+  grottoRock2.scale.y=0.6; grottoRock2.position.set(6,3,-38); addC(grottoRock2);
+
+  // Trigger zone near grotto
+  G._grottoTriggerZ=-18;
+
+  // Opening
+  speak([
+    {speaker:'Narrator',text:'The three girls set out along the winding path toward the river Gave, following the bank to where it bends at the wild rock of Massabielle. It is bitterly cold. The canal water steams in the frosty air.'},
+    {speaker:'Toinette',text:'We need to cross the mill stream to reach the best firewood. Come on!'},
+    {speaker:'Bernadette',text:'(hesitating) The water looks cold. My asthma... I am afraid to wade through.'},
+    {speaker:'Jeanne Abadie',text:'Do not be afraid! Walk toward the grotto — we will all cross together. Race you!'},
+    {speaker:'Narrator',text:'Walk south toward the Grotto of Massabielle.'},
+  ],null);
+}
+
+// ============================================================
+//  CHAPTER 3: THE GROTTO — FIRST APPARITION
+// ============================================================
+function loadChapterGrotta1(){
+  clearChapter();
+
+  scene.background=new THREE.Color(0x0d1520);
+  scene.fog=new THREE.Fog(0x0d1520,20,100);
+
+  addC(new THREE.AmbientLight(0x203040,0.5));
+  const moonLight=new THREE.DirectionalLight(0x8099bb,0.4);
+  moonLight.position.set(-20,30,10); addC(moonLight);
+  G._grottoSunLight=moonLight;
+
+  // Ground
+  const ground=new THREE.Mesh(
+    new THREE.PlaneGeometry(40,40,1,1),
+    new THREE.MeshPhongMaterial({color:0x4a4030})
+  ); ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; addC(ground);
+
+  // Grotto rock formations — Massabielle
+  function rock(sx,sy,sz,x,y,z){
+    const m=new THREE.Mesh(
+      new THREE.SphereGeometry(1,8,6),
+      new THREE.MeshPhongMaterial({color:new THREE.Color(rand(0.38,0.5),rand(0.35,0.45),rand(0.3,0.38))})
+    );
+    m.scale.set(sx,sy,sz); m.position.set(x,y,z); m.castShadow=true; m.receiveShadow=true; addC(m);
+    return m;
+  }
+  // Main cliff
+  rock(12,9,5, 0,4.5,-14);
+  rock(8,7,4, -8,3,-12);
+  rock(6,5,3, 8,2.5,-12);
+  rock(14,4,6, 0,0.5,-15);
+  rock(5,8,4, -10,3,-10);
+  rock(4,5,3, 10,2,-9);
+  // Niche in rock (the hollow where Our Lady appears)
+  const niche=new THREE.Mesh(
+    new THREE.SphereGeometry(2.2,12,10),
+    new THREE.MeshPhongMaterial({color:0x2a2520,side:THREE.BackSide})
+  );
+  niche.scale.set(1,1.3,0.6);
+  niche.position.set(0,4.5,-12.5); addC(niche);
+
+  // Rosebush in niche
+  for(let i=0;i<12;i++){
+    const a=rand(0,Math.PI*2), r=rand(0.3,1.2);
+    const stem=new THREE.Mesh(
+      new THREE.CylinderGeometry(0.03,0.03,rand(0.4,0.9),4),
+      new THREE.MeshPhongMaterial({color:0x2d5a1d})
+    );
+    stem.position.set(Math.cos(a)*r,3.4+rand(0,0.5),-12+Math.sin(a)*0.3);
+    stem.rotation.z=rand(-0.4,0.4); addC(stem);
+    const leaf=new THREE.Mesh(new THREE.SphereGeometry(0.15,4,4),new THREE.MeshPhongMaterial({color:0x3a7a28}));
+    leaf.position.set(Math.cos(a)*r,3.8+rand(0,0.5),-12+Math.sin(a)*0.3); addC(leaf);
+  }
+
+  // Canal stream at bottom of grotto
+  const stream=createWater(3,20,0x2244aa);
+  stream.position.set(0,0.04,-2); addC(stream);
+  G.springWater=stream;
+
+  // Stones for stepping
+  for(let i=0;i<5;i++){
+    const s=new THREE.Mesh(
+      new THREE.CylinderGeometry(0.3,0.3,0.1,8),
+      new THREE.MeshPhongMaterial({color:0x6a6a5a})
+    );
+    s.position.set(rand(-0.5,0.5),0.06,-1+i*0.5); addC(s);
+  }
+
+  // Trees framing
+  [-7,7].forEach(x=>{
+    const h=rand(5,8);
+    const trunk=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.25,h,8),new THREE.MeshPhongMaterial({color:0x3a2820}));
+    trunk.position.set(x,h/2,-6); addC(trunk);
+    const crown=new THREE.Mesh(new THREE.SphereGeometry(rand(2,3),8,6),new THREE.MeshPhongMaterial({color:0x1a4020}));
+    crown.position.set(x,h+1,-6); addC(crown);
+  });
+
+  // Stars
+  const stars=createStars(); addC(stars);
+
+  // Bernadette kneeling position
+  G.player.mesh=createBernadette();
+  G.player.mesh.position.set(0,0,3);
+  G.player.mesh.rotation.y=Math.PI;
+  G.player.canMove=false;
+  addC(G.player.mesh);
+
+  camera.position.set(0,6,14);
+  G.camera.offset.set(0,6,12);
+
+  // Play out the apparition
+  setTimeout(()=>{ doFirstApparition(); },1000);
+}
+
+function doFirstApparition(){
+  // Phase 1: Wind and light
+  speak([
+    {speaker:'Narrator',text:'February 11, 1858. Bernadette has knelt to remove her stockings before crossing the cold stream. Suddenly — a great rushing sound, like a violent wind — but the trees do not stir. Only Bernadette hears it.'},
+    {speaker:'Bernadette',text:'(startled, looking up) What was that?'},
+    {speaker:'Narrator',text:'She looks toward the grotto. A golden light fills the niche above the rosebush. Bernadette reaches for her rosary beads with trembling hands.'},
+  ],()=>{
+    // Create light in niche
+    const nicheLight=new THREE.PointLight(0xeeeeff,0,10);
+    nicheLight.position.set(0,4.5,-11); addC(nicheLight);
+    G._nicheLight=nicheLight;
+    // Animate light growing
+    let t=0;
+    const growLight=()=>{
+      nicheLight.intensity=Math.min(t*0.05,5);
+      t++;
+      if(t<100) requestAnimationFrame(growLight);
+      else afterLight();
+    };
+    growLight();
+  });
+}
+
+function afterLight(){
+  // Show Our Lady
+  G.ourLady=createOurLady();
+  G.ourLady.position.set(0,2.8,-11.5);
+  G.ourLady.scale.set(0.8,0.8,0.8);
+  addC(G.ourLady);
+
+  document.getElementById('holyGlow').style.display='block';
+
+  // Shake camera
+  G.camera.shake=0.3;
+  setTimeout(()=>G.camera.shake=0,2000);
+
+  speak([
+    {speaker:'Narrator',text:'In the hollow of the rock, bathed in a light of indescribable splendor, stands a Lady of surpassing beauty. She wears a white robe with a blue sash, a white veil, and on each foot a golden rose. In her hands, a rosary of white beads on a golden chain.'},
+    {speaker:'Narrator',text:'She smiles at Bernadette — a smile of the most exquisite sweetness — and nods toward the child\'s rosary. Bernadette\'s hand rises, as if lifted by another, and she begins to pray.'},
+    {speaker:'Bernadette',text:'(trembling, tears streaming) I... I must pray. (she falls to her knees and begins the Rosary)'},
+    {speaker:'Narrator',text:'The Lady does not speak. She simply joins her own rosary and smiles upon Bernadette throughout the five decades. At the last decade, she bows her head tenderly and withdraws.'},
+    {speaker:'Bernadette',text:'(whispering, reaching out) Do not go... please do not go...'},
+    {speaker:'Narrator',text:'The light fades. Bernadette remains kneeling, her face transfigured, her eyes fixed upon the now-empty grotto. Toinette returns and pulls her to her feet.'},
+    {speaker:'Toinette',text:'Bernadette! What is wrong with you? You went as white as a sheet! I was frightened!'},
+    {speaker:'Bernadette',text:'(coming back slowly) Did you... did you not see anything? In the grotto?'},
+    {speaker:'Toinette',text:'We saw nothing! Just the rocks and the rosebush. Come, it is getting dark!'},
+  ],()=>transitionTo(4));
+}
+
+// ============================================================
+//  CHAPTER 4: RETURN HOME — MOTHER'S REACTION
+// ============================================================
+function loadChapterMother(){
+  clearChapter();
+
+  scene.background=new THREE.Color(0x0a0815);
+  scene.fog=new THREE.Fog(0x0a0815,15,50);
+
+  // Reuse cachot setup
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(12,14),new THREE.MeshPhongMaterial({color:0x5a4535}));
+  floor.rotation.x=-Math.PI/2; floor.receiveShadow=true; addC(floor);
+  function wall(w,h,d,x,y,z,ry=0){
+    const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshPhongMaterial({color:0x7a6a5a}));
+    m.position.set(x,y,z); m.rotation.y=ry; m.receiveShadow=true; addC(m);
+  }
+  wall(12,4,0.3,0,2,-7); wall(0.3,4,14,-6,2,0); wall(0.3,4,14,6,2,0);
+  const fireLight=new THREE.PointLight(0xff6600,2.5,8);
+  fireLight.position.set(-3.5,1.2,-6.2); addC(fireLight);
+  G._fireLight=fireLight;
+  addC(new THREE.AmbientLight(0x2a1a10,0.7));
+  const fp=new THREE.Mesh(new THREE.BoxGeometry(2,2,0.5),new THREE.MeshPhongMaterial({color:0x6a5545}));
+  fp.position.set(-3.5,1,-6.75); addC(fp);
+
+  G.player.mesh=createBernadette();
+  G.player.mesh.position.set(0,0,2);
+  G.player.canMove=false;
+  addC(G.player.mesh);
+
+  const mother=buildCharacter({skin:0xd4a870,cloth:0x4a3828,hair:0x2a1a0a,veil:true,name:'Louise'});
+  mother.position.set(-2,0,-3); addC(mother);
+
+  const francois=buildCharacter({skin:0xc49060,cloth:0x3a2820,hair:0x2a1a0a,name:'François'});
+  francois.position.set(2,0,-3); addC(francois);
+
+  camera.position.set(0,8,10);
+  G.camera.offset.set(0,8,10);
+
+  speak([
+    {speaker:'Bernadette',text:'Maman, Papa — something happened today at Massabielle. In the grotto, above the rosebush — there was a light, and within it... a Lady, beautiful beyond all words. She smiled at me and we prayed the Rosary together.'},
+    {speaker:'Louise Soubirous — Mother',text:'(paling) A Lady? What Lady? Child, you must have imagined it — the cold, your asthma... you were light-headed from the crossing!'},
+    {speaker:'Bernadette',text:'No, Maman. I was not imagining. She was real — more real than you are standing before me now. Her smile... I cannot describe it. I have never seen anyone so beautiful.'},
+    {speaker:'François Soubirous — Father',text:'(gravely) Bernadette. You are not to speak of this outside this house. People will think you are mad, or worse — that you have been deceived by something evil. The curé will be displeased.'},
+    {speaker:'Louise Soubirous — Mother',text:'You are never to go back to that grotto. Do you hear me? Never. Promise me.'},
+    {speaker:'Bernadette',text:'(quietly, her eyes full of tears) I will try, Maman. But... (her voice breaks) she was so beautiful.'},
+    {speaker:'Narrator',text:'That night, Bernadette could not sleep. The image of the Lady filled her mind — the white robe, the blue sash, the golden roses on her feet, the rosary, and above all, that smile of absolute and overwhelming love.'},
+  ],()=>transitionTo(5));
+}
+
+// ============================================================
+//  CHAPTER 5: SECOND APPARITION — Feb 14
+// ============================================================
+function loadChapterSecond(){
+  clearChapter();
+  scene.background=new THREE.Color(0x1a2535);
+  scene.fog=new THREE.Fog(0x1a2535,25,100);
+
+  addC(new THREE.AmbientLight(0x304050,0.6));
+  addC(new THREE.DirectionalLight(0x809090,0.5)).position.set(10,20,5);
+
+  const ground=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.MeshPhongMaterial({color:0x4a4030}));
+  ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; addC(ground);
+
+  // Rock niche reuse
+  function rock(sx,sy,sz,x,y,z){
+    const m=new THREE.Mesh(new THREE.SphereGeometry(1,8,6),new THREE.MeshPhongMaterial({color:0x686050}));
+    m.scale.set(sx,sy,sz); m.position.set(x,y,z); m.castShadow=true; addC(m);
+  }
+  rock(12,9,5,0,4.5,-14); rock(8,7,4,-8,3,-12); rock(6,5,3,8,2.5,-12); rock(14,4,6,0,0.5,-15);
+  const niche=new THREE.Mesh(new THREE.SphereGeometry(2.2,12,10),new THREE.MeshPhongMaterial({color:0x2a2520,side:THREE.BackSide}));
+  niche.scale.set(1,1.3,0.6); niche.position.set(0,4.5,-12.5); addC(niche);
+
+  const stream=createWater(3,20,0x2244aa); stream.position.set(0,0.04,-2); addC(stream); G.springWater=stream;
+  addC(createStars());
+
+  G.player.mesh=createBernadette();
+  G.player.mesh.position.set(0,0,3); G.player.mesh.rotation.y=Math.PI;
+  G.player.canMove=false; addC(G.player.mesh);
+
+  // Crowd of girls
+  const colors=[0x6a8050,0x7a6040,0x8a5040,0x5a7060];
+  for(let i=0;i<5;i++){
+    const c=buildCharacter({skin:rand(0.85,0.95)*0xffffff,cloth:colors[i%4],hair:0x2a1a0a,apron:true});
+    c.position.set(rand(-4,4),0,rand(2,6)); addC(c);
+  }
+
+  camera.position.set(0,7,14); G.camera.offset.set(0,7,12);
+
+  speak([
+    {speaker:'Narrator',text:'Three days later, February 14th. Against her mother\'s wishes — her heart irresistibly drawn — Bernadette returns to the grotto. This time she brings several schoolgirls, and a bottle of holy water.'},
+    {speaker:'Narrator',text:'The light reappears. Only Bernadette sees the Lady. The other girls, frightened, throw holy water toward the grotto and cry out—'},
+    {speaker:'Jeanne Abadie',text:'If you come from God, stay! If from the devil, go away!'},
+    {speaker:'Narrator',text:'The Lady smiles — serene and untroubled — and moves closer. Bernadette falls into ecstasy. Her face becomes luminous, otherworldly. A physician in the crowd examines her and is astonished: she does not blink; her candle burns her fingers but she feels nothing.'},
+  ],()=>{
+    // Show Our Lady
+    G.ourLady=createOurLady(); G.ourLady.position.set(0,2.8,-11.5); G.ourLady.scale.set(0.8,0.8,0.8); addC(G.ourLady);
+    document.getElementById('holyGlow').style.display='block';
+    const l=new THREE.PointLight(0xaabbff,4,12); l.position.set(0,4,-11); addC(l); G._nicheLight=l;
+
+    speak([
+      {speaker:'The Lady — Our Lady',text:'(Her voice like the sound of many gentle waters) Would you do me the favour of coming here for fifteen days?'},
+      {speaker:'Bernadette',text:'(kneeling, eyes radiant) Yes. Yes, I will come.'},
+      {speaker:'The Lady — Our Lady',text:'I do not promise to make you happy in this world, but in the next.'},
+      {speaker:'Bernadette',text:'I accept this gladly, my Lady. Whatever you ask.'},
+      {speaker:'Narrator',text:'The Lady smiles once more — that smile which Bernadette will describe again and again for the rest of her life, saying she has never seen anything so beautiful — and vanishes.'},
+      {speaker:'Bernadette',text:'(coming out of ecstasy, weeping quietly) She spoke to me. She asked me to return for fifteen days. And she said... she promised happiness, not in this world, but the next.'},
+    ],()=>transitionTo(6));
+  });
+}
+
+// ============================================================
+//  CHAPTER 6: FATHER PEYRAMALE
+// ============================================================
+function loadChapterPriest(){
+  clearChapter();
+
+  scene.background=new THREE.Color(0x2a1a10);
+  scene.fog=new THREE.Fog(0x2a1a10,20,80);
+
+  addC(new THREE.AmbientLight(0x201510,0.8));
+  const cLight=new THREE.PointLight(0xffaa44,2.5,15); cLight.position.set(0,4,0); addC(cLight);
+
+  // Presbytery interior
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(16,16),new THREE.MeshPhongMaterial({color:0x5a4030}));
+  floor.rotation.x=-Math.PI/2; floor.receiveShadow=true; addC(floor);
+  function wallP(w,h,d,x,y,z){
+    const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshPhongMaterial({color:0x8a7860}));
+    m.position.set(x,y,z); addC(m);
+  }
+  wallP(16,5,0.3,0,2.5,-8); wallP(0.3,5,16,-8,2.5,0); wallP(0.3,5,16,8,2.5,0);
+  // Crucifix on wall
+  const cross1=new THREE.Mesh(new THREE.BoxGeometry(0.15,1.2,0.1),new THREE.MeshPhongMaterial({color:0x3a2010}));
+  cross1.position.set(0,3,-7.8); addC(cross1);
+  const cross2=new THREE.Mesh(new THREE.BoxGeometry(0.7,0.15,0.1),new THREE.MeshPhongMaterial({color:0x3a2010}));
+  cross2.position.set(0,3.3,-7.8); addC(cross2);
+  // Bookcase
+  const bc=new THREE.Mesh(new THREE.BoxGeometry(2,3,0.5),new THREE.MeshPhongMaterial({color:0x4a3020}));
+  bc.position.set(-6,1.5,-7.5); addC(bc);
+  for(let i=0;i<6;i++){
+    const bk=new THREE.Mesh(new THREE.BoxGeometry(rand(0.15,0.25),rand(0.6,1),0.4),
+      new THREE.MeshPhongMaterial({color:new THREE.Color(rand(0.3,0.6),rand(0.1,0.3),rand(0,0.1))}));
+    bk.position.set(-6+rand(-0.8,0.8),0.7+rand(0,2),-7.4); addC(bk);
+  }
+  // Desk
+  const desk=new THREE.Mesh(new THREE.BoxGeometry(2.5,0.1,1.2),new THREE.MeshPhongMaterial({color:0x4a3020}));
+  desk.position.set(3,0.9,0); addC(desk);
+  const deskLeg=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.9,8),new THREE.MeshPhongMaterial({color:0x4a3020}));
+  deskLeg.position.set(3,0.45,0); addC(deskLeg);
+
+  // Father Peyramale — tall, imposing
+  const pey=buildCharacter({skin:0xd0a870,cloth:0x0a0a15,hair:0x1a1010,name:'Fr. Peyramale'});
+  pey.scale.set(1.1,1.15,1.1); // taller
+  pey.position.set(-1,0,-3); addC(pey); G.npcs.push(pey);
+  // Black cassock extra
+  const cassock=new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.4,1.5,12),new THREE.MeshPhongMaterial({color:0x080810}));
+  cassock.position.set(-1,0.75,-3); addC(cassock);
+
+  G.player.mesh=createBernadette();
+  G.player.mesh.position.set(0,0,3);
+  G.player.canMove=false; addC(G.player.mesh);
+
+  camera.position.set(0,6,12); G.camera.offset.set(0,6,12);
+
+  speak([
+    {speaker:'Narrator',text:'At the Lady\'s request, Bernadette goes to the parish priest, the Abbé Dominique Peyramale — a large, severe man known for his forceful character, but secretly compassionate. He listens to Bernadette\'s account with barely concealed astonishment.'},
+    {speaker:'Fr. Peyramale',text:'(sternly) You say a Lady appeared to you in the grotto? And she asked you to come for fifteen days? What sort of nonsense is this? How old are you?'},
+    {speaker:'Bernadette',text:'I am fourteen, Father. And it is not nonsense. I would not lie to a priest.'},
+    {speaker:'Fr. Peyramale',text:'Hmph. What is the name of this Lady?'},
+    {speaker:'Bernadette',text:'She has not told me yet, Father.'},
+    {speaker:'Fr. Peyramale',text:'(sharply) She has not told you! And you want me to do what, exactly?'},
+    {speaker:'Bernadette',text:'She asks that the people come in procession and that a chapel be built at Massabielle.'},
+    {speaker:'Fr. Peyramale',text:'(rising to his full height) A chapel! A girl who cannot even tell me the name of the Lady comes to demand a chapel! Go back and ask this Lady her name. And tell her this from me: if she wants a chapel, LET HER MAKE THE ROSEBUSH BLOOM — in the middle of February!'},
+    {speaker:'Bernadette',text:'(quietly, without fear) I will tell her, Father.'},
+    {speaker:'Fr. Peyramale',text:'(watching her go, softening despite himself) There is something about this child...'},
+    {speaker:'Narrator',text:'Father Peyramale would become Bernadette\'s staunchest defender before the bishop — the very man who shouted at her in his study.'},
+  ],()=>transitionTo(7));
+}
+
+// ============================================================
+//  CHAPTER 7: THE SPRING — Feb 25
+// ============================================================
+function loadChapterSpring(){
+  clearChapter();
+
+  scene.background=new THREE.Color(0x0a1520);
+  scene.fog=new THREE.Fog(0x0a1520,20,90);
+
+  addC(new THREE.AmbientLight(0x102030,0.6));
+  const moonL=new THREE.DirectionalLight(0x7090b0,0.4); moonL.position.set(-10,20,5); addC(moonL);
+
+  const ground=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.MeshPhongMaterial({color:0x4a3a28}));
+  ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; addC(ground);
+
+  function rock(sx,sy,sz,x,y,z){
+    const m=new THREE.Mesh(new THREE.SphereGeometry(1,8,6),new THREE.MeshPhongMaterial({color:0x686050}));
+    m.scale.set(sx,sy,sz); m.position.set(x,y,z); addC(m);
+  }
+  rock(12,9,5,0,4.5,-14); rock(8,7,4,-8,3,-12); rock(6,5,3,8,2.5,-12);
+  const niche=new THREE.Mesh(new THREE.SphereGeometry(2.2,12,10),new THREE.MeshPhongMaterial({color:0x2a2520,side:THREE.BackSide}));
+  niche.scale.set(1,1.3,0.6); niche.position.set(0,4.5,-12.5); addC(niche);
+
+  addC(createStars());
+
+  G.player.mesh=createBernadette();
+  G.player.mesh.position.set(0,0,3); G.player.mesh.rotation.y=Math.PI;
+  G.player.canMove=false; addC(G.player.mesh);
+
+  camera.position.set(0,7,13); G.camera.offset.set(0,7,12);
+
+  // Crowd
+  for(let i=0;i<10;i++){
+    const c=buildCharacter({skin:0xd4a870,cloth:new THREE.Color(rand(0.2,0.5),rand(0.1,0.3),0.05).getHex(),hair:0x2a1a0a});
+    c.position.set(rand(-8,8),0,rand(3,9)); addC(c);
+  }
+
+  // The spring hole
+  const springHole=new THREE.Mesh(
+    new THREE.CircleGeometry(0.4,12),
+    new THREE.MeshPhongMaterial({color:0x1a3060})
+  );
+  springHole.rotation.x=-Math.PI/2; springHole.position.set(-2,0.02,-6); addC(springHole);
+
+  speak([
+    {speaker:'Narrator',text:'February 25th. The ninth apparition. Several hundred people now gather daily at the grotto, though only Bernadette sees the Lady. Today, the Lady gives an extraordinary command.'},
+  ],()=>{
+    G.ourLady=createOurLady(); G.ourLady.position.set(0,2.8,-11.5); G.ourLady.scale.set(0.8,0.8,0.8); addC(G.ourLady);
+    document.getElementById('holyGlow').style.display='block';
+    const l=new THREE.PointLight(0xaabbff,4,12); l.position.set(0,4,-11); addC(l);
+
+    speak([
+      {speaker:'The Lady — Our Lady',text:'Go and drink at the spring and wash yourself there.'},
+      {speaker:'Bernadette',text:'(looking around, confused) A spring? I see no spring, my Lady... I see only the mud at the foot of the rock.'},
+      {speaker:'The Lady — Our Lady',text:'(pointing to a spot at the base of the cliff) Go and drink there, and wash yourself.'},
+      {speaker:'Narrator',text:'Bernadette crawls on her knees to the indicated spot and begins to dig in the wet earth with her bare hands. The crowd watches, horrified. Some call her mad. Some weep.'},
+      {speaker:'Narrator',text:'Water begins to well up — slowly at first, muddy, brown. Bernadette cups her hands and drinks the muddy water. She washes her face. The crowd recoils in disgust.'},
+      {speaker:'Narrator',text:'But then — the water clears. And clears. And clears, until it runs pure and cold and crystalline, a steady, singing spring from the living rock.'},
+    ],()=>{
+      // Spring water appears!
+      document.getElementById('springGlow').style.display='block';
+      const springWater=createWater(1.5,1.5,0x44aaff);
+      springWater.position.set(-2,0.05,-6); addC(springWater); G.springWater=springWater;
+      // Spring light
+      const sLight=new THREE.PointLight(0x44aaff,3,8); sLight.position.set(-2,0.5,-6); addC(sLight);
+      // Spring particles
+      const spGeo=new THREE.BufferGeometry();
+      const spPos=new Float32Array(60*3);
+      spGeo.setAttribute('position',new THREE.BufferAttribute(spPos,3));
+      const spMat=new THREE.PointsMaterial({color:0x88ccff,size:0.06,transparent:true,opacity:0.9});
+      const springPts=new THREE.Points(spGeo,spMat); addC(springPts); G._springPts=springPts;
+      G._springPtsPos=spPos;
+
+      speak([
+        {speaker:'Narrator',text:'That spring would flow at 32,000 gallons per day, every day, from that moment to this. It would never diminish, never dry up.'},
+        {speaker:'Narrator',text:'Soon after: Louis Bouriette, a quarryman blinded in one eye for twenty years, washes at the spring. He can see. Catherine Latapie, her fingers paralyzed, plunges her hand into the water. She can move them perfectly. The healings have begun.'},
+        {speaker:'Bernadette',text:'(softly, still kneeling by the spring) It is not I who healed anyone. It is the Lady — and the Lord. I am nothing. A poor girl from the cachot.'},
+      ],()=>transitionTo(8));
+    });
+  });
+}
+
+// ============================================================
+//  CHAPTER 8: PENANCE & BUILD A CHAPEL — Mar 2
+// ============================================================
+function loadChapterPenance(){
+  clearChapter();
+
+  scene.background=new THREE.Color(0x0a1520);
+  scene.fog=new THREE.Fog(0x0a1520,20,80);
+  addC(new THREE.AmbientLight(0x102030,0.5));
+  addC(new THREE.DirectionalLight(0x809090,0.4)).position.set(-10,20,5);
+
+  const ground=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.MeshPhongMaterial({color:0x4a3a28}));
+  ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; addC(ground);
+  function rock(sx,sy,sz,x,y,z){const m=new THREE.Mesh(new THREE.SphereGeometry(1,8,6),new THREE.MeshPhongMaterial({color:0x686050}));m.scale.set(sx,sy,sz);m.position.set(x,y,z);addC(m);}
+  rock(12,9,5,0,4.5,-14);rock(8,7,4,-8,3,-12);rock(6,5,3,8,2.5,-12);
+  const niche=new THREE.Mesh(new THREE.SphereGeometry(2.2,12,10),new THREE.MeshPhongMaterial({color:0x2a2520,side:THREE.BackSide}));
+  niche.scale.set(1,1.3,0.6);niche.position.set(0,4.5,-12.5);addC(niche);
+  addC(createStars());
+
+  G.player.mesh=createBernadette();
+  G.player.mesh.position.set(0,0,3); G.player.mesh.rotation.y=Math.PI;
+  G.player.canMove=false; addC(G.player.mesh);
+  camera.position.set(0,7,13); G.camera.offset.set(0,7,12);
+
+  for(let i=0;i<15;i++){
+    const c=buildCharacter({skin:0xd4a870,cloth:new THREE.Color(rand(0.2,0.5),rand(0.1,0.3),0.05).getHex(),hair:0x2a1a0a});
+    c.position.set(rand(-10,10),0,rand(3,10)); addC(c);
+  }
+
+  speak([
+    {speaker:'Narrator',text:'The apparitions continue. On one day, the Lady\'s face becomes sorrowful — painfully so. She gestures toward the crowd and utters three words that will echo through the centuries:'},
+  ],()=>{
+    G.ourLady=createOurLady(); G.ourLady.position.set(0,2.8,-11.5); G.ourLady.scale.set(0.8,0.8,0.8); addC(G.ourLady);
+    document.getElementById('holyGlow').style.display='block';
+    const l=new THREE.PointLight(0xaabbff,4,12); l.position.set(0,4,-11); addC(l);
+
+    speak([
+      {speaker:'The Lady — Our Lady',text:'Penance! Penance! Penance! Pray to God for sinners.'},
+      {speaker:'Narrator',text:'Bernadette kisses the earth. She crawls on her knees. She eats bitter herbs growing at the mouth of the grotto. The crowd is confused — but Bernadette, her face shining, understands. These are acts of penance for sinners, for souls.'},
+      {speaker:'The Lady — Our Lady',text:'Go and tell the priests that people are to come here in procession and to build a chapel here.'},
+      {speaker:'Bernadette',text:'(nodding solemnly) Yes, my Lady. I will go and tell them at once.'},
+    ],()=>{
+      speak([
+        {speaker:'Narrator',text:'Bernadette returns to Father Peyramale. He listens — still sceptical, still brusque, but something in him stirs. He passes the message to the Bishop. An official commission of inquiry is formed. For four years, it investigates.'},
+        {speaker:'Fr. Peyramale',text:'(to himself, watching Bernadette walk away) That child has not changed her story by a syllable in all these months. Not once. And her face when she speaks of the Lady... I have never seen anything like it in all my years as a priest.'},
+      ],()=>transitionTo(9));
+    });
+  });
+}
+
+// ============================================================
+//  CHAPTER 9: "I AM THE IMMACULATE CONCEPTION" — March 25
+// ============================================================
+function loadChapterName(){
+  clearChapter();
+
+  scene.background=new THREE.Color(0x050310);
+  scene.fog=new THREE.Fog(0x050310,20,80);
+  addC(new THREE.AmbientLight(0x0a0820,0.4));
+  addC(createStars());
+
+  const ground=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.MeshPhongMaterial({color:0x3a2a18}));
+  ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; addC(ground);
+  function rock(sx,sy,sz,x,y,z){const m=new THREE.Mesh(new THREE.SphereGeometry(1,8,6),new THREE.MeshPhongMaterial({color:0x686050}));m.scale.set(sx,sy,sz);m.position.set(x,y,z);addC(m);}
+  rock(12,9,5,0,4.5,-14);rock(8,7,4,-8,3,-12);rock(6,5,3,8,2.5,-12);rock(14,4,6,0,0.5,-15);
+  const niche=new THREE.Mesh(new THREE.SphereGeometry(2.2,12,10),new THREE.MeshPhongMaterial({color:0x2a2520,side:THREE.BackSide}));
+  niche.scale.set(1,1.3,0.6);niche.position.set(0,4.5,-12.5);addC(niche);
+  for(let i=0;i<12;i++){
+    const a=rand(0,Math.PI*2),r=rand(0.3,1.2);
+    const leaf=new THREE.Mesh(new THREE.SphereGeometry(0.15,4,4),new THREE.MeshPhongMaterial({color:0x3a7a28}));
+    leaf.position.set(Math.cos(a)*r,3.8+rand(0,0.5),-12+Math.sin(a)*0.3);addC(leaf);
+  }
+
+  G.player.mesh=createBernadette();
+  G.player.mesh.position.set(0,0,3); G.player.mesh.rotation.y=Math.PI;
+  G.player.canMove=false; addC(G.player.mesh);
+  camera.position.set(0,5,10); G.camera.offset.set(0,5,10);
+
+  speak([
+    {speaker:'Narrator',text:'March 25, 1858. The Feast of the Annunciation. Bernadette has asked the Lady her name three times over the course of the apparitions. Each time, the Lady smiled — and said nothing. Today, the Lady will answer.'},
+    {speaker:'Narrator',text:'The light in the niche blazes more intensely than ever before. The Lady appears — radiant, tender, joyful. Bernadette, trembling, asks once more.'},
+    {speaker:'Bernadette',text:'(softly) My Lady... will you not tell me who you are? I have asked the priest and he requires that I give your name. Who are you?'},
+  ],()=>{
+    G.ourLady=createOurLady(); G.ourLady.position.set(0,2.8,-11.5); G.ourLady.scale.set(0.8,0.8,0.8); addC(G.ourLady);
+    document.getElementById('holyGlow').style.display='block';
+    // Intense light
+    const l1=new THREE.PointLight(0xffffff,6,15); l1.position.set(0,5,-11); addC(l1); G._nicheLight=l1;
+    const l2=new THREE.PointLight(0xaabbff,4,20); l2.position.set(0,3,0); addC(l2);
+
+    speak([
+      {speaker:'Narrator',text:'The Lady\'s expression becomes one of tender solemnity. She joins her hands and raises her eyes to heaven. Her arms fall open in the attitude of the Miraculous Medal — rays of light streaming from her open palms.'},
+    ],()=>{
+      // Big reveal
+      setTimeout(()=>{
+        // Flash
+        G.camera.shake=1.0;
+        const flashLight=new THREE.PointLight(0xffffff,20,50); flashLight.position.set(0,5,-5); addC(flashLight);
+        setTimeout(()=>{ scene.remove(flashLight); G.camera.shake=0; },800);
+
+        speak([
+          {speaker:'✦ Our Lady — The Most Holy Virgin Mary ✦',text:'"Que soy era Immaculata Conceptiou."'},
+          {speaker:'Translation',text:'"I am the Immaculate Conception."'},
+          {speaker:'Narrator',text:'The words are spoken in the Gascon dialect of Bernadette\'s own people. The sky above Lourdes seems to split with light. Bernadette repeats the words over and over as she runs — literally runs — through the streets to Father Peyramale, terrified she will forget them.'},
+          {speaker:'Bernadette',text:'(breathless, bursting into the presbytery) Father Peyramale — Father! She told me! She told me her name! She said — Que soy era Immaculata Conceptiou — "I am the Immaculate Conception!"'},
+          {speaker:'Fr. Peyramale',text:'(stunned into silence, voice breaking) "I am the Immaculate Conception." A child who cannot even read these words... Who told you what this means?'},
+          {speaker:'Bernadette',text:'No one, Father. I did not know what it meant. I kept saying it over and over all the way here so I would not forget.'},
+          {speaker:'Fr. Peyramale',text:'(sinking into his chair, hand over his face) Go home, child. Go home. (alone) Pope Pius IX defined the Immaculate Conception only four years ago — 1854. This poor, uneducated girl cannot possibly know this. She CANNOT have invented this.'},
+          {speaker:'Narrator',text:'Peyramale immediately writes to the Bishop. The commission of inquiry deepens its investigation. Nothing in Bernadette\'s story breaks. Nothing contradicts itself. She stands before theologians, doctors, magistrates — and her account never wavers.'},
+        ],()=>transitionTo(10));
+      },1000);
+    });
+  });
+}
+
+// ============================================================
+//  CHAPTER 10: EPILOGUE — BISHOP'S RECOGNITION & NEVERS
+// ============================================================
+function loadChapterEpilogue(){
+  clearChapter();
+
+  scene.background=new THREE.Color(0x0a1525);
+  scene.fog=new THREE.Fog(0x0a1525,30,150);
+  addC(new THREE.AmbientLight(0x203040,0.6));
+  const sun=new THREE.DirectionalLight(0xfff0d0,1.0); sun.position.set(20,40,10); sun.castShadow=true; addC(sun);
+
+  addC(createPyreneesTerrain());
+  addC(createMountains());
+  addC(createStars());
+
+  // The chapel being built
+  const chapel=new THREE.Group();
+  const body=new THREE.Mesh(new THREE.BoxGeometry(5,4,7),new THREE.MeshPhongMaterial({color:0xd0c0a0}));
+  body.position.y=2; chapel.add(body);
+  const roof=new THREE.Mesh(new THREE.ConeGeometry(4,2.5,4),new THREE.MeshPhongMaterial({color:0xb09070}));
+  roof.position.y=5.25; roof.rotation.y=Math.PI/4; chapel.add(roof);
+  const tower=new THREE.Mesh(new THREE.BoxGeometry(1.5,6,1.5),new THREE.MeshPhongMaterial({color:0xd0c0a0}));
+  tower.position.set(0,3,0); chapel.add(tower);
+  const spire=new THREE.Mesh(new THREE.ConeGeometry(0.8,3,8),new THREE.MeshPhongMaterial({color:0x8a8080}));
+  spire.position.set(0,7.5,0); chapel.add(spire);
+  const cross=new THREE.Mesh(new THREE.BoxGeometry(0.15,1.5,0.15),new THREE.MeshBasicMaterial({color:0xf0d060}));
+  cross.position.set(0,9.5,0); chapel.add(cross);
+  const crossH=new THREE.Mesh(new THREE.BoxGeometry(0.8,0.15,0.15),new THREE.MeshBasicMaterial({color:0xf0d060}));
+  crossH.position.set(0,9.2,0); chapel.add(crossH);
+  chapel.position.set(-5,0,-20); addC(chapel);
+  chapel.traverse(m=>{ if(m.isMesh){m.castShadow=true;m.receiveShadow=true;} });
+
+  // Spring water
+  const spring2=createWater(3,20,0x44aaff); spring2.position.set(0,0.05,-2); addC(spring2); G.springWater=spring2;
+  document.getElementById('springGlow').style.display='block';
+  const sLight=new THREE.PointLight(0x44aaff,2,10); sLight.position.set(0,1,-2); addC(sLight);
+
+  // Pilgrims
+  for(let i=0;i<20;i++){
+    const c=buildCharacter({skin:0xd4a870,cloth:new THREE.Color(rand(0.2,0.5),rand(0.1,0.3),rand(0.1,0.4)).getHex(),hair:0x2a1a0a});
+    c.position.set(rand(-12,12),0,rand(-8,10)); addC(c);
+  }
+
+  G.player.mesh=createBernadette();
+  G.player.mesh.position.set(0,0,5);
+  G.player.canMove=false; addC(G.player.mesh);
+  camera.position.set(0,10,18); G.camera.offset.set(0,10,15);
+
+  speak([
+    {speaker:'Narrator',text:'January 18, 1862. After four years of rigorous investigation, Bishop Bertrand-Sévère Laurence of Tarbes issues his pastoral letter, formally recognizing the apparitions as authentic.'},
+    {speaker:'Bishop Laurence',text:'"We judge that the Immaculate Mary, Mother of God, did indeed appear to Bernadette Soubirous on 11 February 1858, and on subsequent days, to the number of eighteen times, in the Grotto of Massabielle, near the town of Lourdes. This apparition bears all the characteristics of truth, and the faithful are justified in believing it certain."'},
+    {speaker:'Narrator',text:'A great basilica rises above the grotto. The spring flows without ceasing. Pilgrims come from every nation on earth.'},
+    {speaker:'Narrator',text:'As for Bernadette — she does not seek fame. She enters the convent of the Sisters of Charity at Nevers, far from Lourdes, far from the crowds who would make her a spectacle.'},
+    {speaker:'Bernadette',text:'"My mission is finished. I am like a broom. Our Lady used me and then put me back in the corner. That is where I belong. I am only a broom. She has finished with me — and how glad I am of it."'},
+    {speaker:'Narrator',text:'She suffers greatly at Nevers — tuberculosis of the bone, humiliations, illness. Yet she bears it all with the same quiet radiance she showed at the grotto. "I am happy," she says. "I am happy." She dies April 16, 1879, aged 35.'},
+    {speaker:'Bernadette — Her Last Words',text:'"Holy Mary, Mother of God... pray for me, a poor sinner... a poor sinner..."'},
+    {speaker:'Narrator',text:'On December 8, 1933 — the feast of the Immaculate Conception — Pope Pius XI canonizes Bernadette Soubirous. Her body, examined in 1909 and again in 1919 and 1925, is found incorrupt. She lies today in the chapel at Nevers, her face peaceful, as if only asleep. And she smiles.'},
+    {speaker:'Our Lady\'s Promise to Bernadette',text:'"I do not promise to make you happy in this world, but in the next."'},
+  ],()=>showFinal());
+}
+
+function showFinal(){
+  G.player.canMove=false;
+  // Show Our Lady one final time
+  G.ourLady=createOurLady();
+  G.ourLady.position.set(0,3,0);
+  G.ourLady.scale.set(1.2,1.2,1.2);
+  addC(G.ourLady);
+  document.getElementById('holyGlow').style.display='block';
+  camera.position.set(0,8,14);
+
+  setTimeout(()=>{
+    // Show title again
+    document.getElementById('titleScreen').style.opacity='0';
+    document.getElementById('titleScreen').style.display='flex';
+    document.getElementById('titleScreen').style.background='radial-gradient(ellipse at center,rgba(0,0,40,0.7) 0%,rgba(0,0,0,0.95) 100%)';
+    document.getElementById('titleScreen').querySelector('.cross').textContent='☩';
+    document.getElementById('titleScreen').querySelector('h1').textContent='Laus Deo';
+    document.getElementById('titleScreen').querySelector('h2').textContent='Saint Bernadette Soubirous · 1844–1879';
+    document.getElementById('titleScreen').querySelector('.subtitle').innerHTML=
+      '"I am the Immaculate Conception."<br><em>— Our Lady of Lourdes, March 25, 1858</em>';
+    document.getElementById('startBtn').textContent='Play Again';
+    document.getElementById('startBtn').onclick=()=>{ location.reload(); };
+    setTimeout(()=>{ document.getElementById('titleScreen').style.opacity='1'; },100);
+  },5000);
+}
+
+// ============================================================
+//  CHAPTER MANAGER
+// ============================================================
+const CHAPTERS=[
+  { id:'home',   init: loadChapterHome,     title:'The Cachot — A Family in Need',      date:'February 11, 1858 — Morning' },
+  { id:'path',   init: loadChapterPath,     title:'The Road to Massabielle',            date:'February 11, 1858 — Midday' },
+  { id:'grotto', init: loadChapterGrotta1,  title:'The First Apparition',               date:'February 11, 1858 — Afternoon' },
+  { id:'mother', init: loadChapterMother,   title:'Return to the Cachot',               date:'February 11, 1858 — Evening' },
+  { id:'second', init: loadChapterSecond,   title:'She Returns — The Second Vision',    date:'February 14, 1858' },
+  { id:'priest', init: loadChapterPriest,   title:'The Abbé Peyramale',                 date:'February 1858' },
+  { id:'spring', init: loadChapterSpring,   title:'The Miraculous Spring',              date:'February 25, 1858' },
+  { id:'penance',init: loadChapterPenance,  title:'Penance — Build a Chapel',           date:'March 2, 1858' },
+  { id:'name',   init: loadChapterName,     title:'The Holy Name Revealed',             date:'March 25, 1858 — Feast of the Annunciation' },
+  { id:'epilogue',init: loadChapterEpilogue,title:'The Spring Flows — The Church Rises',date:'1858–1879 and Beyond' },
+];
+
+function transitionTo(chapterIdx){
+  if(G.transitioning) return;
+  G.transitioning=true;
+  G.player.canMove=false;
+  fadeOut(()=>{
+    G.chapter=chapterIdx;
+    const ch=CHAPTERS[chapterIdx];
+    scene.clear();
+    G.chapterObjects=[];
+    G.interactables=[];
+    G.npcs=[];
+    G.ourLady=null;
+    G.springWater=null;
+    G._nicheLight=null;
+    document.getElementById('holyGlow').style.display='none';
+    document.getElementById('springGlow').style.display='none';
+    document.getElementById('dialogue').style.display='none';
+    const _dm=document.getElementById('dialogueDimmer');
+    if(_dm) _dm.style.display='none';
+    G.dialogueActive=false;
+    ch.init();
+    fadeIn(()=>{
+      G.transitioning=false;
+      showChapter(ch.title, ch.date, null);
+    });
+  });
+}
+
+// ============================================================
+//  PLAYER CONTROLLER
+// ============================================================
+function updatePlayer(delta){
+  if(!G.player.mesh || !G.player.canMove || G.dialogueActive) return;
+
+  const speed=5;
+  // Keyboard input
+  let mx=0,mz=0;
+  if(G.keys['KeyW']||G.keys['ArrowUp'])    mz=-1;
+  if(G.keys['KeyS']||G.keys['ArrowDown'])  mz= 1;
+  if(G.keys['KeyA']||G.keys['ArrowLeft'])  mx=-1;
+  if(G.keys['KeyD']||G.keys['ArrowRight']) mx= 1;
+
+  // Joystick input — blended with keyboard (joystick overrides if active)
+  if(G.joy && (Math.abs(G.joy.x)>0.01 || Math.abs(G.joy.y)>0.01)){
+    mx = G.joy.x;
+    mz = G.joy.y;   // joystick Y → world Z (forward/back)
+  }
+
+  const moving=mx!==0||mz!==0;
+  if(moving){
+    G.player.mesh.position.x+=mx*speed*delta;
+    G.player.mesh.position.z+=mz*speed*delta;
+    if(mx!==0||mz!==0){
+      G.player.facing.set(mx,0,mz).normalize();
+      G.player.mesh.rotation.y=Math.atan2(mx,mz);
+    }
+  }
+
+  animateWalk(G.player.mesh, delta, moving);
+
+  // Chapter-specific triggers
+  if(G.chapter===1 && G.player.mesh.position.z<G._grottoTriggerZ){
+    G.player.canMove=false;
+    transitionTo(2);
+  }
+
+  // Interact
+  if(G.keys['KeyE'] && !G._eHeld){
+    G._eHeld=true;
+    if(G.nearbyInteractable) G.nearbyInteractable.onInteract();
+  }
+  if(!G.keys['KeyE']) G._eHeld=false;
+}
+
+// ============================================================
+//  CAMERA
+// ============================================================
+function updateCamera(delta){
+  if(!G.player.mesh) return;
+  const target=G.player.mesh.position.clone().add(G.camera.offset);
+  camera.position.lerp(target, delta*4);
+
+  let lookAt=G.player.mesh.position.clone();
+  lookAt.y+=1;
+  // If Our Lady is visible, look toward her too
+  if(G.ourLady){
+    lookAt.lerp(G.ourLady.position.clone(),0.3);
+  }
+  camera.lookAt(lookAt);
+
+  if(G.camera.shake>0){
+    camera.position.x+=rand(-1,1)*G.camera.shake;
+    camera.position.y+=rand(-0.5,0.5)*G.camera.shake;
+    G.camera.shake=Math.max(0,G.camera.shake-delta*2);
+  }
+}
+
+// ============================================================
+//  INTERACTABLE DETECTION
+// ============================================================
+function updateInteractables(delta){
+  G.nearbyInteractable=null;
+  if(!G.player.mesh) return;
+  let closest=2.5, closestItem=null;
+  G.interactables.forEach(item=>{
+    const d=G.player.mesh.position.distanceTo(item.mesh.position);
+    if(d<closest){ closest=d; closestItem=item; }
+    // Animate glow
+    if(item.glowMesh){
+      item.glowMesh.position.y=item.mesh.position.y+1.6+Math.sin(G.time*2)*0.1;
+      item.glowMat.opacity=0.5+Math.sin(G.time*3)*0.3;
+    }
+  });
+  G.nearbyInteractable=closestItem;
+  const prompt=document.getElementById('interactPrompt');
+  if(closestItem&&!G.dialogueActive){
+    prompt.style.display='block';
+    prompt.textContent=`[ E ]  ${closestItem.label}`;
+  } else {
+    prompt.style.display='none';
+  }
+}
+
+// ============================================================
+//  FIRE / CANDLE FLICKER
+// ============================================================
+function updateLights(delta){
+  G.time+=delta;
+  if(G._fireLight) G._fireLight.intensity=2+Math.sin(G.time*8)*0.8+Math.sin(G.time*13)*0.4;
+  if(G._candleLight) G._candleLight.intensity=1.2+Math.sin(G.time*7)*0.3;
+  if(G._nicheLight) G._nicheLight.intensity=4+Math.sin(G.time*2)*1;
+}
+
+// ============================================================
+//  SPRING PARTICLES
+// ============================================================
+function updateSpringParticles(){
+  if(!G._springPts) return;
+  const pos=G._springPtsPos;
+  for(let i=0;i<60;i++){
+    pos[i*3]  =-2+(Math.random()-0.5)*0.3;
+    pos[i*3+1]+= 0.04+Math.random()*0.06;
+    pos[i*3+2]=-6+(Math.random()-0.5)*0.3;
+    if(pos[i*3+1]>1.5){ pos[i*3+1]=0.05; }
+  }
+  G._springPts.geometry.attributes.position.needsUpdate=true;
+}
+
+// ============================================================
+//  MAIN LOOP
+// ============================================================
+function animate(){
+  requestAnimationFrame(animate);
+  const delta=Math.min(clock.getDelta(),0.05);
+  G.time+=delta;
+
+  updatePlayer(delta);
+  updateCamera(delta);
+  updateInteractables(delta);
+  updateLights(delta);
+  if(G.ourLady) animateOurLady(G.ourLady, G.time);
+  if(G.springWater) animateWater(G.springWater, delta);
+  updateSpringParticles();
+
+  // NPC gentle sway
+  G.npcs.forEach((npc,i)=>{
+    npc.rotation.y=Math.sin(G.time*0.5+i)*0.05+npc._baseRY||0;
+  });
+
+  renderer.render(scene, camera);
+}
+
+// ============================================================
+//  START
+// ============================================================
+function startGame(){
+  const title=document.getElementById('titleScreen');
+  title.style.opacity='0';
+  setTimeout(()=>{ title.style.display='none'; }, 1500);
+
+  // Preload first chapter
+  setTimeout(()=>{
+    transitionTo(0);
+  },800);
+}
+
+// Title scene — beautiful Lourdes atmosphere
+(function initTitle(){
+  scene.background=new THREE.Color(0x050212);
+  scene.fog=new THREE.Fog(0x050212,30,200);
+  addC(new THREE.AmbientLight(0x101028,0.5));
+  addC(createStars());
+  addC(createPyreneesTerrain());
+  addC(createMountains());
+
+  // Moonlight
+  const moon=new THREE.DirectionalLight(0x6070a0,0.4);
+  moon.position.set(-20,30,10); addC(moon);
+
+  // Pre-place Our Lady for title
+  const lady=createOurLady();
+  lady.position.set(0,3,-20);
+  lady.scale.set(1.5,1.5,1.5);
+  addC(lady);
+  G.ourLady=lady;
+
+  // River
+  const river=createWater(4,60,0x1a2a5a);
+  river.position.set(8,0.05,0);
+  addC(river);
+  G.springWater=river;
+
+  camera.position.set(0,8,12);
+
+  // Candle lights scattered
+  for(let i=0;i<8;i++){
+    const cl=new THREE.PointLight(0xffaa44,0.8+Math.random(),4+Math.random()*4);
+    cl.position.set(rand(-15,15),0.5+Math.random(),rand(-30,5));
+    addC(cl);
+  }
+})();
+
+animate();
+</script>
+
+</body>
+</html>
