@@ -51,67 +51,77 @@ opacity:0;transition:opacity 1s;pointer-events:none;
 #chapterTitle{font-family:‘Cinzel Decorative’,serif;font-size:clamp(12px,2.2vw,26px);color:#f5e6c0;text-shadow:0 0 20px rgba(255,200,80,0.6);letter-spacing:0.1em}
 #chapterDate{font-family:‘Cinzel’,serif;font-size:clamp(10px,1.4vw,15px);color:#c4a870;letter-spacing:0.2em;margin-top:4px}
 
-/* DIALOGUE — centred card */
+/* DIALOGUE — upper-centre card, 40% transparent */
 #dialogue{
 position:fixed;
-top:50%; left:50%;
-transform:translate(-50%,-50%);
-width:min(92vw, 780px);
-background:rgba(4,2,16,0.97);
-border:2px solid rgba(200,160,60,0.6);
-border-radius:6px;
-box-shadow:0 0 60px rgba(0,0,0,0.95), 0 0 30px rgba(200,140,40,0.18), inset 0 0 40px rgba(0,0,10,0.5);
-padding:32px 36px 24px;
+top:12%;
+left:50%;
+transform:translateX(-50%);
+width:min(94vw, 820px);
+max-height:55vh;
+overflow-y:auto;
+background:rgba(4,2,18,0.60);        /* 40% transparent */
+backdrop-filter:blur(14px) saturate(1.4);
+-webkit-backdrop-filter:blur(14px) saturate(1.4);
+border:1.5px solid rgba(210,170,60,0.55);
+border-radius:8px;
+box-shadow:
+0 8px 48px rgba(0,0,0,0.7),
+0 0 32px rgba(180,130,30,0.15),
+inset 0 1px 0 rgba(255,230,120,0.12),
+inset 0 0 40px rgba(0,0,20,0.3);
+padding:26px 38px 20px;
 display:none;
 pointer-events:all;
 z-index:500;
-/* thin gold corner accents via outline trick */
 }
-/* decorative corner lines */
+/* gold corner accents */
 #dialogue::before,#dialogue::after{
-content:’’;position:absolute;width:18px;height:18px;
-border-color:rgba(200,160,60,0.8);border-style:solid;
+content:’’;position:absolute;width:22px;height:22px;
+border-color:rgba(210,170,60,0.75);border-style:solid;
+pointer-events:none;
 }
-#dialogue::before{top:-1px;left:-1px;border-width:2px 0 0 2px;border-radius:4px 0 0 0;}
-#dialogue::after {bottom:-1px;right:-1px;border-width:0 2px 2px 0;border-radius:0 0 4px 0;}
+#dialogue::before{top:-1px;left:-1px;border-width:2px 0 0 2px;border-radius:6px 0 0 0;}
+#dialogue::after {bottom:-1px;right:-1px;border-width:0 2px 2px 0;border-radius:0 0 6px 0;}
 
 /* speaker name strip */
 #dialogueSpeaker{
 font-family:‘Cinzel’,serif;
-font-size:clamp(10px,2.2vw,14px);
-color:#f0c060;
-letter-spacing:0.18em;
+font-size:clamp(11px,2.4vw,15px);
+color:#ffd060;
+letter-spacing:0.2em;
 text-transform:uppercase;
-margin-bottom:14px;
-padding-bottom:10px;
-border-bottom:1px solid rgba(200,160,60,0.25);
+margin-bottom:12px;
+padding-bottom:9px;
+border-bottom:1px solid rgba(210,170,60,0.3);
 text-align:center;
-text-shadow:0 0 14px rgba(255,200,60,0.5);
-min-height:1.3em;
+text-shadow:0 0 18px rgba(255,210,60,0.7), 0 0 4px rgba(0,0,0,0.9);
+min-height:1.4em;
 }
 
-/* main text */
+/* main dialogue text — clear and large */
 #dialogueText{
 font-family:‘IM Fell English’,serif;
-font-size:clamp(16px,3vw,22px);
-color:#f8f0e0;
-line-height:1.75;
+font-size:clamp(17px,3.2vw,24px);
+color:#fff8ec;
+line-height:1.8;
 text-align:center;
-text-shadow:0 1px 3px rgba(0,0,0,0.8);
-padding:0 4px;
+text-shadow:0 2px 8px rgba(0,0,0,1), 0 0 2px rgba(0,0,0,1);
+padding:0 6px 2px;
+letter-spacing:0.01em;
 }
 
 /* continue hint */
 #dialogueContinue{
 font-family:‘Cinzel’,serif;
-font-size:clamp(9px,1.8vw,12px);
-color:rgba(200,160,60,0.7);
+font-size:clamp(10px,1.8vw,13px);
+color:rgba(210,175,70,0.8);
 text-align:center;
-margin-top:20px;
-letter-spacing:0.14em;
+margin-top:16px;
+letter-spacing:0.16em;
 animation:blink 1.2s infinite;
 }
-@keyframes blink{0%,100%{opacity:0.35}50%{opacity:1}}
+@keyframes blink{0%,100%{opacity:0.3}50%{opacity:1}}
 
 /* TASKS */
 #taskPanel{
@@ -174,22 +184,74 @@ display:none;pointer-events:none;animation:holyPulse 2s infinite;
 }
 @keyframes holyPulse{0%,100%{opacity:0.5}50%{opacity:1}}
 
-/* ── VIRTUAL JOYSTICK — floating, appears where you touch ── */
+/* ── ROSARY PRAYER UI ── */
+#rosaryUI{
+position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+display:none;pointer-events:all;z-index:600;
+flex-direction:column;align-items:center;gap:16px;
+}
+#rosaryUI.show{display:flex;}
+#rosaryTitle{
+font-family:‘Cinzel Decorative’,serif;font-size:clamp(12px,2.5vw,20px);
+color:#f0d060;text-shadow:0 0 20px rgba(255,200,60,0.8);letter-spacing:0.12em;
+text-align:center;
+}
+#rosaryMystery{
+font-family:‘IM Fell English’,serif;font-style:italic;
+font-size:clamp(13px,2.2vw,18px);color:#f8f0e0;text-align:center;
+max-width:500px;line-height:1.6;
+text-shadow:0 2px 8px rgba(0,0,0,0.9);
+}
+#rosaryBeads{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:10px 0;}
+.rbead{
+width:28px;height:28px;border-radius:50%;cursor:pointer;
+background:radial-gradient(circle at 35% 30%,rgba(255,230,120,0.95),rgba(160,100,20,0.8));
+border:2px solid rgba(255,210,70,0.8);
+box-shadow:0 3px 10px rgba(0,0,0,0.6),0 0 8px rgba(255,190,40,0.3);
+transition:transform 0.1s,box-shadow 0.1s;
+pointer-events:all;
+}
+.rbead:hover{transform:scale(1.2);box-shadow:0 3px 16px rgba(0,0,0,0.8),0 0 18px rgba(255,190,40,0.8);}
+.rbead.prayed{
+background:radial-gradient(circle at 35% 30%,rgba(200,230,255,0.95),rgba(30,60,160,0.8));
+border-color:rgba(140,180,255,0.9);
+box-shadow:0 3px 10px rgba(0,0,0,0.6),0 0 12px rgba(100,160,255,0.7);
+}
+#rosaryProgress{
+font-family:‘Cinzel’,serif;font-size:clamp(10px,1.8vw,13px);
+color:rgba(200,170,70,0.9);letter-spacing:0.12em;text-align:center;
+}
+
+/* ── AMBIENT SOUND HINT ── */
+#soundHint{
+position:fixed;top:8px;right:8px;z-index:200;
+font-family:‘Cinzel’,serif;font-size:10px;letter-spacing:0.1em;
+color:rgba(200,170,70,0.5);pointer-events:all;cursor:pointer;
+background:rgba(5,3,20,0.6);padding:5px 10px;border:1px solid rgba(200,160,60,0.2);
+}
+#soundHint:hover{color:rgba(200,170,70,0.9);}
+
+/* ── SPRING WALK PROMPT ── */
+#springPrompt{
+position:fixed;top:32%;left:50%;transform:translateX(-50%);
+font-family:‘Cinzel’,serif;font-size:clamp(12px,2vw,16px);letter-spacing:0.12em;
+color:#88ccff;background:rgba(5,3,20,0.75);border:1px solid rgba(100,160,255,0.5);
+padding:10px 28px;display:none;text-align:center;
+text-shadow:0 0 12px rgba(100,180,255,0.7);animation:pulse 1.5s infinite;
+z-index:200;
+}
+
+/* ── VIRTUAL JOYSTICK — always visible, drag from centre ── */
 #joystickWrap{
 position:fixed;
-bottom:28px;left:28px;        /* default resting position (shown on desktop) */
-width:150px;height:150px;
+bottom:32px; left:32px;
+width:150px; height:150px;
 pointer-events:all;
-user-select:none;-webkit-user-select:none;
+user-select:none; -webkit-user-select:none;
 z-index:50;
-/* on touch devices we reposition it dynamically */
-transition:opacity 0.15s;
+transition:opacity 0.2s;
 }
-/* Hide the static position on touch-primary devices until touched */
-@media (hover:none){
-#joystickWrap{ opacity:0; pointer-events:none; }
-#joystickWrap.active{ opacity:1; pointer-events:all; }
-}
+/* On touch devices, it teleports to finger — handled in JS */
 #joystickBase{
 position:absolute;inset:0;
 border-radius:50%;
@@ -321,12 +383,13 @@ margin-top:-8px;pointer-events:none;
     <div id="chapterDate"></div>
   </div>
 
-  <!-- DIALOGUE DIMMER -->
+  <!-- DIALOGUE DIMMER — subtle vignette only -->
 
   <div id="dialogueDimmer" style="
-    position:fixed;inset:0;background:rgba(0,0,0,0.55);
+    position:fixed;inset:0;
+    background:radial-gradient(ellipse at 50% 30%, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.35) 100%);
     display:none;z-index:499;pointer-events:none;
-    backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+    backdrop-filter:blur(0.5px);-webkit-backdrop-filter:blur(0.5px);
   "></div>
 
   <!-- DIALOGUE -->
@@ -364,6 +427,23 @@ margin-top:-8px;pointer-events:none;
 
   <div id="springGlow"></div>
   <div id="holyGlow"></div>
+
+  <!-- ROSARY PRAYER UI -->
+
+  <div id="rosaryUI">
+    <div id="rosaryTitle">✝ The Holy Rosary ✝</div>
+    <div id="rosaryMystery"></div>
+    <div id="rosaryBeads"></div>
+    <div id="rosaryProgress"></div>
+  </div>
+
+  <!-- SPRING WALK PROMPT -->
+
+  <div id="springPrompt">💧 Walk to the spring and kneel to drink</div>
+
+  <!-- SOUND HINT -->
+
+  <div id="soundHint" onclick="toggleAmbient()">♪ Sound: OFF</div>
 
   <!-- ── VIRTUAL JOYSTICK ── -->
 
@@ -457,37 +537,38 @@ window.addEventListener('resize', () => {
 });
 
 // ============================================================
-//  VIRTUAL JOYSTICK — floating, spawns at touch origin
+//  VIRTUAL JOYSTICK  — desktop: drag from centre | touch: spawns at finger
 // ============================================================
 (function initJoystick(){
   const wrap = document.getElementById('joystickWrap');
+  const base = document.getElementById('joystickBase');
   const knob = document.getElementById('joystickKnob');
-  const RADIUS = 52;   // max knob travel px
-  const DEAD   = 0.15; // dead zone fraction
-  const SIZE   = 150;  // wrap diameter px
+  const RADIUS = 52;    // max knob travel px
+  const DEAD   = 0.14;  // dead zone fraction
+  const SIZE   = 150;   // wrap diameter px
 
-  G.joy = { x: 0, y: 0 };
+  G.joy = { x:0, y:0 };
 
-  // The virtual origin — set when finger first touches
-  let originX = 0, originY = 0;
-  let touchId  = null;   // which touch we're tracking
-  let active   = false;
+  let active  = false;
+  let touchId = null;
+  let originX = 0, originY = 0;   // world pixel origin of the virtual stick centre
 
-  // ── Position the wrap centred on (ox, oy) ──────────────────
+  function getWrapCenter(){
+    const r = wrap.getBoundingClientRect();
+    return { cx: r.left + r.width/2, cy: r.top + r.height/2 };
+  }
+
+  // Clamp-position the wrap so it stays inside the viewport
   function placeWrap(ox, oy){
     const half = SIZE / 2;
-    let left = ox - half;
-    let top  = oy - half;
-    // Clamp inside viewport with small margin
-    left = Math.max(10, Math.min(window.innerWidth  - SIZE - 10, left));
-    top  = Math.max(10, Math.min(window.innerHeight - SIZE - 10, top));
+    let left = Math.max(8, Math.min(window.innerWidth  - SIZE - 8, ox - half));
+    let top  = Math.max(8, Math.min(window.innerHeight - SIZE - 8, oy - half));
     wrap.style.left   = left + 'px';
     wrap.style.top    = top  + 'px';
     wrap.style.bottom = 'auto';
     wrap.style.right  = 'auto';
   }
 
-  // ── Move knob relative to origin ──────────────────────────
   function moveKnob(cx, cy){
     const dx = cx - originX;
     const dy = cy - originY;
@@ -497,88 +578,75 @@ window.addEventListener('resize', () => {
     const kx = Math.cos(angle) * clamped;
     const ky = Math.sin(angle) * clamped;
 
-    // Visual: offset from wrap centre
     knob.style.transform = `translate(calc(-50% + ${kx}px), calc(-50% + ${ky}px))`;
-    knob.style.boxShadow = dist > 8
-      ? '0 2px 10px rgba(0,0,0,0.9), 0 0 28px rgba(255,200,60,0.85)'
-      : '0 4px 18px rgba(0,0,0,0.6), 0 0 14px rgba(255,200,60,0.35)';
+    knob.style.boxShadow = dist > 10
+      ? '0 2px 10px rgba(0,0,0,0.9),0 0 28px rgba(255,200,60,0.9)'
+      : '0 4px 18px rgba(0,0,0,0.6),0 0 14px rgba(255,200,60,0.35)';
 
-    // Normalise to -1..1
     const nx = kx / RADIUS;
     const ny = ky / RADIUS;
 
-    // Apply dead zone, then snap to 8 directions
     if(Math.abs(nx) < DEAD && Math.abs(ny) < DEAD){
       G.joy.x = 0; G.joy.y = 0;
     } else {
+      // 8-direction snap
       const a8  = Math.round(Math.atan2(ny, nx) / (Math.PI/4)) * (Math.PI/4);
       const mag = Math.min(Math.sqrt(nx*nx + ny*ny), 1);
-      G.joy.x = Math.cos(a8) * mag;
-      G.joy.y = Math.sin(a8) * mag;
+      G.joy.x = parseFloat((Math.cos(a8) * mag).toFixed(2));
+      G.joy.y = parseFloat((Math.sin(a8) * mag).toFixed(2));
     }
   }
 
   function resetKnob(){
-    active  = false;
-    touchId = null;
+    active = false; touchId = null;
     G.joy.x = 0; G.joy.y = 0;
     knob.style.transform = 'translate(-50%,-50%)';
     knob.style.boxShadow = '';
-    wrap.classList.remove('active');
   }
 
-  // ── Touch events — left 65% of screen activates joystick ──
-  window.addEventListener('touchstart', e => {
-    if(active) return;               // already tracking a touch
-    const t = e.changedTouches[0];
-    // Only activate if touching the left side (not on action buttons)
-    if(t.clientX > window.innerWidth * 0.68) return;
+  // ── DESKTOP MOUSE — drag from wrap centre ──────────────────
+  base.addEventListener('mousedown', e => {
+    if(active) return;
     e.preventDefault();
-    active    = true;
-    touchId   = t.identifier;
-    originX   = t.clientX;
-    originY   = t.clientY;
+    active = true;
+    const c = getWrapCenter();
+    originX = c.cx; originY = c.cy;
+    moveKnob(e.clientX, e.clientY);
+  });
+  window.addEventListener('mousemove', e => {
+    if(!active || touchId !== null) return;
+    moveKnob(e.clientX, e.clientY);
+  });
+  window.addEventListener('mouseup', () => { if(active && touchId===null) resetKnob(); });
+
+  // ── TOUCH — teleport wrap to finger, drag freely ──────────
+  window.addEventListener('touchstart', e => {
+    if(active) return;
+    const t = Array.from(e.changedTouches).find(t => t.clientX < window.innerWidth * 0.65);
+    if(!t) return;
+    e.preventDefault();
+    active  = true;
+    touchId = t.identifier;
+    originX = t.clientX;
+    originY = t.clientY;
     placeWrap(originX, originY);
-    wrap.classList.add('active');
     moveKnob(originX, originY);
   }, {passive:false});
 
   window.addEventListener('touchmove', e => {
     if(!active) return;
     e.preventDefault();
-    for(let i=0; i<e.changedTouches.length; i++){
-      const t = e.changedTouches[i];
-      if(t.identifier === touchId){
-        moveKnob(t.clientX, t.clientY);
-        break;
-      }
+    for(const t of e.changedTouches){
+      if(t.identifier === touchId){ moveKnob(t.clientX, t.clientY); break; }
     }
   }, {passive:false});
 
   window.addEventListener('touchend', e => {
-    for(let i=0;i<e.changedTouches.length;i++){
-      if(e.changedTouches[i].identifier === touchId){ resetKnob(); break; }
+    for(const t of e.changedTouches){
+      if(t.identifier === touchId){ resetKnob(); break; }
     }
   });
   window.addEventListener('touchcancel', () => resetKnob());
-
-  // ── Mouse fallback (desktop — fixed at wrap position) ──────
-  const baseEl = document.getElementById('joystickBase');
-  baseEl.addEventListener('mousedown', e => {
-    if(active) return;
-    e.preventDefault();
-    active  = true;
-    const r = wrap.getBoundingClientRect();
-    originX = r.left + r.width  / 2;
-    originY = r.top  + r.height / 2;
-    wrap.classList.add('active');
-    moveKnob(e.clientX, e.clientY);
-  });
-  window.addEventListener('mousemove', e => {
-    if(!active) return;
-    moveKnob(e.clientX, e.clientY);
-  });
-  window.addEventListener('mouseup', () => { if(active) resetKnob(); });
 })();
 
 // ============================================================
@@ -623,6 +691,130 @@ window.addEventListener('resize', () => {
 // ============================================================
 function rand(a,b){return a+(b-a)*Math.random()}
 function lerp(a,b,t){return a+(b-a)*t}
+
+// ============================================================
+//  AMBIENT AUDIO ENGINE  (Web Audio — no network needed)
+// ============================================================
+const AUDIO = (function(){
+  let ctx = null, nodes = [], enabled = false;
+
+  function ensure(){ if(!ctx) ctx = new (window.AudioContext||window.webkitAudioContext)(); }
+
+  function makeWindNoise(){
+    ensure();
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 4, ctx.sampleRate);
+    const d   = buf.getChannelData(0);
+    for(let i=0;i<d.length;i++) d[i] = Math.random()*2-1;
+    const src  = ctx.createBufferSource(); src.buffer=buf; src.loop=true;
+    const lp   = ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=400;
+    const gain = ctx.createGain();         gain.gain.value=0.06;
+    src.connect(lp); lp.connect(gain); gain.connect(ctx.destination);
+    src.start();
+    return {src,gain};
+  }
+
+  function makeWaterDrip(){
+    ensure();
+    // Pitched resonant bandpass for flowing water
+    const osc  = ctx.createOscillator(); osc.type='sine';
+    const bp   = ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=900; bp.Q.value=0.4;
+    const gain = ctx.createGain(); gain.gain.value=0;
+    osc.connect(bp); bp.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(200,ctx.currentTime);
+    osc.start();
+    // Modulate for babbling sound
+    const lfo  = ctx.createOscillator(); lfo.frequency.value=5;
+    const lfog = ctx.createGain(); lfog.gain.value=80;
+    lfo.connect(lfog); lfog.connect(osc.frequency); lfo.start();
+    return {osc,lfo,gain};
+  }
+
+  function makeChurchTone(){
+    ensure();
+    const osc   = ctx.createOscillator(); osc.type='sine'; osc.frequency.value=220;
+    const osc2  = ctx.createOscillator(); osc2.type='sine'; osc2.frequency.value=330;
+    const gain  = ctx.createGain(); gain.gain.value=0;
+    osc.connect(gain); osc2.connect(gain); gain.connect(ctx.destination);
+    osc.start(); osc2.start();
+    return {osc,osc2,gain};
+  }
+
+  let wind=null, water=null, church=null;
+
+  return {
+    start(){
+      ensure(); enabled=true;
+      wind   = makeWindNoise();
+      water  = makeWaterDrip();
+      church = makeChurchTone();
+      document.getElementById('soundHint').textContent='♪ Sound: ON';
+    },
+    stop(){
+      enabled=false;
+      [wind,water,church].forEach(n=>{ if(n&&n.gain) n.gain.gain.value=0; });
+      document.getElementById('soundHint').textContent='♪ Sound: OFF';
+    },
+    setWind(v){   if(wind&&enabled)   wind.gain.gain.linearRampToValueAtTime(v*0.06,   ctx.currentTime+1); },
+    setWater(v){  if(water&&enabled)  water.gain.gain.linearRampToValueAtTime(v*0.08,  ctx.currentTime+1.5); },
+    setChurch(v){ if(church&&enabled) church.gain.gain.linearRampToValueAtTime(v*0.03, ctx.currentTime+2); },
+    isOn(){ return enabled; }
+  };
+})();
+
+function toggleAmbient(){
+  if(AUDIO.isOn()) AUDIO.stop();
+  else { AUDIO.start(); AUDIO.setWind(0.5); }
+}
+
+// ============================================================
+//  ROSARY PRAYER MECHANIC
+// ============================================================
+const MYSTERIES = [
+  { name:'The Annunciation',   text:'"The angel Gabriel was sent from God... and the virgin\'s name was Mary." — Luke 1:26–27' },
+  { name:'The Visitation',     text:'"Blessed are you among women, and blessed is the fruit of your womb!" — Luke 1:42' },
+  { name:'The Nativity',       text:'"She gave birth to her firstborn son and wrapped him in swaddling cloths." — Luke 2:7' },
+  { name:'The Presentation',   text:'"My eyes have seen your salvation, which you have prepared before all peoples." — Luke 2:30–31' },
+  { name:'Finding in the Temple',text:'"Did you not know that I must be about my Father\'s business?" — Luke 2:49' },
+];
+
+function showRosary(onComplete){
+  const ui = document.getElementById('rosaryUI');
+  const beadsEl = document.getElementById('rosaryBeads');
+  const mystEl  = document.getElementById('rosaryMystery');
+  const progEl  = document.getElementById('rosaryProgress');
+  let prayed = 0;
+
+  beadsEl.innerHTML='';
+  MYSTERIES.forEach((m,i)=>{
+    const b = document.createElement('div');
+    b.className='rbead';
+    b.title = m.name;
+    beadsEl.appendChild(b);
+    b.addEventListener('click',()=>{
+      if(b.classList.contains('prayed')) return;
+      b.classList.add('prayed');
+      prayed++;
+      mystEl.textContent = `"${m.name}" — ${m.text}`;
+      progEl.textContent = `${prayed} / 5 Mysteries prayed`;
+      if(prayed>=5){
+        setTimeout(()=>{
+          ui.classList.remove('show');
+          ui.style.display='none';
+          G.dialogueActive=false;
+          G.player.canMove=true;
+          if(onComplete) onComplete();
+        },1800);
+      }
+    });
+  });
+
+  mystEl.textContent='Click each golden bead to pray a Mystery of the Rosary.';
+  progEl.textContent='0 / 5 Mysteries prayed';
+  ui.style.display='flex';
+  ui.classList.add('show');
+  G.dialogueActive=true;
+  G.player.canMove=false;
+}
 
 function notify(txt, dur=3000){
   const n=document.getElementById('notification');
@@ -1100,8 +1292,15 @@ function clearChapter(){
   G.npcs=[];
   G.ourLady=null;
   G.springWater=null;
+  G._awaitingSpring=false;
+  G._springTarget=null;
+  G._onSpringArrived=null;
   document.getElementById('holyGlow').style.display='none';
   document.getElementById('springGlow').style.display='none';
+  document.getElementById('springPrompt').style.display='none';
+  const rui=document.getElementById('rosaryUI');
+  if(rui){rui.style.display='none';rui.classList.remove('show');}
+  AUDIO.setWind(0); AUDIO.setWater(0); AUDIO.setChurch(0);
   hideTasks();
 }
 
@@ -1242,7 +1441,7 @@ function loadChapterHome(){
       {speaker:'Louise Soubirous — Mother',text:'Bernadette, my dear child. You have been such a help to our family. The cold is bitter today, but we need firewood. You may go with Toinette and Jeanne to gather some — but wrap your capulet tightly, child. Your asthma...'},
       {speaker:'Bernadette Soubirous',text:'Yes, Maman. I will take care, I promise.'},
       {speaker:'Louise Soubirous — Mother',text:'Be back before dark. And pray your rosary on the way, as your father taught you.'},
-    ], ()=>{ G._homeDone=true; transitionTo(2); });
+    ], ()=>{ G._homeDone=true; transitionTo(1); });
   };
 
   // Interactables
@@ -1394,8 +1593,8 @@ function loadChapterPath(){
     {speaker:'Toinette',text:'We need to cross the mill stream to reach the best firewood. Come on!'},
     {speaker:'Bernadette',text:'(hesitating) The water looks cold. My asthma... I am afraid to wade through.'},
     {speaker:'Jeanne Abadie',text:'Do not be afraid! Walk toward the grotto — we will all cross together. Race you!'},
-    {speaker:'Narrator',text:'Walk south toward the Grotto of Massabielle.'},
-  ],null);
+    {speaker:'Narrator',text:'✦ Walk south toward the Grotto of Massabielle at the end of the path. ✦'},
+  ],()=>{ AUDIO.setWind(0.8); AUDIO.setWater(0.3); });
 }
 
 // ============================================================
@@ -1506,6 +1705,7 @@ function doFirstApparition(){
     const nicheLight=new THREE.PointLight(0xeeeeff,0,10);
     nicheLight.position.set(0,4.5,-11); addC(nicheLight);
     G._nicheLight=nicheLight;
+    AUDIO.setWind(0); AUDIO.setChurch(1);
     // Animate light growing
     let t=0;
     const growLight=()=>{
@@ -1534,14 +1734,21 @@ function afterLight(){
   speak([
     {speaker:'Narrator',text:'In the hollow of the rock, bathed in a light of indescribable splendor, stands a Lady of surpassing beauty. She wears a white robe with a blue sash, a white veil, and on each foot a golden rose. In her hands, a rosary of white beads on a golden chain.'},
     {speaker:'Narrator',text:'She smiles at Bernadette — a smile of the most exquisite sweetness — and nods toward the child\'s rosary. Bernadette\'s hand rises, as if lifted by another, and she begins to pray.'},
-    {speaker:'Bernadette',text:'(trembling, tears streaming) I... I must pray. (she falls to her knees and begins the Rosary)'},
-    {speaker:'Narrator',text:'The Lady does not speak. She simply joins her own rosary and smiles upon Bernadette throughout the five decades. At the last decade, she bows her head tenderly and withdraws.'},
-    {speaker:'Bernadette',text:'(whispering, reaching out) Do not go... please do not go...'},
-    {speaker:'Narrator',text:'The light fades. Bernadette remains kneeling, her face transfigured, her eyes fixed upon the now-empty grotto. Toinette returns and pulls her to her feet.'},
-    {speaker:'Toinette',text:'Bernadette! What is wrong with you? You went as white as a sheet! I was frightened!'},
-    {speaker:'Bernadette',text:'(coming back slowly) Did you... did you not see anything? In the grotto?'},
-    {speaker:'Toinette',text:'We saw nothing! Just the rocks and the rosebush. Come, it is getting dark!'},
-  ],()=>transitionTo(4));
+    {speaker:'Bernadette',text:'(trembling, tears streaming) I... I must pray. Pray with me.'},
+    {speaker:'Narrator',text:'✦ Pray the Holy Rosary with Bernadette — click each golden bead to pray a Mystery. ✦'},
+  ],()=>{
+    // ROSARY MECHANIC — player prays 5 decades
+    showRosary(()=>{
+      speak([
+        {speaker:'Narrator',text:'The Lady does not recite the prayers along with Bernadette — but She does count the beads, and at each Gloria, She bows Her head tenderly. At the last decade, She withdraws.'},
+        {speaker:'Bernadette',text:'(whispering, reaching out) Do not go... please do not go...'},
+        {speaker:'Narrator',text:'The light fades. Bernadette remains kneeling, her face transfigured, her eyes fixed upon the now-empty grotto. Toinette returns and pulls her to her feet.'},
+        {speaker:'Toinette',text:'Bernadette! What is wrong with you? You went as white as a sheet! I was frightened!'},
+        {speaker:'Bernadette',text:'(coming back slowly) Did you... did you not see anything? In the grotto?'},
+        {speaker:'Toinette',text:'We saw nothing! Just the rocks and the rosebush. Come, it is getting dark!'},
+      ],()=>transitionTo(3));
+    });
+  });
 }
 
 // ============================================================
@@ -1590,7 +1797,7 @@ function loadChapterMother(){
     {speaker:'Louise Soubirous — Mother',text:'You are never to go back to that grotto. Do you hear me? Never. Promise me.'},
     {speaker:'Bernadette',text:'(quietly, her eyes full of tears) I will try, Maman. But... (her voice breaks) she was so beautiful.'},
     {speaker:'Narrator',text:'That night, Bernadette could not sleep. The image of the Lady filled her mind — the white robe, the blue sash, the golden roses on her feet, the rosary, and above all, that smile of absolute and overwhelming love.'},
-  ],()=>transitionTo(5));
+  ],()=>transitionTo(4));
 }
 
 // ============================================================
@@ -1650,7 +1857,7 @@ function loadChapterSecond(){
       {speaker:'Bernadette',text:'I accept this gladly, my Lady. Whatever you ask.'},
       {speaker:'Narrator',text:'The Lady smiles once more — that smile which Bernadette will describe again and again for the rest of her life, saying she has never seen anything so beautiful — and vanishes.'},
       {speaker:'Bernadette',text:'(coming out of ecstasy, weeping quietly) She spoke to me. She asked me to return for fifteen days. And she said... she promised happiness, not in this world, but the next.'},
-    ],()=>transitionTo(6));
+    ],()=>transitionTo(5));
   });
 }
 
@@ -1719,7 +1926,7 @@ function loadChapterPriest(){
     {speaker:'Bernadette',text:'(quietly, without fear) I will tell her, Father.'},
     {speaker:'Fr. Peyramale',text:'(watching her go, softening despite himself) There is something about this child...'},
     {speaker:'Narrator',text:'Father Peyramale would become Bernadette\'s staunchest defender before the bishop — the very man who shouted at her in his study.'},
-  ],()=>transitionTo(7));
+  ],()=>transitionTo(6));
 }
 
 // ============================================================
@@ -1771,35 +1978,76 @@ function loadChapterSpring(){
   ],()=>{
     G.ourLady=createOurLady(); G.ourLady.position.set(0,2.8,-11.5); G.ourLady.scale.set(0.8,0.8,0.8); addC(G.ourLady);
     document.getElementById('holyGlow').style.display='block';
+    AUDIO.setWind(0.3); AUDIO.setChurch(0.8);
     const l=new THREE.PointLight(0xaabbff,4,12); l.position.set(0,4,-11); addC(l);
 
     speak([
       {speaker:'The Lady — Our Lady',text:'Go and drink at the spring and wash yourself there.'},
       {speaker:'Bernadette',text:'(looking around, confused) A spring? I see no spring, my Lady... I see only the mud at the foot of the rock.'},
       {speaker:'The Lady — Our Lady',text:'(pointing to a spot at the base of the cliff) Go and drink there, and wash yourself.'},
-      {speaker:'Narrator',text:'Bernadette crawls on her knees to the indicated spot and begins to dig in the wet earth with her bare hands. The crowd watches, horrified. Some call her mad. Some weep.'},
-      {speaker:'Narrator',text:'Water begins to well up — slowly at first, muddy, brown. Bernadette cups her hands and drinks the muddy water. She washes her face. The crowd recoils in disgust.'},
-      {speaker:'Narrator',text:'But then — the water clears. And clears. And clears, until it runs pure and cold and crystalline, a steady, singing spring from the living rock.'},
+      {speaker:'Narrator',text:'✦ Walk to the muddy spot at the base of the cliff and kneel to dig. ✦'},
     ],()=>{
-      // Spring water appears!
-      document.getElementById('springGlow').style.display='block';
-      const springWater=createWater(1.5,1.5,0x44aaff);
-      springWater.position.set(-2,0.05,-6); addC(springWater); G.springWater=springWater;
-      // Spring light
-      const sLight=new THREE.PointLight(0x44aaff,3,8); sLight.position.set(-2,0.5,-6); addC(sLight);
-      // Spring particles
-      const spGeo=new THREE.BufferGeometry();
-      const spPos=new Float32Array(60*3);
-      spGeo.setAttribute('position',new THREE.BufferAttribute(spPos,3));
-      const spMat=new THREE.PointsMaterial({color:0x88ccff,size:0.06,transparent:true,opacity:0.9});
-      const springPts=new THREE.Points(spGeo,spMat); addC(springPts); G._springPts=springPts;
-      G._springPtsPos=spPos;
+      // Spring walk mechanic — player must walk to (-2, 0, -6)
+      G._springTarget = new THREE.Vector3(-2, 0, -6);
+      G._awaitingSpring = true;
+      G.player.canMove = true;
+      document.getElementById('springPrompt').style.display='block';
 
-      speak([
-        {speaker:'Narrator',text:'That spring would flow at 32,000 gallons per day, every day, from that moment to this. It would never diminish, never dry up.'},
-        {speaker:'Narrator',text:'Soon after: Louis Bouriette, a quarryman blinded in one eye for twenty years, washes at the spring. He can see. Catherine Latapie, her fingers paralyzed, plunges her hand into the water. She can move them perfectly. The healings have begun.'},
-        {speaker:'Bernadette',text:'(softly, still kneeling by the spring) It is not I who healed anyone. It is the Lady — and the Lord. I am nothing. A poor girl from the cachot.'},
-      ],()=>transitionTo(8));
+      G._onSpringArrived = function(){
+        document.getElementById('springPrompt').style.display='none';
+        G._awaitingSpring = false;
+        G.player.canMove = false;
+
+        speak([
+          {speaker:'Narrator',text:'Bernadette crawls on her knees to the indicated spot and begins to dig in the wet earth with her bare hands. The crowd watches, horrified. Some call her mad. Some weep.'},
+          {speaker:'Narrator',text:'Water begins to well up — slowly at first, muddy, brown. Bernadette cups her hands and drinks the muddy water. She washes her face. The crowd recoils in disgust.'},
+          {speaker:'Narrator',text:'But then — the water clears. And clears. And clears, until it runs pure and cold and crystalline, a steady, singing spring from the living rock.'},
+        ],()=>{
+          // Spring water appears!
+          document.getElementById('springGlow').style.display='block';
+          AUDIO.setWater(1); AUDIO.setChurch(0.4);
+          const springWater=createWater(1.5,1.5,0x44aaff);
+          springWater.position.set(-2,0.05,-6); addC(springWater); G.springWater=springWater;
+          const sLight=new THREE.PointLight(0x44aaff,3,8); sLight.position.set(-2,0.5,-6); addC(sLight);
+          const spGeo=new THREE.BufferGeometry();
+          const spPos=new Float32Array(60*3);
+          spGeo.setAttribute('position',new THREE.BufferAttribute(spPos,3));
+          const spMat=new THREE.PointsMaterial({color:0x88ccff,size:0.06,transparent:true,opacity:0.9});
+          const springPts=new THREE.Points(spGeo,spMat); addC(springPts); G._springPts=springPts;
+          G._springPtsPos=spPos;
+
+          // Healing witness interactable — a blind man by the spring
+          const louis=buildCharacter({skin:0xc49060,cloth:0x4a3020,hair:0x2a1a0a,name:'Louis Bouriette'});
+          louis.position.set(1.5,0,-5); addC(louis);
+          createInteractable(louis,'Speak with Louis Bouriette',()=>{
+            speak([
+              {speaker:'Louis Bouriette — Quarryman',text:'For twenty years, I have been blind in this eye from an accident. Twenty years! My wife led me here. I washed my eyes with this water. I... I can see. I can see you clearly! Blessed be God! Blessed be the Lady!'},
+              {speaker:'Bernadette',text:'(whispering) Do not thank me. Go and give thanks to God and to the Lady. It is She who works these wonders, not I.'},
+            ],null);
+          });
+
+          speak([
+            {speaker:'Narrator',text:'That spring would flow at 32,000 gallons per day, every day, from that moment to this. It would never diminish, never dry up.'},
+            {speaker:'Narrator',text:'Louis Bouriette, a quarryman blinded in one eye for twenty years, washes at the spring. He can see. Catherine Latapie, her fingers paralyzed for years, plunges her hand into the water. She can move them perfectly. The healings have begun.'},
+            {speaker:'Narrator',text:'Speak with Louis Bouriette, then when you are ready, proceed. The story continues.'},
+          ],()=>{
+            // Give player time to interact with Louis, then they can proceed
+            G.player.canMove = true;
+            // Auto-advance after 12 seconds if they don't interact
+            G._springTimer = setTimeout(()=>transitionTo(7), 12000);
+            // Also add a "Continue" interactable
+            const continueSign=new THREE.Mesh(
+              new THREE.BoxGeometry(0.3,1.4,0.1),
+              new THREE.MeshPhongMaterial({color:0x3a2010})
+            );
+            continueSign.position.set(-5,0.7,-4); addC(continueSign);
+            createInteractable(continueSign,'Continue the Journey',()=>{
+              if(G._springTimer) clearTimeout(G._springTimer);
+              transitionTo(7);
+            });
+          });
+        });
+      };
     });
   });
 }
@@ -1838,6 +2086,7 @@ function loadChapterPenance(){
   ],()=>{
     G.ourLady=createOurLady(); G.ourLady.position.set(0,2.8,-11.5); G.ourLady.scale.set(0.8,0.8,0.8); addC(G.ourLady);
     document.getElementById('holyGlow').style.display='block';
+    AUDIO.setChurch(0.9); AUDIO.setWind(0.2);
     const l=new THREE.PointLight(0xaabbff,4,12); l.position.set(0,4,-11); addC(l);
 
     speak([
@@ -1846,10 +2095,43 @@ function loadChapterPenance(){
       {speaker:'The Lady — Our Lady',text:'Go and tell the priests that people are to come here in procession and to build a chapel here.'},
       {speaker:'Bernadette',text:'(nodding solemnly) Yes, my Lady. I will go and tell them at once.'},
     ],()=>{
-      speak([
-        {speaker:'Narrator',text:'Bernadette returns to Father Peyramale. He listens — still sceptical, still brusque, but something in him stirs. He passes the message to the Bishop. An official commission of inquiry is formed. For four years, it investigates.'},
-        {speaker:'Fr. Peyramale',text:'(to himself, watching Bernadette walk away) That child has not changed her story by a syllable in all these months. Not once. And her face when she speaks of the Lady... I have never seen anything like it in all my years as a priest.'},
-      ],()=>transitionTo(9));
+      // PENANCE MECHANIC — three stones on the ground to kneel at
+      G.player.canMove=true;
+      speak([{speaker:'Narrator',text:'✦ In a spirit of penance, kneel at each of the three sacred stones before approaching Father Peyramale. ✦'}],null);
+      const stonePositions=[
+        new THREE.Vector3(-3,0,-2), new THREE.Vector3(0,0,-4), new THREE.Vector3(3,0,-2)
+      ];
+      let visited=0;
+      const penanceTasks=['Kneel at stone of Repentance','Kneel at stone of Prayer','Kneel at stone of Charity'];
+      initTasks(penanceTasks.map((l,i)=>({id:'penance'+i,label:l})));
+
+      stonePositions.forEach((pos,i)=>{
+        const stone=new THREE.Mesh(
+          new THREE.SphereGeometry(0.25,8,6),
+          new THREE.MeshPhongMaterial({color:0x888070,emissive:0x443322,emissiveIntensity:0.3})
+        );
+        stone.position.copy(pos); stone.scale.y=0.4; addC(stone);
+        // Small cross above each
+        const crossMesh=new THREE.Mesh(new THREE.BoxGeometry(0.04,0.3,0.04),new THREE.MeshBasicMaterial({color:0xf0d060}));
+        crossMesh.position.set(pos.x,0.4,pos.z); addC(crossMesh);
+        const crossH=new THREE.Mesh(new THREE.BoxGeometry(0.15,0.04,0.04),new THREE.MeshBasicMaterial({color:0xf0d060}));
+        crossH.position.set(pos.x,0.35,pos.z); addC(crossH);
+        createInteractable(stone, penanceTasks[i], ()=>{
+          if(!G.completedTasks['penance'+i]){
+            completeTask('penance'+i);
+            visited++;
+            if(visited>=3){
+              setTimeout(()=>{
+                hideTasks();
+                speak([
+                  {speaker:'Narrator',text:'Bernadette returns to Father Peyramale. He listens — still sceptical, still brusque, but something in him stirs. He passes the message to the Bishop. An official commission of inquiry is formed. For four years, it investigates.'},
+                  {speaker:'Fr. Peyramale',text:'(to himself, watching Bernadette walk away) That child has not changed her story by a syllable in all these months. Not once. And her face when she speaks of the Lady... I have never seen anything like it in all my years as a priest.'},
+                ],()=>transitionTo(8));
+              },600);
+            }
+          }
+        });
+      });
     });
   });
 }
@@ -1898,8 +2180,9 @@ function loadChapterName(){
     ],()=>{
       // Big reveal
       setTimeout(()=>{
-        // Flash
+        // Flash + audio swell
         G.camera.shake=1.0;
+        AUDIO.setChurch(1); AUDIO.setWind(0);
         const flashLight=new THREE.PointLight(0xffffff,20,50); flashLight.position.set(0,5,-5); addC(flashLight);
         setTimeout(()=>{ scene.remove(flashLight); G.camera.shake=0; },800);
 
@@ -1912,7 +2195,7 @@ function loadChapterName(){
           {speaker:'Bernadette',text:'No one, Father. I did not know what it meant. I kept saying it over and over all the way here so I would not forget.'},
           {speaker:'Fr. Peyramale',text:'(sinking into his chair, hand over his face) Go home, child. Go home. (alone) Pope Pius IX defined the Immaculate Conception only four years ago — 1854. This poor, uneducated girl cannot possibly know this. She CANNOT have invented this.'},
           {speaker:'Narrator',text:'Peyramale immediately writes to the Bishop. The commission of inquiry deepens its investigation. Nothing in Bernadette\'s story breaks. Nothing contradicts itself. She stands before theologians, doctors, magistrates — and her account never wavers.'},
-        ],()=>transitionTo(10));
+        ],()=>transitionTo(9));
       },1000);
     });
   });
@@ -2082,9 +2365,19 @@ function updatePlayer(delta){
   animateWalk(G.player.mesh, delta, moving);
 
   // Chapter-specific triggers
-  if(G.chapter===1 && G.player.mesh.position.z<G._grottoTriggerZ){
+  if(G.chapter===1 && G.player.mesh.position.z < G._grottoTriggerZ){
     G.player.canMove=false;
     transitionTo(2);
+  }
+
+  // Spring walking mechanic (Chapter 6)
+  if(G._awaitingSpring && G._springTarget && G.player.mesh){
+    const d = G.player.mesh.position.distanceTo(G._springTarget);
+    if(d < 1.8 && G._onSpringArrived){
+      const cb = G._onSpringArrived;
+      G._onSpringArrived = null;
+      cb();
+    }
   }
 
   // Interact
