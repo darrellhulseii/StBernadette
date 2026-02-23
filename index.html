@@ -3,191 +3,294 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#000000">
 <title>I Am Bernadette — The Sacred Journey of Lourdes</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;overflow:hidden;font-family:'IM Fell English',Georgia,serif;touch-action:none}
-#gameCanvas{display:block;position:fixed;top:0;left:0}
+html{height:100%;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{background:#000;overflow:hidden;font-family:'IM Fell English',Georgia,serif;touch-action:none;overscroll-behavior:none;-webkit-overscroll-behavior:none;position:fixed;width:100%;height:100%;
+  height:100%;height:100dvh;-webkit-overflow-scrolling:touch;}
+#gameCanvas{display:block;position:fixed;top:0;left:0;width:100%;height:100%;}
 #ui{position:fixed;inset:0;pointer-events:none;z-index:10}
+
+/* ── TITLE SCREEN ── */
 #titleScreen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:radial-gradient(ellipse at 50% 60%,rgba(8,4,28,0.55),rgba(0,0,0,0.93));
-  z-index:100;pointer-events:all;transition:opacity 1.8s;}
-#titleScreen h1{font-family:'Cinzel Decorative',serif;font-size:clamp(20px,4.5vw,56px);color:#f5e6c0;
-  text-shadow:0 0 40px rgba(255,200,80,0.9),0 0 90px rgba(255,150,30,0.4);
-  letter-spacing:0.07em;text-align:center;line-height:1.25;margin-bottom:8px;}
-#titleScreen h2{font-family:'Cinzel',serif;font-size:clamp(11px,2vw,21px);color:#c4a882;letter-spacing:0.22em;margin-bottom:5px;text-align:center;}
-#titleScreen .sub{font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(10px,1.5vw,16px);color:#9a7850;margin-bottom:44px;text-align:center;}
-#titleScreen .cross{font-size:clamp(28px,5.5vw,72px);color:#f0d080;margin-bottom:28px;animation:GLOW 2s infinite alternate;}
+background:radial-gradient(ellipse at 50% 60%,rgba(8,4,28,0.55),rgba(0,0,0,0.93));
+z-index:100;pointer-events:all;transition:opacity 1.8s;
+padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);}
+#titleScreen h1{font-family:‘Cinzel Decorative’,serif;font-size:clamp(22px,5vw,56px);color:#f5e6c0;
+text-shadow:0 0 40px rgba(255,200,80,0.9),0 0 90px rgba(255,150,30,0.4);
+letter-spacing:0.07em;text-align:center;line-height:1.25;margin-bottom:8px;padding:0 16px;}
+#titleScreen h2{font-family:‘Cinzel’,serif;font-size:clamp(12px,2.5vw,21px);color:#c4a882;letter-spacing:0.18em;margin-bottom:5px;text-align:center;}
+#titleScreen .sub{font-family:‘IM Fell English’,serif;font-style:italic;font-size:clamp(11px,2vw,16px);color:#9a7850;margin-bottom:32px;text-align:center;padding:0 20px;}
+#titleScreen .cross{font-size:clamp(36px,7vw,72px);color:#f0d080;margin-bottom:24px;animation:GLOW 2s infinite alternate;}
 @keyframes GLOW{from{text-shadow:0 0 18px rgba(255,220,80,0.5)}to{text-shadow:0 0 60px #ffd700,0 0 130px rgba(255,160,30,0.5)}}
-#startBtn{font-family:'Cinzel',serif;font-size:clamp(11px,1.8vw,17px);letter-spacing:0.16em;color:#f5e6c0;
-  background:rgba(255,200,80,0.1);border:1px solid rgba(255,200,80,0.45);padding:13px 42px;
-  cursor:pointer;pointer-events:all;transition:all 0.4s;text-transform:uppercase;}
-#startBtn:hover{background:rgba(255,200,80,0.22);border-color:rgba(255,200,80,0.85);box-shadow:0 0 28px rgba(255,200,80,0.35);}
-.tv{font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(9px,1.3vw,14px);
-  color:rgba(180,150,80,0.7);margin-top:28px;text-align:center;max-width:500px;line-height:1.6;}
-#chapterBanner{position:fixed;top:0;left:0;width:100%;padding:18px;text-align:center;
-  background:linear-gradient(to bottom,rgba(0,0,0,0.78),transparent);
-  opacity:0;transition:opacity 1s;pointer-events:none;}
+#startBtn{font-family:‘Cinzel’,serif;font-size:clamp(13px,2.2vw,17px);letter-spacing:0.16em;color:#f5e6c0;
+background:rgba(255,200,80,0.1);border:1px solid rgba(255,200,80,0.45);padding:16px 48px;
+cursor:pointer;pointer-events:all;transition:all 0.4s;text-transform:uppercase;
+-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:52px;}
+#startBtn:hover,#startBtn:active{background:rgba(255,200,80,0.22);border-color:rgba(255,200,80,0.85);box-shadow:0 0 28px rgba(255,200,80,0.35);}
+.tv{font-family:‘IM Fell English’,serif;font-style:italic;font-size:clamp(10px,1.5vw,14px);
+color:rgba(180,150,80,0.7);margin-top:24px;text-align:center;max-width:500px;line-height:1.6;padding:0 20px;}
+
+/* ── CHAPTER BANNER ── */
+#chapterBanner{position:fixed;top:0;left:0;width:100%;padding:max(14px,env(safe-area-inset-top,14px)) 16px 18px;text-align:center;
+background:linear-gradient(to bottom,rgba(0,0,0,0.82),transparent);
+opacity:0;transition:opacity 1s;pointer-events:none;}
 #chapterBanner.show{opacity:1}
-#chapterTitle{font-family:'Cinzel Decorative',serif;font-size:clamp(11px,2.4vw,28px);color:#f5e6c0;
-  text-shadow:0 0 22px rgba(255,200,80,0.65);letter-spacing:0.1em;}
-#chapterDate{font-family:'Cinzel',serif;font-size:clamp(9px,1.4vw,14px);color:#c4a870;letter-spacing:0.22em;margin-top:4px;}
-#ageBadge{position:fixed;top:72px;left:50%;transform:translateX(-50%);font-family:'Cinzel',serif;
-  font-size:clamp(8px,1.1vw,11px);letter-spacing:0.12em;color:rgba(200,170,80,0.85);
-  background:rgba(5,3,20,0.72);border:1px solid rgba(200,160,60,0.3);padding:5px 14px;
-  display:none;pointer-events:none;z-index:60;text-align:center;}
-#dialogue{position:fixed;top:10%;left:50%;transform:translateX(-50%);
-  width:min(95vw,830px);max-height:52vh;overflow-y:auto;
-  background:rgba(4,2,18,0.58);
-  backdrop-filter:blur(16px) saturate(1.5);-webkit-backdrop-filter:blur(16px) saturate(1.5);
-  border:1.5px solid rgba(215,175,65,0.52);border-radius:8px;
-  box-shadow:0 8px 50px rgba(0,0,0,0.72),inset 0 1px 0 rgba(255,230,120,0.1);
-  padding:24px 36px 18px;display:none;pointer-events:all;z-index:500;}
-#dialogue::before,#dialogue::after{content:'';position:absolute;width:22px;height:22px;
-  border-color:rgba(215,175,65,0.72);border-style:solid;pointer-events:none;}
+#chapterTitle{font-family:‘Cinzel Decorative’,serif;font-size:clamp(12px,2.8vw,28px);color:#f5e6c0;
+text-shadow:0 0 22px rgba(255,200,80,0.65);letter-spacing:0.08em;}
+#chapterDate{font-family:‘Cinzel’,serif;font-size:clamp(9px,1.6vw,14px);color:#c4a870;letter-spacing:0.18em;margin-top:4px;}
+#ageBadge{position:fixed;top:max(68px, calc(env(safe-area-inset-top,0px) + 56px));left:50%;transform:translateX(-50%);
+font-family:‘Cinzel’,serif;font-size:clamp(9px,1.3vw,11px);letter-spacing:0.1em;color:rgba(200,170,80,0.85);
+background:rgba(5,3,20,0.72);border:1px solid rgba(200,160,60,0.3);padding:5px 14px;
+display:none;pointer-events:none;z-index:60;text-align:center;white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;}
+
+/* ── DIALOGUE ── */
+#dialogue{position:fixed;top:max(10%, env(safe-area-inset-top,10px));left:50%;transform:translateX(-50%);
+width:min(96vw,830px);max-height:55vh;overflow-y:auto;
+background:rgba(4,2,18,0.78);
+backdrop-filter:blur(16px) saturate(1.5);-webkit-backdrop-filter:blur(16px) saturate(1.5);
+border:1.5px solid rgba(215,175,65,0.52);border-radius:8px;
+box-shadow:0 8px 50px rgba(0,0,0,0.72),inset 0 1px 0 rgba(255,230,120,0.1);
+padding:20px 24px 16px;display:none;pointer-events:all;z-index:500;cursor:pointer;}
+#dialogue::before,#dialogue::after{content:’’;position:absolute;width:18px;height:18px;
+border-color:rgba(215,175,65,0.72);border-style:solid;pointer-events:none;}
 #dialogue::before{top:-1px;left:-1px;border-width:2px 0 0 2px;border-radius:5px 0 0 0;}
 #dialogue::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0;border-radius:0 0 5px 0;}
-#dialogueSpeaker{font-family:'Cinzel',serif;font-size:clamp(10px,2.3vw,14px);color:#ffd055;
-  letter-spacing:0.2em;text-transform:uppercase;margin-bottom:11px;padding-bottom:9px;
-  border-bottom:1px solid rgba(215,175,65,0.28);text-align:center;
-  text-shadow:0 0 16px rgba(255,210,55,0.65),0 0 3px rgba(0,0,0,0.9);min-height:1.3em;}
-#dialogueText{font-family:'IM Fell English',serif;font-size:clamp(16px,3.1vw,23px);color:#fff8ec;
-  line-height:1.82;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,1);padding:0 4px;}
-#dialogueContinue{font-family:'Cinzel',serif;font-size:clamp(9px,1.7vw,12px);color:rgba(215,178,68,0.78);
-  text-align:center;margin-top:14px;letter-spacing:0.15em;animation:BLINK 1.3s infinite;}
+#dialogueSpeaker{font-family:‘Cinzel’,serif;font-size:clamp(10px,2.4vw,14px);color:#ffd055;
+letter-spacing:0.18em;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;
+border-bottom:1px solid rgba(215,175,65,0.28);text-align:center;
+text-shadow:0 0 16px rgba(255,210,55,0.65),0 0 3px rgba(0,0,0,0.9);min-height:1.3em;}
+#dialogueText{font-family:‘IM Fell English’,serif;font-size:clamp(15px,3.2vw,23px);color:#fff8ec;
+line-height:1.8;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,1);padding:0 4px;}
+#dialogueContinue{font-family:‘Cinzel’,serif;font-size:clamp(9px,1.8vw,12px);color:rgba(215,178,68,0.78);
+text-align:center;margin-top:12px;letter-spacing:0.15em;animation:BLINK 1.3s infinite;}
 @keyframes BLINK{0%,100%{opacity:0.28}50%{opacity:1}}
+.kb-hint{display:inline;}
+@media (pointer:coarse){.kb-hint{display:none;}}
 #dialogueDimmer{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 20%,rgba(0,0,0,0),rgba(0,0,0,0.32));
-  display:none;z-index:499;pointer-events:none;}
-#taskPanel{position:fixed;top:90px;right:18px;background:rgba(5,3,20,0.82);
-  border:1px solid rgba(200,160,60,0.3);padding:14px 18px;min-width:195px;display:none;z-index:60;}
-#taskPanel h3{font-family:'Cinzel',serif;font-size:12px;color:#f0c060;letter-spacing:0.1em;margin-bottom:10px;text-transform:uppercase;}
-.task-item{font-family:'IM Fell English',serif;font-size:14px;color:#c0b090;margin:5px 0;
-  padding-left:20px;position:relative;transition:color 0.5s;}
-.task-item::before{content:'○';position:absolute;left:0;color:#6a5830;}
+display:none;z-index:499;pointer-events:none;}
+
+/* ── TASKS ── */
+#taskPanel{position:fixed;top:max(88px, calc(env(safe-area-inset-top,0px) + 80px));right:max(12px,env(safe-area-inset-right,12px));
+background:rgba(5,3,20,0.88);border:1px solid rgba(200,160,60,0.3);
+padding:12px 16px;min-width:min(185px,42vw);max-width:min(220px,48vw);display:none;z-index:60;border-radius:4px;}
+#taskPanel h3{font-family:‘Cinzel’,serif;font-size:clamp(9px,1.4vw,12px);color:#f0c060;letter-spacing:0.1em;margin-bottom:8px;text-transform:uppercase;}
+.task-item{font-family:‘IM Fell English’,serif;font-size:clamp(11px,1.8vw,14px);color:#c0b090;margin:4px 0;
+padding-left:18px;position:relative;transition:color 0.5s;line-height:1.4;}
+.task-item::before{content:‘○’;position:absolute;left:0;color:#6a5830;}
 .task-item.done{color:#80c080;text-decoration:line-through;}
-.task-item.done::before{content:'✓';color:#80c080;}
-#interactPrompt{position:fixed;bottom:198px;left:50%;transform:translateX(-50%);
-  font-family:'Cinzel',serif;font-size:clamp(10px,1.3vw,13px);letter-spacing:0.14em;
-  color:#f0e0a0;background:rgba(5,3,20,0.78);border:1px solid rgba(200,160,60,0.4);
-  padding:7px 22px;display:none;text-transform:uppercase;animation:PULSE 1.5s infinite;z-index:200;}
+.task-item.done::before{content:‘✓’;color:#80c080;}
+
+/* ── INTERACT PROMPT ── */
+#interactPrompt{position:fixed;bottom:max(190px, calc(env(safe-area-inset-bottom,0px) + 190px));left:50%;transform:translateX(-50%);border-radius:20px;
+font-family:‘Cinzel’,serif;font-size:clamp(11px,1.6vw,14px);letter-spacing:0.12em;
+color:#f0e0a0;background:rgba(5,3,20,0.85);border:1px solid rgba(200,160,60,0.5);
+padding:9px 26px;display:none;text-transform:uppercase;animation:PULSE 1.5s infinite;z-index:200;border-radius:3px;
+white-space:nowrap;}
 @keyframes PULSE{0%,100%{border-color:rgba(200,160,60,0.35)}50%{border-color:rgba(200,160,60,0.85)}}
-#controls{position:fixed;bottom:8px;left:50%;transform:translateX(-50%);
-  font-family:'Cinzel',serif;font-size:clamp(7px,1vw,10px);color:rgba(180,160,100,0.42);
-  letter-spacing:0.1em;text-align:center;pointer-events:none;}
+
+/* ── CONTROLS HINT ── */
+#controls{position:fixed;bottom:max(8px,env(safe-area-inset-bottom,8px));left:50%;transform:translateX(-50%);
+font-family:‘Cinzel’,serif;font-size:clamp(7px,1.2vw,10px);color:rgba(180,160,100,0.38);
+letter-spacing:0.1em;text-align:center;pointer-events:none;display:none;}
+
+/* ── NOTIFICATION ── */
 #notification{position:fixed;top:48%;left:50%;transform:translate(-50%,-50%);
-  font-family:'Cinzel Decorative',serif;font-size:clamp(12px,2.1vw,22px);
-  color:#f5e6c0;text-shadow:0 0 28px rgba(255,200,80,0.85);text-align:center;
-  display:none;pointer-events:none;padding:18px;z-index:601;}
+font-family:‘Cinzel Decorative’,serif;font-size:clamp(13px,2.5vw,22px);
+color:#f5e6c0;text-shadow:0 0 28px rgba(255,200,80,0.85);text-align:center;
+display:none;pointer-events:none;padding:18px 24px;z-index:601;}
+
+/* ── FADE ── */
 #fade{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;z-index:99;transition:opacity 1.5s;}
 #fade.in{opacity:1;pointer-events:all;}
+#vignette{position:fixed;inset:0;pointer-events:none;z-index:8;
+background:radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.62) 100%);
+transition:opacity 0.8s;}
+
+/* ── ATMOSPHERE ── */
 #springGlow{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 62%,rgba(0,180,255,0.14),transparent 68%);
-  display:none;pointer-events:none;animation:SPING 3s infinite;}
+display:none;pointer-events:none;animation:SPING 3s infinite;}
 @keyframes SPING{0%,100%{opacity:0.3}50%{opacity:1}}
 #holyGlow{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 28%,rgba(255,255,200,0.18),transparent 58%);
-  display:none;pointer-events:none;animation:HPULSE 2s infinite;}
+display:none;pointer-events:none;animation:HPULSE 2s infinite;}
 @keyframes HPULSE{0%,100%{opacity:0.45}50%{opacity:1}}
-#soundHint{position:fixed;top:8px;left:8px;z-index:200;font-family:'Cinzel',serif;font-size:10px;
-  letter-spacing:0.1em;color:rgba(200,170,70,0.45);pointer-events:all;cursor:pointer;
-  background:rgba(5,3,20,0.55);padding:4px 9px;border:1px solid rgba(200,160,60,0.18);}
-#soundHint:hover{color:rgba(200,170,70,0.85);}
-#springPrompt,#communionPrompt,#walkPrompt{position:fixed;top:30%;left:50%;transform:translateX(-50%);
-  font-family:'Cinzel',serif;font-size:clamp(11px,1.9vw,15px);letter-spacing:0.12em;
-  background:rgba(5,3,20,0.72);border:1px solid rgba(100,160,255,0.48);
-  padding:9px 26px;display:none;text-align:center;animation:PULSE 1.5s infinite;z-index:200;}
+
+/* ── SOUND HINT ── */
+#soundHint{position:fixed;top:max(8px,env(safe-area-inset-top,8px));left:max(8px,env(safe-area-inset-left,8px));z-index:200;
+font-family:‘Cinzel’,serif;font-size:clamp(9px,1.2vw,11px);letter-spacing:0.1em;color:rgba(200,170,70,0.5);
+pointer-events:all;cursor:pointer;background:rgba(5,3,20,0.6);padding:6px 10px;
+border:1px solid rgba(200,160,60,0.2);border-radius:3px;touch-action:manipulation;
+-webkit-tap-highlight-color:transparent;min-height:36px;display:flex;align-items:center;}
+#soundHint:hover,#soundHint:active{color:rgba(200,170,70,0.9);}
+
+/* ── WALK / SPRING / COMMUNION PROMPTS ── */
+#springPrompt,#communionPrompt,#walkPrompt{position:fixed;top:28%;left:50%;transform:translateX(-50%);
+font-family:‘Cinzel’,serif;font-size:clamp(12px,2.2vw,15px);letter-spacing:0.1em;
+background:rgba(5,3,20,0.8);border:1px solid rgba(100,160,255,0.48);
+padding:11px 28px;display:none;text-align:center;animation:PULSE 1.5s infinite;z-index:200;
+border-radius:4px;max-width:90vw;}
 #springPrompt{color:#88ccff;border-color:rgba(100,160,255,0.48);text-shadow:0 0 10px rgba(100,180,255,0.65);}
 #communionPrompt{color:#f0d060;border-color:rgba(200,160,60,0.48);text-shadow:0 0 10px rgba(255,200,60,0.5);}
 #walkPrompt{color:#c0e0a0;border-color:rgba(100,180,100,0.48);text-shadow:0 0 10px rgba(120,200,80,0.5);}
+
+/* ── OVERLAY PANELS (rosary, quiz, interrogation, candle) ── */
 .overlay-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-  display:none;flex-direction:column;align-items:center;gap:14px;
-  backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
-  border-radius:10px;padding:28px 36px;max-width:min(95vw,620px);z-index:600;pointer-events:all;}
+display:none;flex-direction:column;align-items:center;gap:12px;
+backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
+border-radius:10px;padding:24px 20px;
+width:min(96vw,620px);max-height:90vh;overflow-y:auto;
+z-index:600;pointer-events:all;}
 .overlay-panel.show{display:flex;}
-#rosaryUI{background:rgba(4,2,18,0.88);border:1.5px solid rgba(215,175,65,0.55);}
-#rosaryTitle{font-family:'Cinzel Decorative',serif;font-size:clamp(13px,2.5vw,20px);color:#f0d060;
-  text-shadow:0 0 18px rgba(255,200,60,0.75);letter-spacing:0.12em;text-align:center;}
-#rosaryMystery{font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(13px,2.1vw,17px);
-  color:#f8f0e0;text-align:center;max-width:480px;line-height:1.65;text-shadow:0 2px 8px rgba(0,0,0,0.9);}
-#rosaryBeads{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;padding:8px 0;}
-.rbead{width:32px;height:32px;border-radius:50%;cursor:pointer;
-  background:radial-gradient(circle at 35% 30%,rgba(255,230,120,0.95),rgba(160,100,20,0.82));
-  border:2px solid rgba(255,210,70,0.82);box-shadow:0 3px 10px rgba(0,0,0,0.6);
-  transition:transform 0.12s;display:grid;place-items:center;font-size:14px;color:rgba(80,40,0,0.8);}
-.rbead:hover{transform:scale(1.25);box-shadow:0 3px 18px rgba(0,0,0,0.85),0 0 20px rgba(255,190,40,0.85);}
+#rosaryUI{background:rgba(4,2,18,0.92);border:1.5px solid rgba(215,175,65,0.55);}
+#rosaryTitle{font-family:‘Cinzel Decorative’,serif;font-size:clamp(14px,3vw,20px);color:#f0d060;
+text-shadow:0 0 18px rgba(255,200,60,0.75);letter-spacing:0.1em;text-align:center;}
+#rosaryMystery{font-family:‘IM Fell English’,serif;font-style:italic;font-size:clamp(14px,2.4vw,17px);
+color:#f8f0e0;text-align:center;max-width:480px;line-height:1.65;text-shadow:0 2px 8px rgba(0,0,0,0.9);}
+#rosaryBeads{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:6px 0;}
+.rbead{width:44px;height:44px;border-radius:50%;cursor:pointer;touch-action:manipulation;
+background:radial-gradient(circle at 35% 30%,rgba(255,230,120,0.95),rgba(160,100,20,0.82));
+border:2px solid rgba(255,210,70,0.82);box-shadow:0 3px 10px rgba(0,0,0,0.6);
+transition:transform 0.12s;display:grid;place-items:center;font-size:16px;color:rgba(80,40,0,0.8);
+-webkit-tap-highlight-color:transparent;}
+.rbead:hover,.rbead:active{transform:scale(1.22);box-shadow:0 3px 18px rgba(0,0,0,0.85),0 0 20px rgba(255,190,40,0.85);}
 .rbead.prayed{background:radial-gradient(circle at 35% 30%,rgba(200,230,255,0.95),rgba(30,60,160,0.82));
-  border-color:rgba(140,180,255,0.9);}
-#rosaryProgress{font-family:'Cinzel',serif;font-size:clamp(10px,1.7vw,13px);color:rgba(200,170,70,0.9);letter-spacing:0.12em;text-align:center;}
-#quizUI{background:rgba(4,2,18,0.9);border:1.5px solid rgba(215,175,65,0.55);}
-#quizTitle{font-family:'Cinzel Decorative',serif;font-size:clamp(12px,2.3vw,18px);color:#f0d060;letter-spacing:0.1em;text-align:center;}
-#quizQ{font-family:'IM Fell English',serif;font-size:clamp(14px,2.5vw,19px);color:#f8f0e0;text-align:center;line-height:1.7;max-width:500px;}
+border-color:rgba(140,180,255,0.9);}
+#rosaryProgress{font-family:‘Cinzel’,serif;font-size:clamp(10px,1.8vw,13px);color:rgba(200,170,70,0.9);letter-spacing:0.12em;text-align:center;}
+
+#quizUI{background:rgba(4,2,18,0.92);border:1.5px solid rgba(215,175,65,0.55);}
+#quizTitle{font-family:‘Cinzel Decorative’,serif;font-size:clamp(13px,2.6vw,18px);color:#f0d060;letter-spacing:0.08em;text-align:center;}
+#quizQ{font-family:‘IM Fell English’,serif;font-size:clamp(15px,2.8vw,19px);color:#f8f0e0;text-align:center;line-height:1.7;max-width:500px;}
 #quizAnswers{display:flex;flex-direction:column;gap:10px;width:100%;}
-.qAnswer{font-family:'Cinzel',serif;font-size:clamp(11px,1.8vw,14px);color:#f5e6c0;
-  background:rgba(255,200,80,0.08);border:1px solid rgba(200,160,60,0.38);
-  padding:10px 18px;cursor:pointer;text-align:center;letter-spacing:0.08em;
-  transition:all 0.25s;border-radius:3px;}
-.qAnswer:hover{background:rgba(255,200,80,0.22);border-color:rgba(200,160,60,0.85);}
+.qAnswer{font-family:‘Cinzel’,serif;font-size:clamp(12px,2vw,14px);color:#f5e6c0;
+background:rgba(255,200,80,0.08);border:1px solid rgba(200,160,60,0.38);
+padding:13px 18px;cursor:pointer;text-align:center;letter-spacing:0.06em;
+transition:all 0.2s;border-radius:4px;touch-action:manipulation;
+-webkit-tap-highlight-color:transparent;min-height:48px;display:flex;align-items:center;justify-content:center;}
+.qAnswer:hover,.qAnswer:active{background:rgba(255,200,80,0.22);border-color:rgba(200,160,60,0.85);}
 .qAnswer.correct{background:rgba(80,200,80,0.25);border-color:rgba(100,220,100,0.85);color:#90f090;}
 .qAnswer.wrong{background:rgba(200,60,60,0.22);border-color:rgba(220,80,80,0.75);color:#f08080;}
-#quizProgress{font-family:'Cinzel',serif;font-size:clamp(9px,1.5vw,11px);color:rgba(200,170,70,0.7);letter-spacing:0.12em;}
-#interrUI{background:rgba(4,2,18,0.92);border:1.5px solid rgba(180,100,60,0.55);}
-#interrLabel{font-family:'Cinzel',serif;font-size:clamp(11px,2vw,15px);color:#f0c080;letter-spacing:0.08em;text-align:center;text-transform:uppercase;}
-#interrText{font-family:'IM Fell English',serif;font-size:clamp(14px,2.4vw,18px);color:#f8f0e0;text-align:center;line-height:1.7;max-width:480px;}
+#quizProgress{font-family:‘Cinzel’,serif;font-size:clamp(10px,1.6vw,11px);color:rgba(200,170,70,0.7);letter-spacing:0.12em;}
+
+#interrUI{background:rgba(4,2,18,0.94);border:1.5px solid rgba(180,100,60,0.55);}
+#interrLabel{font-family:‘Cinzel’,serif;font-size:clamp(11px,2.2vw,15px);color:#f0c080;letter-spacing:0.06em;text-align:center;text-transform:uppercase;}
+#interrText{font-family:‘IM Fell English’,serif;font-size:clamp(14px,2.6vw,18px);color:#f8f0e0;text-align:center;line-height:1.7;max-width:480px;}
 #interrChoices{display:flex;flex-direction:column;gap:10px;width:100%;}
-.iChoice{font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(13px,2.1vw,17px);
-  color:#f5e6c0;background:rgba(180,100,60,0.1);border:1px solid rgba(180,100,60,0.38);
-  padding:10px 18px;cursor:pointer;text-align:center;transition:all 0.25s;border-radius:3px;}
-.iChoice:hover{background:rgba(180,100,60,0.25);border-color:rgba(180,100,60,0.82);}
-#candleUI{background:rgba(4,2,18,0.9);border:1.5px solid rgba(255,160,30,0.55);}
-#candleTitle{font-family:'Cinzel',serif;font-size:clamp(12px,2.3vw,17px);color:#ffa040;letter-spacing:0.12em;text-align:center;}
-#candleDesc{font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(13px,2.2vw,17px);color:#f8f0e0;text-align:center;line-height:1.7;max-width:420px;}
-#candleFlame{font-size:clamp(36px,8vw,72px);text-align:center;animation:FLICKER 0.3s infinite alternate;}
+.iChoice{font-family:‘IM Fell English’,serif;font-style:italic;font-size:clamp(14px,2.4vw,17px);
+color:#f5e6c0;background:rgba(180,100,60,0.1);border:1px solid rgba(180,100,60,0.38);
+padding:13px 18px;cursor:pointer;text-align:center;transition:all 0.2s;border-radius:4px;
+touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:52px;
+display:flex;align-items:center;justify-content:center;}
+.iChoice:hover,.iChoice:active{background:rgba(180,100,60,0.28);border-color:rgba(180,100,60,0.85);}
+
+#candleUI{background:rgba(4,2,18,0.92);border:1.5px solid rgba(255,160,30,0.55);}
+#candleTitle{font-family:‘Cinzel’,serif;font-size:clamp(13px,2.5vw,17px);color:#ffa040;letter-spacing:0.1em;text-align:center;}
+#candleDesc{font-family:‘IM Fell English’,serif;font-style:italic;font-size:clamp(13px,2.4vw,17px);color:#f8f0e0;text-align:center;line-height:1.7;max-width:420px;}
+#candleFlame{font-size:clamp(48px,10vw,72px);text-align:center;animation:FLICKER 0.3s infinite alternate;}
 @keyframes FLICKER{from{transform:scaleY(1) rotate(-1deg)}to{transform:scaleY(1.08) rotate(1.5deg)}}
-#candleBar{width:260px;height:18px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,160,30,0.5);border-radius:9px;overflow:hidden;margin:4px 0;}
-#candleFill{height:100%;width:0%;background:linear-gradient(90deg,#ff6600,#ffd700);transition:width 0.1s;border-radius:9px;}
-#candleBtn{font-family:'Cinzel',serif;font-size:clamp(12px,2vw,15px);letter-spacing:0.12em;
-  color:#ffa040;background:rgba(255,160,30,0.12);border:1.5px solid rgba(255,160,30,0.5);
-  padding:11px 32px;cursor:pointer;transition:all 0.2s;user-select:none;-webkit-user-select:none;border-radius:4px;}
-#candleBtn.held{background:rgba(255,160,30,0.35);border-color:rgba(255,160,30,0.9);box-shadow:0 0 22px rgba(255,160,30,0.5);}
-#joystickWrap{position:fixed;bottom:30px;left:30px;width:152px;height:152px;pointer-events:all;user-select:none;-webkit-user-select:none;z-index:50;}
+#candleBar{width:min(280px,78vw);height:20px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,160,30,0.5);border-radius:10px;overflow:hidden;margin:4px 0;}
+#candleFill{height:100%;width:0%;background:linear-gradient(90deg,#ff6600,#ffd700);transition:width 0.1s;border-radius:10px;}
+#candleBtn{font-family:‘Cinzel’,serif;font-size:clamp(13px,2.2vw,15px);letter-spacing:0.1em;
+color:#ffa040;background:rgba(255,160,30,0.12);border:1.5px solid rgba(255,160,30,0.5);
+padding:16px 40px;cursor:pointer;transition:all 0.2s;user-select:none;-webkit-user-select:none;
+border-radius:6px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:56px;}
+#candleBtn.held{background:rgba(255,160,30,0.38);border-color:rgba(255,160,30,0.9);box-shadow:0 0 22px rgba(255,160,30,0.55);}
+
+/* ── JOYSTICK ── */
+#joystickWrap{position:fixed;bottom:max(30px,env(safe-area-inset-bottom,30px));
+left:max(24px,env(safe-area-inset-left,24px));
+width:clamp(130px,20vw,160px);height:clamp(130px,20vw,160px);
+pointer-events:all;user-select:none;-webkit-user-select:none;z-index:50;touch-action:none;}
 #joystickBase{position:absolute;inset:0;border-radius:50%;
-  background:radial-gradient(circle at 38% 35%,rgba(255,220,120,0.16),rgba(10,5,30,0.72));
-  border:2px solid rgba(200,160,60,0.48);box-shadow:0 0 16px rgba(200,160,60,0.16);backdrop-filter:blur(4px);}
-#joystickBase::before{content:'';position:absolute;inset:10px;border-radius:50%;border:1px dashed rgba(200,160,60,0.22);}
-#joystickBase::after{content:'';position:absolute;inset:0;border-radius:50%;
-  background:linear-gradient(rgba(200,160,60,0.13) 0,rgba(200,160,60,0.13) 100%) center/1px 100% no-repeat,
-             linear-gradient(rgba(200,160,60,0.13) 0,rgba(200,160,60,0.13) 100%) center/100% 1px no-repeat;}
-#joystickKnob{position:absolute;width:56px;height:56px;top:50%;left:50%;transform:translate(-50%,-50%);
-  border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,230,140,0.95),rgba(160,100,20,0.88));
-  border:2px solid rgba(255,210,80,0.88);box-shadow:0 4px 18px rgba(0,0,0,0.62),0 0 13px rgba(255,200,60,0.32);
-  display:grid;place-items:center;font-size:18px;color:rgba(255,240,180,0.72);cursor:grab;}
+background:radial-gradient(circle at 38% 35%,rgba(255,220,120,0.16),rgba(10,5,30,0.72));
+border:2px solid rgba(200,160,60,0.48);box-shadow:0 0 16px rgba(200,160,60,0.14);backdrop-filter:blur(4px);}
+#joystickBase::before{content:’’;position:absolute;inset:10px;border-radius:50%;border:1px dashed rgba(200,160,60,0.22);}
+#joystickBase::after{content:’’;position:absolute;inset:0;border-radius:50%;
+background:linear-gradient(rgba(200,160,60,0.12) 0,rgba(200,160,60,0.12) 100%) center/1px 100% no-repeat,
+linear-gradient(rgba(200,160,60,0.12) 0,rgba(200,160,60,0.12) 100%) center/100% 1px no-repeat;}
+#joystickKnob{position:absolute;width:clamp(46px,8vw,58px);height:clamp(46px,8vw,58px);
+top:50%;left:50%;transform:translate(-50%,-50%);
+border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,230,140,0.95),rgba(160,100,20,0.88));
+border:2px solid rgba(255,210,80,0.88);box-shadow:0 4px 18px rgba(0,0,0,0.62),0 0 13px rgba(255,200,60,0.32);
+display:grid;place-items:center;font-size:18px;color:rgba(255,240,180,0.72);cursor:grab;touch-action:none;}
 .jDir{position:absolute;font-size:10px;color:rgba(200,160,60,0.44);pointer-events:none;}
 .jDir.u{top:3px;left:50%;transform:translateX(-50%)}
 .jDir.d{bottom:3px;left:50%;transform:translateX(-50%)}
 .jDir.l{left:3px;top:50%;transform:translateY(-50%)}
 .jDir.r{right:3px;top:50%;transform:translateY(-50%)}
-#actionButtons{position:fixed;bottom:30px;right:28px;display:flex;flex-direction:column;
-  align-items:center;gap:13px;pointer-events:all;z-index:50;user-select:none;}
-.actBtn{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;
-  font-family:'Cinzel',serif;font-weight:600;cursor:pointer;border:none;outline:none;
-  transition:transform 0.08s,filter 0.08s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;overflow:hidden;}
-.actBtn:active{transform:scale(0.86);filter:brightness(1.35);}
+
+/* ── ACTION BUTTONS ── */
+#actionButtons{position:fixed;bottom:max(26px,env(safe-area-inset-bottom,26px));
+right:max(22px,env(safe-area-inset-right,22px));
+display:flex;flex-direction:column;align-items:center;gap:12px;
+pointer-events:all;z-index:50;user-select:none;}
+.actBtn{width:clamp(62px,12vw,76px);height:clamp(62px,12vw,76px);border-radius:50%;
+display:grid;place-items:center;font-family:‘Cinzel’,serif;font-weight:600;
+cursor:pointer;border:none;outline:none;transition:transform 0.08s,filter 0.08s;
+-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;overflow:hidden;}
+.actBtn:active{transform:scale(0.84);filter:brightness(1.38);}
 #btnE{background:radial-gradient(circle at 38% 32%,rgba(255,230,120,0.95),rgba(155,88,10,0.9));
-  border:2.5px solid rgba(255,210,70,0.9);box-shadow:0 4px 20px rgba(0,0,0,0.72),0 0 18px rgba(255,190,40,0.4);font-size:22px;color:#3a1a00;}
+border:2.5px solid rgba(255,210,70,0.9);box-shadow:0 4px 20px rgba(0,0,0,0.72),0 0 18px rgba(255,190,40,0.4);
+font-size:clamp(18px,4vw,24px);color:#3a1a00;}
 #btnContinue{background:radial-gradient(circle at 38% 32%,rgba(180,210,255,0.9),rgba(38,58,120,0.88));
-  border:2.5px solid rgba(140,180,255,0.8);box-shadow:0 4px 20px rgba(0,0,0,0.72),0 0 18px rgba(100,140,255,0.28);font-size:25px;color:#f5f0ff;}
-.actLabel{font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.12em;color:rgba(200,170,80,0.65);text-transform:uppercase;margin-top:-7px;pointer-events:none;}
+border:2.5px solid rgba(140,180,255,0.8);box-shadow:0 4px 20px rgba(0,0,0,0.72),0 0 18px rgba(100,140,255,0.28);
+font-size:clamp(20px,4.5vw,26px);color:#f5f0ff;}
+.actLabel{font-family:‘Cinzel’,serif;font-size:clamp(7px,1.4vw,10px);letter-spacing:0.1em;
+color:rgba(200,170,80,0.65);text-transform:uppercase;margin-top:-6px;pointer-events:none;}
+
+/* ── LANDSCAPE-ONLY ORIENTATION HINT (show in portrait on tiny phones) ── */
+#orientHint{position:fixed;inset:0;background:rgba(4,2,18,0.96);z-index:9999;
+display:none;flex-direction:column;align-items:center;justify-content:center;
+font-family:‘Cinzel’,serif;color:#f5e6c0;text-align:center;gap:18px;pointer-events:none;}
+#orientHint .oh-icon{font-size:56px;animation:ROTATE 2s ease-in-out infinite;}
+@keyframes ROTATE{0%,100%{transform:rotate(0deg)}50%{transform:rotate(90deg)}}
+#orientHint p{font-size:clamp(13px,3vw,18px);letter-spacing:0.12em;color:#c4a870;padding:0 24px;}
+
+/* ── RESPONSIVE — SMALL PHONES ── */
+@media (max-width: 480px) {
+#dialogue{top:max(8%, env(safe-area-inset-top,8%));padding:16px 16px 14px;}
+#dialogueText{font-size:clamp(14px,4.2vw,20px);}
+#taskPanel{min-width:min(160px,44vw);padding:10px 12px;}
+#interactPrompt{bottom:max(175px, calc(env(safe-area-inset-bottom,0px) + 175px));font-size:12px;padding:8px 18px;}
+.overlay-panel{padding:18px 14px;gap:10px;}
+#rosaryBeads{gap:8px;}
+.rbead{width:40px;height:40px;}
+}
+
+/* ── RESPONSIVE — LANDSCAPE MOBILE ── */  
+@media (max-height: 450px) and (orientation: landscape) {
+#dialogue{top:max(6%, env(safe-area-inset-top,6%));max-height:60vh;padding:14px 20px 12px;}
+#dialogueText{font-size:clamp(13px,2.8vw,18px);line-height:1.6;}
+#taskPanel{top:max(52px, calc(env(safe-area-inset-top,0px) + 48px));}
+#chapterBanner{padding:max(8px,env(safe-area-inset-top,8px)) 12px 12px;}
+#joystickWrap{bottom:max(16px,env(safe-area-inset-bottom,16px));left:max(16px,env(safe-area-inset-left,16px));width:120px;height:120px;}
+#actionButtons{bottom:max(16px,env(safe-area-inset-bottom,16px));right:max(16px,env(safe-area-inset-right,16px));gap:8px;}
+.actBtn{width:58px;height:58px;}
+.overlay-panel{max-height:88vh;padding:14px 16px;gap:8px;}
+}
 </style>
+
 </head>
 <body>
 <canvas id="gameCanvas"></canvas>
+<div id="orientHint">
+  <div class="oh-icon">📱</div>
+  <p>Rotate your device to landscape<br>for the best experience</p>
+</div>
 <div id="ui">
   <div id="titleScreen">
     <div class="cross">✝</div>
     <h1>I Am Bernadette</h1>
     <h2>The Sacred Journey of Lourdes</h2>
     <div class="sub">The Complete Life of Saint Bernadette Soubirous · 1844–1879</div>
-    <button id="startBtn" onclick="startGame()">Begin the Sacred Journey</button>
-    <div class="tv">"I do not promise to make you happy in this world, but in the next."<br>— Our Lady of Lourdes to Bernadette, 1858</div>
+    <button id="startBtn" onclick="startGame()">✝ Begin the Sacred Journey ✝</button>
+    <div class="tv">"I do not promise to make you happy in this world, but in the next."<br>— Our Lady of Lourdes to Bernadette, 1858<br><br><span style="font-size:0.85em;opacity:0.55;letter-spacing:0.08em">18 Chapters · Lourdes, France · 1844–1879</span></div>
   </div>
   <div id="chapterBanner"><div id="chapterTitle"></div><div id="chapterDate"></div></div>
   <div id="ageBadge"></div>
@@ -195,12 +298,17 @@ body{background:#000;overflow:hidden;font-family:'IM Fell English',Georgia,serif
   <div id="dialogue">
     <div id="dialogueSpeaker"></div>
     <div id="dialogueText"></div>
-    <div id="dialogueContinue">⏩ Continue &nbsp;|&nbsp; Space · Enter</div>
+    <div id="dialogueContinue">⏩ <span class="kb-hint">Space · Enter · </span>Tap to continue</div>
   </div>
   <div id="taskPanel"><h3>✝ Today's Duties</h3><div id="taskList"></div></div>
-  <div id="interactPrompt">[ E ] Interact</div>
+  <div id="interactPrompt">✋ Tap · [ E ]</div>
   <div id="notification"></div>
-  <div id="controls">WASD · Joystick to Move &nbsp;|&nbsp; E to Interact &nbsp;|&nbsp; ⏩ / Space to Continue</div>
+  <div id="controls">WASD · Joystick to Move &nbsp;|&nbsp; E to Interact</div>
+  <div id="vignette"></div>
+  <div id="zoomHint" style="position:fixed;bottom:8px;left:50%;transform:translateX(-50%);
+    color:rgba(255,255,255,0.32);font-size:11px;font-family:inherit;pointer-events:none;
+    letter-spacing:0.08em;z-index:20;text-align:center;transition:opacity 1.5s;">
+    <span class="kb-hint">Q = zoom out &nbsp;·&nbsp; Z = reset &nbsp;·&nbsp; </span>Pinch to zoom</div>
   <div id="fade"></div>
   <div id="springGlow"></div>
   <div id="holyGlow"></div>
@@ -252,32 +360,78 @@ body{background:#000;overflow:hidden;font-family:'IM Fell English',Georgia,serif
 
 // Position helper — avoids overwriting THREE.Vector3
 function pm(mesh,x,y,z){mesh.position.set(x,y,z);return mesh;}
-function pmc(mesh,x,y,z){mesh.castShadow=true;mesh.receiveShadow=true;mesh.position.set(x,y,z);return mesh;}
 const canvas=document.getElementById(‘gameCanvas’);
-let W=innerWidth,H=innerHeight;
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:‘high-performance’});
+let W=window.innerWidth,H=window.innerHeight;
+const renderer=new THREE.WebGLRenderer({canvas,antialias:window.devicePixelRatio<2,powerPreference:‘high-performance’});
 renderer.setSize(W,H);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
 const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(56,W/H,0.1,1000);
 const clock=new THREE.Clock();
-window.addEventListener(‘resize’,()=>{W=innerWidth;H=innerHeight;renderer.setSize(W,H);camera.aspect=W/H;camera.updateProjectionMatrix();});
+function onResize(){
+W=window.innerWidth;H=window.innerHeight;
+renderer.setSize(W,H);camera.aspect=W/H;camera.updateProjectionMatrix();
+// Show orientation hint on portrait phones (not tablets)
+const oh=document.getElementById(‘orientHint’);
+if(oh){const isPortrait=W<H,isPhone=Math.min(W,H)<600;
+oh.style.display=(isPortrait&&isPhone&&G.chapter>=0)?‘flex’:‘none’;}
+}
+window.addEventListener(‘resize’,onResize);
+window.addEventListener(‘orientationchange’,()=>setTimeout(onResize,300));
 
 const G={
 chapter:-1,dialogueActive:false,dialogueQueue:[],dialogueIdx:0,dialogueCb:null,
 tasks:{},completedTasks:{},
 player:{mesh:null,canMove:true},
-camera:{offset:new THREE.Vector3(0,9,13),shake:0},
+camera:{
+// follow: trails behind player. fixed: locked position. cinematic: scripted arc. zoom: close-up
+mode:‘follow’,
+offset:new THREE.Vector3(0,9,13),  // used in follow mode
+// fixed/cinematic/zoom targets (set per chapter)
+pos:null, look:null,
+// Dynamic FOV — zoom in for intimate scenes, out for vistas
+fov:56, fovCur:56,
+// Who/what to look toward (overrides default player-tracking)
+focusMesh:null, focusWeight:0,
+// Cinematic orbit
+orbitCenter:null, orbitR:0, orbitY:0, orbitSpeed:0, _orbitAngle:0,
+shake:0, _orbitAngle:0,
+},
 nearbyInteractable:null,interactables:[],npcs:[],chapterObjects:[],
-ourLady:null,springWater:null,keys:{},joy:{x:0,y:0},
+ourLady:null,springWater:null,keys:{},joy:{x:0,y:0},groundFn:null,
 time:0,transitioning:false,bernadetteStage:0,_eHeld:false,
 _awaitingSpring:false,_springTarget:null,_onSpringArrived:null,
 _awaitingWalk:false,_walkTarget:null,_walkRadius:2,_onWalkArrived:null,
 _nicheLight:null,_fireLight:null,_candleLight:null,_springPts:null,_springPtsPos:null,
 };
 
-window.addEventListener(‘keydown’,e=>{G.keys[e.code]=true;if(e.code===‘Space’||e.code===‘Enter’)advanceDialogue();});
+window.addEventListener(‘keydown’,e=>{
+G.keys[e.code]=true;
+if(e.code===‘Space’||e.code===‘Enter’)advanceDialogue();
+// Q/E zoom out/in manually
+if(e.code===‘KeyQ’)G.camera.fov=Math.min(G.camera.fov+6,75);
+if(e.code===‘KeyE’&&!G._eHeld){
+// E is interact; only zoom if no interactable nearby
+if(!G.nearbyInteractable&&!G.dialogueActive)G.camera.fov=Math.max(G.camera.fov-6,30);
+}
+// Z = reset zoom
+if(e.code===‘KeyZ’){G.camera.fov=56;G.camera.mode=‘follow’;}
+});
+
+// Tap dialogue to advance (mobile)
+(function(){
+const dlg=document.getElementById(‘dialogue’);
+let lastTap=0;
+dlg.addEventListener(‘touchend’,e=>{
+const now=Date.now();
+if(now-lastTap<600)return; // debounce
+lastTap=now;
+e.preventDefault();
+advanceDialogue();
+},{passive:false});
+dlg.addEventListener(‘click’,advanceDialogue);
+})();
 window.addEventListener(‘keyup’,e=>{G.keys[e.code]=false;});
 
 // Joystick
@@ -298,11 +452,33 @@ function reset(){active=false;touchId=null;G.joy.x=0;G.joy.y=0;knob.style.transf
 base.addEventListener(‘mousedown’,e=>{if(active)return;e.preventDefault();active=true;const c=centre();ox=c.cx;oy=c.cy;move(e.clientX,e.clientY);});
 window.addEventListener(‘mousemove’,e=>{if(!active||touchId!==null)return;move(e.clientX,e.clientY);});
 window.addEventListener(‘mouseup’,()=>{if(active&&touchId===null)reset();});
-window.addEventListener(‘touchstart’,e=>{if(active)return;const t=Array.from(e.changedTouches).find(t=>t.clientX<W*0.65);
-if(!t)return;e.preventDefault();active=true;touchId=t.identifier;ox=t.clientX;oy=t.clientY;place(ox,oy);move(ox,oy);},{passive:false});
+window.addEventListener(‘touchstart’,e=>{
+if(active)return;
+// Don’t intercept touches on UI panels, dialogue, or buttons
+const target=e.target;
+const isUI=target.closest(’.overlay-panel,#dialogue,#actionButtons,#soundHint,#titleScreen,#taskPanel,#interrUI,#quizUI,#rosaryUI,#candleUI’);
+if(isUI)return;
+const t=Array.from(e.changedTouches).find(t=>t.clientX<W*0.65);
+if(!t)return;
+e.preventDefault();active=true;touchId=t.identifier;ox=t.clientX;oy=t.clientY;place(ox,oy);move(ox,oy);
+},{passive:false});
 window.addEventListener(‘touchmove’,e=>{if(!active)return;e.preventDefault();for(const t of e.changedTouches){if(t.identifier===touchId){move(t.clientX,t.clientY);break;}}},{passive:false});
 window.addEventListener(‘touchend’,e=>{for(const t of e.changedTouches){if(t.identifier===touchId){reset();break;}}});
 window.addEventListener(‘touchcancel’,()=>reset());
+wrap.addEventListener(‘touchcancel’,()=>reset());
+})();
+
+// ── Pinch-to-zoom ──
+(function(){
+let lastDist=0;
+window.addEventListener(‘touchstart’,e=>{if(e.touches.length===2)lastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);},{passive:true});
+window.addEventListener(‘touchmove’,e=>{
+if(e.touches.length!==2)return;
+const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+if(lastDist>0){const delta=(lastDist-d)*0.08;G.camera.fov=Math.max(28,Math.min(78,G.camera.fov+delta));}
+lastDist=d;
+},{passive:true});
+window.addEventListener(‘touchend’,e=>{if(e.touches.length<2)lastDist=0;},{passive:true});
 })();
 
 // Action buttons
@@ -312,7 +488,7 @@ function pe(e){e.preventDefault();if(G.nearbyInteractable&&!G.dialogueActive)G.n
 function pc(e){e.preventDefault();advanceDialogue();}
 btnE.addEventListener(‘touchstart’,pe,{passive:false});btnE.addEventListener(‘mousedown’,pe);
 btnC.addEventListener(‘touchstart’,pc,{passive:false});btnC.addEventListener(‘mousedown’,pc);
-function tick(){btnC.style.opacity=G.dialogueActive?‘1’:‘0.42’;btnE.style.opacity=(!G.dialogueActive&&G.nearbyInteractable)?‘1’:‘0.46’;requestAnimationFrame(tick);}tick();
+function tick(){btnC.style.opacity=G.dialogueActive?‘1’:‘0.35’;btnE.style.opacity=(!G.dialogueActive&&G.nearbyInteractable)?‘1’:‘0.38’;requestAnimationFrame(tick);}tick();
 })();
 
 // Audio
@@ -327,10 +503,10 @@ const g=ctx.createGain();g.gain.value=0;src.connect(lp);lp.connect(g);g.connect(
 function makeChurch(){const o1=ctx.createOscillator(),o2=ctx.createOscillator();o1.type=‘sine’;o2.type=‘sine’;
 o1.frequency.value=220;o2.frequency.value=277;const g=ctx.createGain();g.gain.value=0;
 o1.connect(g);o2.connect(g);g.connect(ctx.destination);o1.start();o2.start();return{gain:g};}
-function ramp(n,v,t=1.2){if(n&&enabled)n.gain.gain.linearRampToValueAtTime(v,ctx.currentTime+t);}
+function ramp(n,v,t=1.2){if(n&&enabled&&ctx)n.gain.gain.linearRampToValueAtTime(v,ctx.currentTime+t);}
 return{
 start(){ensure();enabled=true;wind=makeNoise(400);water=makeNoise(900);church=makeChurch();document.getElementById(‘soundHint’).textContent=‘♪ Sound: ON’;},
-stop(){enabled=false;[wind,water,church].forEach(n=>{if(n)n.gain.gain.value=0;});document.getElementById(‘soundHint’).textContent=‘♪ Sound: OFF’;},
+stop(){enabled=false;[wind,water,church].forEach(n=>{if(n)n.gain.gain.value=0;});wind=null;water=null;church=null;document.getElementById(‘soundHint’).textContent=‘♪ Sound: OFF’;},
 setWind(v){ramp(wind,v*0.055);},setWater(v){ramp(water,v*0.07);},setChurch(v){ramp(church,v*0.028);},isOn(){return enabled;}
 };
 })();
@@ -371,9 +547,18 @@ function hideTasks(){hideEl(‘taskPanel’);}
 // Interactables
 function createInteractable(mesh,label,onInteract){
 const item={mesh,label,onInteract};
-const gg=new THREE.Mesh(new THREE.SphereGeometry(0.15,8,8),new THREE.MeshBasicMaterial({color:0xffee88,transparent:true,opacity:0.7}));
-gg.position.copy(mesh.position);gg.position.y+=1.7;
-item.glowMesh=gg;item.glowMat=gg.material;scene.add(gg);G.interactables.push(item);return item;}
+// Glowing orb above the object
+const gg=new THREE.Mesh(new THREE.SphereGeometry(0.15,10,10),new THREE.MeshBasicMaterial({color:0xffee55,transparent:true,opacity:0.8}));
+gg.position.copy(mesh.position);gg.position.y+=1.85;
+item.glowMesh=gg;item.glowMat=gg.material;
+// Small cross on top of the orb (sacred marker)
+const crx=new THREE.Mesh(new THREE.BoxGeometry(0.04,0.22,0.04),new THREE.MeshBasicMaterial({color:0xffd700}));
+crx.position.copy(gg.position);crx.position.y+=0.22;
+const crxh=new THREE.Mesh(new THREE.BoxGeometry(0.14,0.04,0.04),new THREE.MeshBasicMaterial({color:0xffd700}));
+crxh.position.copy(crx.position);crxh.position.y+=0.05;
+addC(gg);addC(crx);addC(crxh);
+item._crx=crx;item._crxh=crxh;
+G.interactables.push(item);return item;}
 
 // Clear chapter
 function clearChapter(){
@@ -384,10 +569,16 @@ G._awaitingSpring=false;G._springTarget=null;G._onSpringArrived=null;
 G._awaitingWalk=false;G._walkTarget=null;G._onWalkArrived=null;
 [‘holyGlow’,‘springGlow’,‘springPrompt’,‘communionPrompt’,‘walkPrompt’].forEach(hideEl);
 [‘rosaryUI’,‘quizUI’,‘interrUI’,‘candleUI’].forEach(id=>{const el=document.getElementById(id);el.style.display=‘none’;el.classList.remove(‘show’);});
-AUDIO.setWind(0);AUDIO.setWater(0);AUDIO.setChurch(0);hideTasks();}
+AUDIO.setWind(0);AUDIO.setWater(0);AUDIO.setChurch(0);hideTasks();onAllTasksDone=()=>{};G._walkRadius=2;G.groundFn=null;G._fireflies=null;G._stepT=null;
+if(G.player.mesh){G.player.mesh.rotation.x=0;G.player.mesh.rotation.z=0;}
+// Reset camera to default follow mode
+G.camera.mode=‘follow’;G.camera.fov=56;G.camera.focusMesh=null;G.camera.focusWeight=0;
+G.camera.pos=null;G.camera.look=null;G.camera.orbitCenter=null;G.camera.orbitSpeed=0;
+camera.fov=56;camera.updateProjectionMatrix();}
 
 // Transition
 function transitionTo(idx){
+const oh=document.getElementById(‘orientHint’);if(oh)oh.style.display=‘none’;
 if(G.transitioning)return;G.transitioning=true;G.player.canMove=false;
 fadeOut(()=>{G.chapter=idx;const ch=CHAPTERS[idx];scene.clear();clearChapter();
 hideEl(‘dialogue’);hideEl(‘dialogueDimmer’);G.dialogueActive=false;
@@ -493,8 +684,25 @@ if(l._halo)l._halo.rotation.z=t*0.48;
 if(l._iL)l._iL.intensity=2.2+Math.sin(t*1.9)*1.1;if(l._oL)l._oL.intensity=1.4+Math.sin(t*1.3)*0.85;
 if(l._pPos){const pos=l._pts.geometry.attributes.position.array;for(let i=0;i<l._pN;i++){const a=Math.atan2(pos[i*3+2],pos[i*3])+0.008,r=Math.sqrt(pos[i*3]*pos[i*3]+pos[i*3+2]*pos[i*3+2]);pos[i*3]=Math.cos(a)*r;pos[i*3+2]=Math.sin(a)*r;pos[i*3+1]+=(Math.random()-0.5)*0.012;if(pos[i*3+1]>3.2)pos[i*3+1]=0;if(pos[i*3+1]<0)pos[i*3+1]=2.5;}l._pts.geometry.attributes.position.needsUpdate=true;}}
 
-// Walk animation
-function animWalk(c,dt,walking){if(!c||!c._armL)return;c._walkT=(c._walkT||0)+(walking?dt*3:0);const sw=Math.sin(c._walkT);c._armL.rotation.x=walking?sw*0.4:0;c._armR.rotation.x=walking?-sw*0.4:0;if(c._head)c._head.rotation.x=walking?Math.abs(sw)*0.05:0;}
+// Walk animation — expressive character movement
+function animWalk(c,dt,walking){
+if(!c||!c._armL)return;
+c._walkT=(c._walkT||0)+(walking?dt*3.2:0);
+const sw=Math.sin(c._walkT),cw=Math.cos(c._walkT);
+// Arms swing opposite to legs
+c._armL.rotation.x=walking?sw*0.45:c._armL.rotation.x*0.85;
+c._armR.rotation.x=walking?-sw*0.45:c._armR.rotation.x*0.85;
+// Slight body lean forward when walking
+if(c._armL)c._armL.rotation.z=walking?0.32+Math.abs(sw)*0.05:0.32;
+if(c._armR)c._armR.rotation.z=walking?-0.32-Math.abs(sw)*0.05:-0.32;
+// Head bob gently while walking — subtle, devout
+if(c._head){
+c._head.rotation.x=walking?Math.abs(cw)*0.04:c._head.rotation.x*0.9;
+c._head.rotation.z=walking?sw*0.015:c._head.rotation.z*0.9;
+}
+// Slight vertical bounce stored separately — avoids fighting terrain snap
+if(walking){c._bounceY=(c._bounceY||0);c._bounceY=Math.abs(sw)*0.015;}
+}
 
 // Generic NPC builder
 function mkChar(skin,cloth,hair,opts){
@@ -515,43 +723,424 @@ g.traverse(m=>{if(m.isMesh){m.castShadow=true;m.receiveShadow=true;}});g._walkT=
 // ═══════════════════════════════════════════════
 //  SCENE BUILDERS
 // ═══════════════════════════════════════════════
-function mkStars(){const g=new THREE.BufferGeometry(),n=2000,p=new Float32Array(n*3);for(let i=0;i<n;i++){p[i*3]=(Math.random()-0.5)*400;p[i*3+1]=50+Math.random()*200;p[i*3+2]=(Math.random()-0.5)*400;}g.setAttribute(‘position’,new THREE.BufferAttribute(p,3));return new THREE.Points(g,new THREE.PointsMaterial({color:0xffffff,size:0.30,transparent:true,opacity:0.82,sizeAttenuation:true}));}
-function mkTerrain(){const geo=new THREE.PlaneGeometry(200,200,60,60);geo.rotateX(-Math.PI/2);const pos=geo.attributes.position;for(let i=0;i<pos.count;i++){const x=pos.getX(i),z=pos.getZ(i);let h=Math.sin(x*0.08)*3+Math.sin(z*0.06)*2.5+Math.sin(x*0.15+z*0.12)*1.5;h=Math.max(h,-0.5);pos.setY(i,h);}geo.computeVertexNormals();return new THREE.Mesh(geo,new THREE.MeshPhongMaterial({color:0x4a6e3a,shininess:4}));}
-function mkMountains(){const g=new THREE.Group();[{x:-62,z:-82,h:55,r:22},{x:-32,z:-88,h:48,r:18},{x:20,z:-84,h:62,r:25},{x:62,z:-76,h:40,r:16},{x:42,z:-102,h:70,r:28},{x:-52,z:-108,h:65,r:24}].forEach(p=>{const m=new THREE.Mesh(new THREE.ConeGeometry(p.r,p.h,10),new THREE.MeshPhongMaterial({color:0x8a9a8a}));m.position.set(p.x,p.h/2-2,p.z);m.castShadow=true;g.add(m);const s=new THREE.Mesh(new THREE.ConeGeometry(p.r*0.28,p.h*0.22,10),new THREE.MeshPhongMaterial({color:0xffffff}));s.position.set(p.x,p.h*0.88,p.z);g.add(s);});return g;}
-function mkWater(w,d,col){col=col||0x2255aa;const geo=new THREE.PlaneGeometry(w,d,18,18);geo.rotateX(-Math.PI/2);const m=new THREE.Mesh(geo,new THREE.MeshPhongMaterial({color:col,transparent:true,opacity:0.74,shininess:100}));m._wT=0;return m;}
-function animWater(w,dt){if(!w)return;w._wT+=dt;const p=w.geometry.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),z=p.getZ(i);p.setY(i,Math.sin(x*0.8+w._wT*1.5)*0.07+Math.sin(z*0.6+w._wT*1.2)*0.05);}p.needsUpdate=true;w.geometry.computeVertexNormals();}
-function mkTrees(count,xRange,zRange){for(let i=0;i<count;i++){const x=rand(-xRange,xRange),z=rand(-zRange.max,zRange.min||0),h=rand(2.5,5.5);const tr=new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.20,h,8),new THREE.MeshPhongMaterial({color:0x5a3e2a}));tr.position.set(x,h/2,z);addC(tr);const fo=new THREE.Mesh(new THREE.ConeGeometry(rand(1.0,2.2),rand(2.5,5),8),new THREE.MeshPhongMaterial({color:new THREE.Color(0.12+Math.random()*0.15,0.44+Math.random()*0.2,0.08)}));fo.position.set(x,h+1.5,z);addC(fo);}}
+// ═══════════════════════════════════════════════
+//  TERRAIN HEIGHT SYSTEM
+// ═══════════════════════════════════════════════
+// Pure math height function — identical to geometry generation.
+// Chapters can override G.groundFn for flat/indoor scenes.
+function rawTerrain(x,z){
+// Pyrenean valley: flat central path, river valley at x≈9
+const pathFactor=Math.max(0,1-Math.abs(x)*0.16);      // pilgrim road, center flat
+const riverFactor=Math.max(0,1-Math.abs(x-9)*0.18);   // Gave de Pau river channel
+let h=Math.sin(x*0.072)*2.2+Math.cos(z*0.058)*1.8
++Math.sin(x*0.14+z*0.11)*1.1+Math.cos(x*0.21-z*0.19)*0.55
++Math.sin(z*0.08)*0.9+Math.cos(x*0.09)*0.7;
+h*=(1-pathFactor*0.90);        // flatten pilgrim corridor
+h-=riverFactor*3.8;            // carve river valley — terrain drops toward river
+h=Math.max(h,-0.5);            // floor at -0.5 (river bed)
+return h;
+}
+function sampleGround(x,z){
+if(G.groundFn)return G.groundFn(x,z);
+return 0; // default flat
+}
 
+// Stars — Milky Way style with colour variation
+function mkStars(){
+const g=new THREE.BufferGeometry(),n=3200,p=new Float32Array(n*3),c=new Float32Array(n*3);
+for(let i=0;i<n;i++){
+const phi=Math.acos(2*Math.random()-1),theta=Math.random()*Math.PI*2,r=80+Math.random()*220;
+p[i*3]=r*Math.sin(phi)*Math.cos(theta);p[i*3+1]=Math.abs(r*Math.cos(phi))+30;p[i*3+2]=r*Math.sin(phi)*Math.sin(theta);
+// Star colours: white, blue-white, warm yellow
+const t=Math.random();
+c[i*3]=t<0.3?0.78:t<0.6?1:1;c[i*3+1]=t<0.3?0.84:t<0.6?0.97:0.92;c[i*3+2]=t<0.3?1:t<0.6?0.88:0.72;
+}
+g.setAttribute(‘position’,new THREE.BufferAttribute(p,3));g.setAttribute(‘color’,new THREE.BufferAttribute(c,3));
+return new THREE.Points(g,new THREE.PointsMaterial({size:0.28,vertexColors:true,transparent:true,opacity:0.88,sizeAttenuation:true}));
+}
+
+// Beautiful terrain with vertex colours (grass/path/rock) and walkable hills
+function mkTerrain(opts){
+opts=opts||{};
+const res=opts.res||80;
+const geo=new THREE.PlaneGeometry(220,220,res,res);
+geo.rotateX(-Math.PI/2);
+const pos=geo.attributes.position;
+const col=new Float32Array(pos.count*3);
+
+// Season colours: spring=green, winter=muted
+const season=opts.season||‘spring’;
+const grassC=season===‘winter’?[0.42,0.46,0.35]:[0.26,0.50,0.18];
+const pathC=[0.56,0.48,0.36];
+const rockC=[0.48,0.44,0.40];
+const mudC=[0.40,0.30,0.22];
+
+for(let i=0;i<pos.count;i++){
+const x=pos.getX(i),z=pos.getZ(i);
+const h=rawTerrain(x,z);
+pos.setY(i,h);
+// Path corridor down center (historical Chemin de Massabielle)
+const pathW=Math.max(0,1-Math.abs(x)*0.13);
+// Riverside path (x around 6-10)
+const riverPath=Math.max(0,1-Math.abs(x-8)*0.18);
+const onPath=Math.max(pathW,riverPath);
+// Steepness → rock colour
+const steep=Math.abs(h)>2.5?1:0;
+let r,g2,b;
+if(onPath>0.5){r=pathC[0]+(mudC[0]-pathC[0])*(1-onPath);g2=pathC[1];b=pathC[2];}
+else if(steep){r=rockC[0];g2=rockC[1];b=rockC[2];}
+else{const t=Math.min(1,h*0.25+0.5);r=grassC[0]*t;g2=grassC[1]*t;b=grassC[2]*t;}
+col[i*3]=r;col[i*3+1]=g2;col[i*3+2]=b;
+}
+geo.setAttribute(‘color’,new THREE.BufferAttribute(col,3));
+geo.computeVertexNormals();
+const mat=new THREE.MeshPhongMaterial({vertexColors:true,shininess:3,specular:0x223311});
+const m=new THREE.Mesh(geo,mat);m.receiveShadow=true;
+return m;
+}
+
+// Pyrenean mountain range — historically accurate for Lourdes geography
+function mkMountains(){
+const g=new THREE.Group();
+// Pic du Jer, Pic de Pibeste and surrounding Pyrenean peaks visible from Lourdes
+const peaks=[
+{x:-55,z:-90,h:68,r:26,name:‘Pic du Jer’},{x:-28,z:-96,h:52,r:19},{x:18,z:-88,h:74,r:30},
+{x:55,z:-80,h:44,r:17},{x:38,z:-108,h:82,r:32},{x:-48,z:-112,h:72,r:27},
+{x:72,z:-102,h:36,r:14},{x:-72,z:-78,h:58,r:21},{x:8,z:-118,h:60,r:22},
+{x:-15,z:-78,h:38,r:15},{x:90,z:-110,h:50,r:20},{x:-88,z:-96,h:55,r:22},
+];
+peaks.forEach(p=>{
+// Base rock body — layered with two overlapping cones for organic look
+const rockC=new THREE.Color(0.52+Math.random()*0.06,0.49+Math.random()*0.05,0.44+Math.random()*0.04);
+const base=new THREE.Mesh(new THREE.ConeGeometry(p.r,p.h,12),new THREE.MeshPhongMaterial({color:rockC}));
+base.position.set(p.x,p.h/2-4,p.z);base.castShadow=true;g.add(base);
+// Mid slope darker
+const mid=new THREE.Mesh(new THREE.ConeGeometry(p.r*0.65,p.h*0.55,10),new THREE.MeshPhongMaterial({color:new THREE.Color(0.38,0.36,0.32)}));
+mid.position.set(p.x,p.h*0.55,p.z);g.add(mid);
+// Snow cap — Pyrenean peaks are snow-capped in winter/spring
+const snow=new THREE.Mesh(new THREE.ConeGeometry(p.r*0.24,p.h*0.20,9),new THREE.MeshPhongMaterial({color:0xf8f8ff,shininess:40}));
+snow.position.set(p.x,p.h*0.90,p.z);g.add(snow);
+// Snow line fringe
+const fringe=new THREE.Mesh(new THREE.ConeGeometry(p.r*0.38,p.h*0.08,9,1,true),new THREE.MeshPhongMaterial({color:0xeeeeee,side:THREE.DoubleSide,transparent:true,opacity:0.8}));
+fringe.position.set(p.x,p.h*0.75,p.z);g.add(fringe);
+});
+// Rolling foothills
+for(let i=0;i<18;i++){
+const hx=rand(-100,100),hz=rand(-60,-40),hr=rand(6,18),hh=rand(4,12);
+const hill=new THREE.Mesh(new THREE.SphereGeometry(hr,10,8),new THREE.MeshPhongMaterial({color:new THREE.Color(0.28+Math.random()*0.08,0.38+Math.random()*0.1,0.18+Math.random()*0.06)}));
+hill.scale.y=hh/hr*0.6;hill.position.set(hx,hh*0.3,hz);hill.receiveShadow=true;g.add(hill);
+}
+return g;
+}
+
+// Water with realistic vertex wave simulation
+function mkWater(w,d,col,opts){
+col=col||0x2255aa;opts=opts||{};
+// Higher resolution for waves
+const segments=Math.max(20,Math.ceil((w+d)*3));
+const geo=new THREE.PlaneGeometry(w,d,segments,segments);geo.rotateX(-Math.PI/2);
+// Store base positions for wave animation
+const basePos=new Float32Array(geo.attributes.position.array);
+const mat=new THREE.MeshPhongMaterial({
+color:col,transparent:true,opacity:opts.opacity||0.80,
+shininess:240,specular:0xaaddff,
+emissive:new THREE.Color(col).multiplyScalar(0.06),
+emissiveIntensity:0.4,
+});
+const m=new THREE.Mesh(geo,mat);
+m._wT=0;m._wBase=basePos;m._wPhase=Math.random()*Math.PI*2;
+m._isWater=true;m.receiveShadow=false;return m;
+}
+function animWater(w,dt){
+if(!w)return;w._wT=(w._wT||0)+dt;
+const p=w.geometry.attributes.position;
+const ph=w._wPhase||0;
+const t=w._wT;
+const isSpring=w._isSpring; // smaller waves for the spring
+const amp=isSpring?0.022:0.055;
+for(let i=0;i<p.count;i++){
+const x=p.getX(i),z=p.getZ(i);
+// Three overlapping wave frequencies for natural look
+const y=Math.sin(x*1.1+t*1.7+ph)*amp
++Math.sin(z*0.85+t*1.35+ph*0.6)*amp*0.7
++Math.sin((x-z)*0.55+t*2.3+ph*1.3)*amp*0.4;
+p.setY(i,y);
+}
+p.needsUpdate=true;w.geometry.computeVertexNormals();
+// Subtle colour oscillation — light/dark ripples
+if(w.material&&w._col){
+const pulse=0.92+Math.sin(t*2.1+ph)*0.08;
+w.material.opacity=Math.min(0.95,(w.material.opacity||0.8)*0.96+0.04)*pulse;
+}
+}
+
+// Trees that follow terrain height, with path avoidance
+function mkTrees(count,xRange,zRange,pathFn){
+for(let i=0;i<count;i++){
+let x,z,tries=0;
+do{x=rand(-xRange,xRange);z=rand(-zRange.max,-(zRange.min||0));tries++;}
+while(tries<12&&pathFn&&pathFn(x,z));
+const gy=G.groundFn?G.groundFn(x,z):0;
+const h=rand(3.0,6.5),species=Math.random();
+if(species<0.55){
+// Oak/chestnut — common in Pyrenean foothills
+const trunkH=h*0.55,trunkR=rand(0.13,0.20);
+const tr=new THREE.Mesh(new THREE.CylinderGeometry(trunkR*0.7,trunkR,trunkH,8),new THREE.MeshPhongMaterial({color:new THREE.Color(0.28+Math.random()*0.06,0.20+Math.random()*0.04,0.12)}));
+tr.position.set(x,gy+trunkH/2,z);tr.castShadow=true;addC(tr);
+// Layered canopy
+for(let c=0;c<3;c++){
+const cy=gy+trunkH+c*rand(0.6,1.0),cr=rand(1.2,2.2)-c*0.35;
+const fo=new THREE.Mesh(new THREE.SphereGeometry(cr,8,7),new THREE.MeshPhongMaterial({color:new THREE.Color(0.10+Math.random()*0.10,0.34+Math.random()*0.18,0.06+Math.random()*0.04)}));
+fo.position.set(x+rand(-0.3,0.3),cy,z+rand(-0.3,0.3));fo.castShadow=true;addC(fo);
+}
+}else if(species<0.80){
+// Pine — Pyrenean conifer
+const tr=new THREE.Mesh(new THREE.CylinderGeometry(0.10,0.16,h*0.6,7),new THREE.MeshPhongMaterial({color:0x4a2e1a}));
+tr.position.set(x,gy+h*0.3,z);tr.castShadow=true;addC(tr);
+for(let t=0;t<3;t++){const ty=gy+h*0.3+t*h*0.24,tr2=rand(0.9,1.9)-t*0.4;
+const fo=new THREE.Mesh(new THREE.ConeGeometry(tr2,h*0.38-t*0.1,8),new THREE.MeshPhongMaterial({color:new THREE.Color(0.06,0.28+Math.random()*0.08,0.08)}));fo.position.set(x,ty,z);fo.castShadow=true;addC(fo);}
+}else{
+// Willow/ash near water — slender
+const tr=new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.12,h*0.70,7),new THREE.MeshPhongMaterial({color:0x5a3e28}));
+tr.position.set(x,gy+h*0.35,z);addC(tr);
+const fo=new THREE.Mesh(new THREE.SphereGeometry(rand(1.0,1.6),8,6),new THREE.MeshPhongMaterial({color:new THREE.Color(0.18+Math.random()*0.08,0.42+Math.random()*0.14,0.10)}));
+fo.scale.y=1.4;fo.position.set(x,gy+h*0.75,z);addC(fo);
+}
+}
+}
+
+// Scatter rocks naturally on terrain
+function mkRocks(count,xRange,zRange,pathFn){
+for(let i=0;i<count;i++){
+let x,z,tries=0;
+do{x=rand(-xRange,xRange);z=rand(-zRange.max,-(zRange.min||0));tries++;}
+while(tries<8&&pathFn&&pathFn(x,z));
+const gy=G.groundFn?G.groundFn(x,z):0;
+const s=rand(0.2,0.8);
+const r=new THREE.Mesh(new THREE.SphereGeometry(s,7,6),new THREE.MeshPhongMaterial({color:new THREE.Color(0.44+rand(0,0.08),0.40+rand(0,0.06),0.36+rand(0,0.05))}));
+r.scale.set(1+rand(-0.3,0.3),0.55+rand(0,0.3),1+rand(-0.3,0.3));
+r.position.set(x,gy+s*0.2,z);r.castShadow=true;r.receiveShadow=true;addC(r);
+}
+}
+
+// ═══════════════════════════════════════════════
+// MASSABIELLE GROTTO — historically accurate
+// The actual Grotte de Massabielle: a cave hollowed by the Gave de Pau river,
+// 18m high cliff, niche 5m above ground, wild rosebush, canal spring.
+// ═══════════════════════════════════════════════
 function buildGrotto(opts){
 opts=opts||{};
-const sky=opts.sky||0x0d1520;
-scene.background=new THREE.Color(sky);scene.fog=new THREE.Fog(sky,20,95);
-addC(new THREE.AmbientLight(0x203040,0.52));
-const moon=new THREE.DirectionalLight(0x8099bb,0.42);moon.position.set(-18,28,10);addC(moon);
-const gnd=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.MeshPhongMaterial({color:0x4a3a28}));gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;addC(gnd);
-// Main cliff rocks
-function rock(sx,sy,sz,x,y,z){const m=new THREE.Mesh(new THREE.SphereGeometry(1,9,7),new THREE.MeshPhongMaterial({color:new THREE.Color(0.38+rand(0,0.08),0.34+rand(0,0.06),0.28+rand(0,0.05))}));m.scale.set(sx,sy,sz);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;addC(m);}
-rock(13,9,5.5,0,5,-14.5);rock(8.5,7,4.5,-8.5,3.5,-12.5);rock(6.5,5.5,3.5,9,3,-12);rock(14.5,4.5,6.5,0,0.5,-15.5);
-// Niche
-const niche=new THREE.Mesh(new THREE.SphereGeometry(2.3,14,11),new THREE.MeshPhongMaterial({color:0x222018,side:THREE.BackSide}));niche.scale.set(1,1.35,0.62);niche.position.set(0,5,-13);addC(niche);
-// Rosebush
-for(let i=0;i<14;i++){const a=rand(0,Math.PI*2),r=rand(0.3,1.3);
-const s=new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.03,rand(0.4,0.95),4),new THREE.MeshPhongMaterial({color:0x2d5a1d}));s.position.set(Math.cos(a)*r,3.5+rand(0,0.6),-12.2+Math.sin(a)*0.3);s.rotation.z=rand(-0.4,0.4);addC(s);
-const lf=new THREE.Mesh(new THREE.SphereGeometry(0.14,5,5),new THREE.MeshPhongMaterial({color:0x3a7828}));lf.position.set(Math.cos(a)*r,3.9+rand(0,0.5),-12.2+Math.sin(a)*0.3);addC(lf);}
-// Canal stream
-const stream=mkWater(3,22,0x2244aa);stream.position.set(0,0.04,-2);addC(stream);G.springWater=stream;
-// Stepping stones
-for(let i=0;i<6;i++){const s=new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.28,0.09,8),new THREE.MeshPhongMaterial({color:0x6a6a5a}));s.position.set(rand(-0.4,0.4),0.05,-0.5+i*0.55);addC(s);}
-// Flanking trees
-[-7.5,7.5].forEach(x=>{const h=rand(5,8);const tr=new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.22,h,8),new THREE.MeshPhongMaterial({color:0x3a2820}));tr.position.set(x,h/2,-6);addC(tr);const cr=new THREE.Mesh(new THREE.SphereGeometry(rand(2,3),8,7),new THREE.MeshPhongMaterial({color:0x1a4022}));cr.position.set(x,h+1.2,-6);addC(cr);});
+G.groundFn=null; // grotto is flat
+const sky=opts.sky||0x0a0f1e;
+const isDay=opts.day||false;
+const dayCol=isDay?0x2a3a5a:sky;
+scene.background=new THREE.Color(dayCol);
+scene.fog=new THREE.Fog(dayCol,22,110);
+
+// Lighting — atmospheric, historically respectful
+if(isDay){
+addC(new THREE.AmbientLight(0x7a92b8,0.65));
+const sun=new THREE.DirectionalLight(0xfff5d8,1.2);sun.position.set(22,48,18);
+sun.castShadow=true;sun.shadow.mapSize.width=1024;sun.shadow.mapSize.height=1024;
+sun.shadow.camera.near=0.5;sun.shadow.camera.far=120;sun.shadow.camera.left=-30;sun.shadow.camera.right=30;sun.shadow.camera.top=30;sun.shadow.camera.bottom=-30;
+addC(sun);
+}else{
+addC(new THREE.AmbientLight(0x182030,0.48));
+const moon=new THREE.DirectionalLight(0x7888aa,0.38);moon.position.set(-18,32,12);addC(moon);
 addC(mkStars());
-if(opts.nicheLight){const nl=new THREE.PointLight(0xeeeeff,0,11);nl.position.set(0,5,-12);addC(nl);G._nicheLight=nl;}
+}
+
+// ── GROUND ── Gave riverbank: flat sandy limestone floor, historically the
+// bank of the Gave de Pau before the shrine was built
+const gndM=new THREE.MeshPhongMaterial({color:0x7a6a50,shininess:3});
+const gnd=new THREE.Mesh(new THREE.PlaneGeometry(44,44,1,1),gndM);
+gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;addC(gnd);
+
+// ── CLIFF FACE — Massabielle: pale grey-beige limestone, overhanging
+function rock(sx,sy,sz,x,y,z,c){
+const col=c||new THREE.Color(0.44+rand(0,0.07),0.40+rand(0,0.05),0.34+rand(0,0.04));
+const m=new THREE.Mesh(new THREE.SphereGeometry(1,10,8),new THREE.MeshPhongMaterial({color:col,shininess:6}));
+m.scale.set(sx,sy,sz);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;addC(m);
+}
+// The enormous main cliff — runs from left to right, 18m high at center
+rock(18,12,7,0,7,-15.5);        // central cliff mass
+rock(12,10,6,-10,5,-13.5);      // left wing
+rock(10,9,5.5,10,4.5,-13);      // right wing
+rock(20,4.5,7.5,0,0.5,-16.5);   // base shelf
+rock(7,14,4.5,-14,7,-12);       // far left pillar
+rock(6,12,4,13,5.5,-11.5);      // far right pillar
+// Overhang — the cave ceiling sweeping forward
+rock(16,3.5,9,0,11.5,-12);      // overhang ceiling
+rock(10,2.8,6,-8,10,-11);
+rock(8,2.5,5,9,9,-10.5);
+// Cave interior depth — darker rocks receding
+rock(8,6,3.5,0,4,-18,new THREE.Color(0.22,0.20,0.18));
+rock(5,5,3,-5,3,-17.5,new THREE.Color(0.22,0.20,0.18));
+rock(5,5,3,5,3,-17.5,new THREE.Color(0.22,0.20,0.18));
+// Additional surface texture rocks
+for(let i=0;i<18;i++){
+const rx=rand(-15,15),rz=rand(-16,-10),rsx=rand(0.5,2.5),rsy=rand(0.4,1.8),rsz=rand(0.4,1.5);
+rock(rsx,rsy,rsz,rx,rand(-0.5,2),rz);
+}
+
+// ── NICHE OF THE APPARITION ── 5m above ground, elliptical hollow
+// Historically: a natural hollow in the rock, 2.5m wide, 1.5m deep
+const nicheGeo=new THREE.SphereGeometry(2.6,16,12);
+const niche=new THREE.Mesh(nicheGeo,new THREE.MeshPhongMaterial({color:0x18160e,side:THREE.BackSide}));
+niche.scale.set(1.1,1.6,0.68);niche.position.set(0,5.2,-13.2);addC(niche);
+// Niche rim — lighter limestone edge catching light
+const nicheRim=new THREE.Mesh(new THREE.TorusGeometry(2.2,0.28,8,22),new THREE.MeshPhongMaterial({color:0x8a7a60}));
+nicheRim.position.set(0,5.2,-12.2);nicheRim.scale.set(1,1.5,0.2);nicheRim.rotation.z=0.04;addC(nicheRim);
+
+// ── WILD ROSEBUSH (Eglantier) — Rosa canina, growing from crack in rock
+// This exact rosebush exists today — pilgrims touch it
+function addRoseBush(cx,cz,baseY){
+for(let i=0;i<22;i++){
+const a=rand(0,Math.PI*2),r=rand(0.25,1.6),y=baseY+rand(0,0.9);
+const stem=new THREE.Mesh(new THREE.CylinderGeometry(0.016,0.022,rand(0.4,1.1),4),new THREE.MeshPhongMaterial({color:0x2a4a1a}));
+stem.position.set(cx+Math.cos(a)*r,y,-12.0+Math.sin(a)*0.35);stem.rotation.z=rand(-0.5,0.5);addC(stem);
+// Leaves — small olive-green clusters
+for(let j=0;j<3;j++){
+const lf=new THREE.Mesh(new THREE.SphereGeometry(0.10+rand(0,0.06),5,5),new THREE.MeshPhongMaterial({color:new THREE.Color(0.15+rand(0,0.08),0.38+rand(0,0.12),0.10)}));
+lf.position.set(cx+Math.cos(a)*r+rand(-0.15,0.15),y+rand(0.1,0.4),-12.0+Math.sin(a)*0.35);lf.scale.set(1.4,0.7,1);addC(lf);
+}
+// Pink roses — Rosa canina has pale pink blossoms in summer, hips in autumn
+if(Math.random()<0.3){
+const rose=new THREE.Mesh(new THREE.SphereGeometry(0.12,6,6),new THREE.MeshPhongMaterial({color:0xffb8c0}));
+rose.position.set(cx+Math.cos(a)*r,y+0.5,-12.0+Math.sin(a)*0.35);addC(rose);
+}
+}
+}
+addRoseBush(-0.5,0,3.3); // primary bush — right edge of niche
+addRoseBush(0.8,0,3.6);  // secondary
+
+// ── GAVE CANAL (Gave de Pau) — ran at foot of grotto, diverted after 1862
+const canal=mkWater(5,28,0x1a3a6a);canal.position.set(-1,0.06,-1.5);addC(canal);G.springWater=canal;
+// Canal banks — smooth river pebbles
+for(let i=0;i<40;i++){
+const px=rand(-10,10),pz=rand(0.5,8),ps=rand(0.08,0.25);
+const peb=new THREE.Mesh(new THREE.SphereGeometry(ps,6,5),new THREE.MeshPhongMaterial({color:new THREE.Color(0.52+rand(0,0.1),0.48+rand(0,0.08),0.42+rand(0,0.07))}));
+peb.scale.y=0.45;peb.position.set(px,ps*0.2,pz);addC(peb);
+}
+
+// ── TORCHES AND CANDLES — crowd candles at grotto (from 2nd apparition onward)
+if(opts.candles){
+for(let i=0;i<30;i++){
+const cx=rand(-8,8),cz=rand(-2,5);
+const cnd=new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.04,0.3,6),new THREE.MeshPhongMaterial({color:0xf0e8d0}));
+cnd.position.set(cx,0.15,cz);addC(cnd);
+const fl=new THREE.PointLight(0xffaa44,rand(0.6,1.4),rand(2,4));fl.position.set(cx,0.52,cz);addC(fl);
+}
+}
+
+// ── PILGRIM LANTERNS — historically pilgrims brought torches
+if(opts.pilgrims){
+for(let i=0;i<5;i++){
+const lx=rand(-6,6),lz=rand(1,7);
+const ln=new THREE.PointLight(0xff8833,rand(0.8,1.6),rand(3,6));ln.position.set(lx,1.5,lz);addC(ln);
+}
+}
+
+// ── FLANKING POPLARS — the great poplars lining the Gave
+[[-8.5,-4],[8.5,-4],[-11,-8],[11,-7],[-14,-12],[13,-11]].forEach(([px,pz])=>{
+const h=rand(7,12);
+const tr=new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.20,h,7),new THREE.MeshPhongMaterial({color:0x3a2418}));
+tr.position.set(px,h/2,pz);tr.castShadow=true;addC(tr);
+// Poplar canopy — narrow and tall (distinctive shape)
+const cr=new THREE.Mesh(new THREE.CylinderGeometry(0.5,1.2,h*0.65,8),new THREE.MeshPhongMaterial({color:new THREE.Color(0.10,0.30+rand(0,0.10),0.08)}));
+cr.position.set(px,h*0.72,pz);cr.castShadow=true;addC(cr);
+});
+
+// ── NICHE LIGHT ──
+if(opts.nicheLight){
+const nl=new THREE.PointLight(0xeeeeff,0,14);nl.position.set(0,5.5,-12);addC(nl);G._nicheLight=nl;
+}
+
+// ── MIST — Pyrenean morning mist rises from the Gave
+if(opts.mist){
+for(let i=0;i<8;i++){
+const mp=new THREE.Mesh(new THREE.SphereGeometry(rand(2,4),6,5),new THREE.MeshBasicMaterial({color:0xaabbcc,transparent:true,opacity:0.06+rand(0,0.05)}));
+mp.position.set(rand(-8,8),rand(0.3,1.5),rand(-4,4));addC(mp);
+}
+}
+}
+
+// ═══════════════════════════════════════════════
+//  TERRAIN PLACEMENT HELPERS
+// ═══════════════════════════════════════════════
+// Snap any mesh/group’s Y to terrain + optional height offset
+function snapY(mesh, offsetY){
+if(!mesh)return;
+const p=mesh.position;
+p.y=sampleGround(p.x,p.z)+(offsetY||0);
+}
+// Snap multiple meshes — call after placing all objects in a chapter
+function snapAll(meshes, offsetY){meshes.forEach(m=>snapY(m,offsetY));}
+// Snap NPC to terrain, optionally tilt on slope
+function snapNPC(npc){
+if(!npc||!npc.position)return;
+const gx=sampleGround(npc.position.x,npc.position.z);
+npc.position.y=gx;
+// Gentle slope tilt
+if(G.groundFn){
+const sx=sampleGround(npc.position.x+0.4,npc.position.z)-sampleGround(npc.position.x-0.4,npc.position.z);
+const sz=sampleGround(npc.position.x,npc.position.z+0.4)-sampleGround(npc.position.x,npc.position.z-0.4);
+npc.rotation.x=sz*(-0.12);npc.rotation.z=sx*0.10;
+}
+}
+// After every chapter init that uses terrain, call this to snap all registered NPCs
+function snapAllNPCs(){G.npcs.forEach(snapNPC);}
+
+// ═══════════════════════════════════════════════
+// ── Ambient birds for outdoor scenes (simple arcing particles) ──
+function addBirds(scene_or_group){
+const g=scene_or_group||scene;
+const bGeo=new THREE.BufferGeometry();
+const n=12;const pos=new Float32Array(n*3);const vel=[];
+for(let i=0;i<n;i++){
+pos[i*3]=rand(-40,40);pos[i*3+1]=rand(18,35);pos[i*3+2]=rand(-50,-5);
+vel.push({x:rand(0.4,1.2)*(Math.random()<0.5?1:-1),y:rand(-0.2,0.2),z:rand(-0.2,0.2)});
+}
+bGeo.setAttribute(‘position’,new THREE.BufferAttribute(pos,3));
+const bPts=new THREE.Points(bGeo,new THREE.PointsMaterial({color:0x1a1a18,size:0.25}));
+bPts._vel=vel;bPts._pos=pos;bPts._n=n;bPts._isBirds=true;
+addC(bPts);return bPts;
+}
+function animBirds(b,dt){
+if(!b||!b._isBirds)return;
+const pos=b._pos;
+for(let i=0;i<b._n;i++){
+const v=b._vel[i];
+pos[i*3]+=v.x*dt*6;
+pos[i*3+1]+=Math.sin(G.time*2.1+i*0.8)*0.04;
+if(pos[i*3]>50)pos[i*3]=-50;
+if(pos[i*3]<-50)pos[i*3]=50;
+}
+b.geometry.attributes.position.array.set(pos);
+b.geometry.attributes.position.needsUpdate=true;
+}
+
+// Add atmospheric fireflies/sprite particles to grotto scenes
+function addFireflies(count,area){
+const n=count||20,geo=new THREE.BufferGeometry(),pos=new Float32Array(n*3);
+for(let i=0;i<n;i++){pos[i*3]=rand(-area,area);pos[i*3+1]=rand(0.5,4);pos[i*3+2]=rand(-area,area);}
+geo.setAttribute(‘position’,new THREE.BufferAttribute(pos,3));
+const mat=new THREE.PointsMaterial({color:0xaaffaa,size:0.12,transparent:true,opacity:0.7,sizeAttenuation:true});
+const pts=new THREE.Points(geo,mat);addC(pts);G._fireflies=pts;
 }
 
 function buildCachot(){
 scene.background=new THREE.Color(0x08060f);scene.fog=new THREE.Fog(0x08060f,12,55);
 const M=c=>new THREE.MeshPhongMaterial({color:c});
-const gnd=new THREE.Mesh(new THREE.PlaneGeometry(12,14),M(0x5a4535));gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;addC(gnd);
+G.groundFn=null; // cachot is flat
+// Cobblestone floor — the actual Cachot had rough stone floor
+const gnd=new THREE.Mesh(new THREE.PlaneGeometry(12,14),new THREE.MeshPhongMaterial({color:0x504030,shininess:2}));
+gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;addC(gnd);
+// Stone floor texture via small raised squares
+for(let bx=-5;bx<5;bx+=0.8){for(let bz=-6;bz<7;bz+=0.8){
+const s=new THREE.Mesh(new THREE.BoxGeometry(0.72,0.04,0.72),M(0x4a3a28+Math.floor(rand(0,0x101010))));
+s.position.set(bx+rand(-0.05,0.05),0.02,bz+rand(-0.05,0.05));s.receiveShadow=true;addC(s);
+}}
 function wall(w,h,d,x,y,z){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),M(0x7a6a5a));m.position.set(x,y,z);m.receiveShadow=true;addC(m);}
 wall(12,4.5,0.3,0,2.25,-7);wall(0.3,4.5,14,-6,2.25,0);wall(0.3,4.5,14,6,2.25,0);wall(12,0.3,14,0,4.5,0);
 for(let i=-4;i<=4;i+=4){const b=new THREE.Mesh(new THREE.BoxGeometry(12,0.22,0.26),M(0x4a3828));b.position.set(0,4.3,i);addC(b);}
@@ -667,27 +1256,55 @@ G.bernadetteStage=0;
 scene.background=new THREE.Color(0x87ceeb);scene.fog=new THREE.Fog(0xc8e8f8,30,120);
 addC(new THREE.AmbientLight(0xffeedd,0.8));
 const sun=new THREE.DirectionalLight(0xfff0c0,1.1);sun.position.set(20,40,10);sun.castShadow=true;addC(sun);
-addC(mkTerrain());addC(mkMountains());
-// Village
-function bld(w,h,d,x,z,wc,rc){const b=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshPhongMaterial({color:wc||0xd0c8a8}));b.position.set(x,h/2,z);b.castShadow=true;b.receiveShadow=true;addC(b);const r=new THREE.Mesh(new THREE.ConeGeometry(Math.max(w,d)*0.75,h*0.5,4),new THREE.MeshPhongMaterial({color:rc||0xa07050}));r.position.set(x,h+h*0.25,z);r.rotation.y=Math.PI/4;r.castShadow=true;addC(r);}
-bld(4,3,4,-12,-15);bld(3,2.5,3,6,-20);bld(5,3.5,5,-5,-30,0xc8c0a8,0x807060);bld(2.5,2,2.5,12,-14);
-// Church with steeple
-const ch=new THREE.Mesh(new THREE.BoxGeometry(5,5,8),new THREE.MeshPhongMaterial({color:0xe8e0d0}));ch.position.set(0,-3.5,-28);addC(ch);
-const ct=new THREE.Mesh(new THREE.BoxGeometry(2,7,2),new THREE.MeshPhongMaterial({color:0xe8e0d0}));ct.position.set(0,-1.5,-28);addC(ct);
-const csp=new THREE.Mesh(new THREE.ConeGeometry(1.4,4,8),new THREE.MeshPhongMaterial({color:0x888a88}));csp.position.set(0,5.5,-28);addC(csp);
-const crx=new THREE.Mesh(new THREE.BoxGeometry(0.15,1.8,0.15),new THREE.MeshBasicMaterial({color:0xf0d060}));crx.position.set(0,8.5,-28);addC(crx);
-const crxh=new THREE.Mesh(new THREE.BoxGeometry(0.9,0.15,0.15),new THREE.MeshBasicMaterial({color:0xf0d060}));crxh.position.set(0,8.1,-28);addC(crxh);
-// Well
-const well=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.6,1,12),new THREE.MeshPhongMaterial({color:0x8a7a6a}));well.position.set(5,-0.3,-10);addC(well);
-// Road
-const road=new THREE.Mesh(new THREE.PlaneGeometry(2.5,65),new THREE.MeshPhongMaterial({color:0x9a8870}));road.rotation.x=-Math.PI/2;road.position.set(0,0.02,-15);addC(road);
-mkTrees(20,18,{max:50,min:5});
-// NPCs
-const mama=mkChar(0xd4a870,0x4a3828,0x2a1a0a,{veil:true,veilC:0x8a7a6a,apron:true,apronC:0xccc0a0});mama.position.set(-3,0,2);addC(mama);G.npcs.push(mama);
-const priest=mkChar(0xc8a060,0x0a0a15,0x1a1010,{cassock:true});priest.position.set(-8,0,-18);addC(priest);G.npcs.push(priest);
-G.player.mesh=createBernadette(0);G.player.mesh.position.set(0,0,4);addC(G.player.mesh);
-camera.position.set(0,8,16);G.camera.offset.set(0,7,13);G.player.canMove=true;
+G.groundFn=rawTerrain;
+addC(mkTerrain({season:‘spring’,res:70}));addC(mkMountains());
+// Village — all buildings snap to terrain
+// Buildings snap to terrain height at their XZ position
+function bldT(w,h,d,x,z,wc,rc){
+const gy=rawTerrain(x,z);
+const b=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshPhongMaterial({color:wc||0xd0c8a8}));
+b.position.set(x,gy+h/2,z);b.castShadow=true;b.receiveShadow=true;addC(b);
+const r=new THREE.Mesh(new THREE.ConeGeometry(Math.max(w,d)*0.75,h*0.5,4),new THREE.MeshPhongMaterial({color:rc||0xa07050}));
+r.position.set(x,gy+h+h*0.25,z);r.rotation.y=Math.PI/4;r.castShadow=true;addC(r);
+}
+bldT(4,3,4,-12,-15);bldT(3,2.5,3,6,-20);bldT(5,3.5,5,-5,-30,0xc8c0a8,0x807060);bldT(2.5,2,2.5,12,-14);
+// Church with steeple — on terrain
+const chGY=rawTerrain(0,-28);
+const ch=new THREE.Mesh(new THREE.BoxGeometry(5,5,8),new THREE.MeshPhongMaterial({color:0xe8e0d0}));ch.position.set(0,chGY+2.5,-28);addC(ch);
+const ct=new THREE.Mesh(new THREE.BoxGeometry(2,7,2),new THREE.MeshPhongMaterial({color:0xe8e0d0}));ct.position.set(0,chGY+3.5,-28);addC(ct);
+const csp=new THREE.Mesh(new THREE.ConeGeometry(1.4,4,8),new THREE.MeshPhongMaterial({color:0x888a88}));csp.position.set(0,chGY+9.5,-28);addC(csp);
+const crx=new THREE.Mesh(new THREE.BoxGeometry(0.15,1.8,0.15),new THREE.MeshBasicMaterial({color:0xf0d060}));crx.position.set(0,chGY+12.5,-28);addC(crx);
+const crxh=new THREE.Mesh(new THREE.BoxGeometry(0.9,0.15,0.15),new THREE.MeshBasicMaterial({color:0xf0d060}));crxh.position.set(0,chGY+12.1,-28);addC(crxh);
+// Well on terrain
+const wellGY=rawTerrain(5,-10);
+const well=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.6,1,12),new THREE.MeshPhongMaterial({color:0x8a7a6a}));well.position.set(5,wellGY+0.5,-10);addC(well);
+// Road follows terrain (rendered as flat strip at ground+0.02)
+const roadGY=rawTerrain(0,-15);
+const road=new THREE.Mesh(new THREE.PlaneGeometry(2.5,65),new THREE.MeshPhongMaterial({color:0x9a8870}));road.rotation.x=-Math.PI/2;road.position.set(0,roadGY+0.02,-15);addC(road);
+const ch0PathFn=(x,z)=>(Math.abs(x)<4&&z>-20&&z<20);
+mkTrees(20,18,{max:50,min:5},ch0PathFn);
+mkRocks(8,18,{max:50,min:10},ch0PathFn);
+G._birds=addBirds(); // Pyrenean birds over the village
+// Spring wildflowers in the Bartres meadow
+for(let fi=0;fi<60;fi++){
+const fx=rand(-16,16),fz=rand(-45,8);
+if(ch0PathFn(fx,fz))continue;
+const fgy=rawTerrain(fx,fz);
+const fc=[0xffddee,0xffee88,0xddeeff,0xeeffdd][Math.floor(Math.random()*4)];
+const fl=new THREE.Mesh(new THREE.SphereGeometry(rand(0.07,0.13),4,3),new THREE.MeshPhongMaterial({color:fc}));
+fl.position.set(fx,fgy+0.10,fz);fl.scale.y=0.5;addC(fl);
+}
+// NPCs snap to terrain
+const mama=mkChar(0xd4a870,0x4a3828,0x2a1a0a,{veil:true,veilC:0x8a7a6a,apron:true,apronC:0xccc0a0});
+mama.position.set(-3,rawTerrain(-3,2),2);addC(mama);G.npcs.push(mama);
+const priest=mkChar(0xc8a060,0x0a0a15,0x1a1010,{cassock:true});priest.position.set(-8,rawTerrain(-8,-18),-18);addC(priest);G.npcs.push(priest);
+G.player.mesh=createBernadette(0);
+const ch1StartY=rawTerrain(0,4);G.player.mesh.position.set(0,ch1StartY,4);addC(G.player.mesh);
+// Pastoral wide — shows village, rolling hills, Pyrenees in distance
+setCam({mode:‘follow’,offset:new THREE.Vector3(0,10,16),fov:62});
+camera.position.set(0,ch1StartY+10,20);
 showAge(‘Bernadette Soubirous · Age 9–13 · Bartrès & Lourdes, France’);
+G.player.canMove=true;
 initTasks([{id:‘mama’,label:‘Help Maman at the well’},{id:‘pray’,label:‘Pray at the church’},{id:‘priest’,label:‘Speak with the Abbé about Catechism’}]);
 createInteractable(well,‘Fetch water with Maman’,()=>{if(G.completedTasks[‘mama’])return;speak([{speaker:‘Young Bernadette’,text:’(heaving the bucket up, arms trembling) It is so heavy today… but Maman needs the water. I can do this.’},
 {speaker:‘Louise Soubirous — Maman’,text:‘You are stronger than you look, my Bernarde. Now come — there is bread if we are quick.’}],()=>completeTask(‘mama’));});
@@ -713,7 +1330,9 @@ setTimeout(()=>speak([
 {title:‘Chapter II — The Cachot’,date:‘73 Rue des Petites Fosses, Lourdes · February 11, 1858’,init:function(){
 G.bernadetteStage=0;buildCachot();
 G.player.mesh=createBernadette(0);G.player.mesh.position.set(0,0,3);addC(G.player.mesh);
-camera.position.set(0,9,13);G.camera.offset.set(0,9,13);G.player.canMove=true;
+// Intimate indoor close — sees all 4 family members clearly
+setCam({mode:‘follow’,offset:new THREE.Vector3(0,5.5,10),fov:50});
+camera.position.set(0,5.5,13);
 showAge(‘Bernadette Soubirous · Age 14 · The Cachot, Lourdes · February 11, 1858’);AUDIO.setWind(0.15);
 const mama=mkChar(0xd4a870,0x4a3828,0x2a1a0a,{veil:true,veilC:0x8a7a6a});mama.position.set(-1.5,0,-4.5);addC(mama);G.npcs.push(mama);
 const toinette=mkChar(0xf0c89a,0x7a5a40,0x3d2b1f,{apron:true,apronC:0xd8c8a0});toinette.position.set(2.5,0,-1);addC(toinette);G.npcs.push(toinette);
@@ -750,21 +1369,46 @@ G.bernadetteStage=0;
 scene.background=new THREE.Color(0x8ab8d8);scene.fog=new THREE.Fog(0xaacce0,28,110);
 addC(new THREE.AmbientLight(0x9ab5cc,0.6));
 const sun=new THREE.DirectionalLight(0xfff0d0,1.1);sun.position.set(28,50,18);sun.castShadow=true;addC(sun);
-addC(mkTerrain());addC(mkMountains());
-const river=mkWater(4,80,0x3d7faa);river.position.set(8,0.05,0);addC(river);G.springWater=river;
+G.groundFn=rawTerrain;
+addC(mkTerrain({season:‘spring’,res:80}));addC(mkMountains());
+const riverBedY=rawTerrain(9,0)+0.08; // sits right at valley floor
+const river=mkWater(5.5,90,0x2a6090);river.position.set(9,riverBedY,0);addC(river);G.springWater=river;
+// River bank stones — alluvial gravel of the Gave de Pau
+for(let i=0;i<50;i++){
+const bx=rand(5.5,13),bz=rand(-45,12),bs=rand(0.15,0.5);
+const peb=new THREE.Mesh(new THREE.SphereGeometry(bs,6,5),new THREE.MeshPhongMaterial({color:new THREE.Color(0.52+rand(0,0.1),0.48+rand(0,0.08),0.42+rand(0,0.07))}));
+peb.scale.set(1+rand(0,0.6),0.4+rand(0,0.25),1+rand(0,0.5));
+const bgy=rawTerrain(bx,bz);if(bgy>riverBedY+2)continue; // only near river
+peb.position.set(bx,bgy+bs*0.15,bz);addC(peb);
+}
+// Spring wildflowers along the path — anemones, primroses, violets (Pyrenean Feb-Mar)
+for(let i=0;i<80;i++){
+const fx=rand(-9,9),fz=rand(-50,10);
+if(Math.abs(fx)<3)continue; // not on path center
+const fgy=rawTerrain(fx,fz);
+const fc=Math.random()<0.5?0xffeeee:Math.random()<0.5?0xffdd88:0xccaaff;
+const fl=new THREE.Mesh(new THREE.SphereGeometry(rand(0.08,0.15),5,4),new THREE.MeshPhongMaterial({color:fc}));
+fl.position.set(fx,fgy+0.12,fz);fl.scale.y=0.5;addC(fl);
+}
 // Riverbank rocks
 for(let z=-35;z<30;z+=2.5+Math.random()*2){const r=new THREE.Mesh(new THREE.SphereGeometry(0.2+Math.random()*0.35,6,5),new THREE.MeshPhongMaterial({color:0x6a7a7a}));r.position.set(8+rand(-2,2),0.1,z);r.scale.y=0.5;addC(r);}
-mkTrees(35,18,{max:55,min:5});
+// Trees avoid the central walking path and riverside path
+const ch2PathFn=(x,z)=>(Math.abs(x)<3.5||(x>5&&x<12&&z>-30&&z<10));
+mkTrees(35,18,{max:55,min:5},ch2PathFn);
+mkRocks(12,18,{max:55,min:8},ch2PathFn);
+G._birds=addBirds(); // Birds over Pyrenean path to Massabielle
 const path=new THREE.Mesh(new THREE.PlaneGeometry(2.5,90),new THREE.MeshPhongMaterial({color:0x9a8a70}));path.rotation.x=-Math.PI/2;path.position.y=0.02;addC(path);
 // Distant grotto rocks
 const gr1=new THREE.Mesh(new THREE.SphereGeometry(12,10,8),new THREE.MeshPhongMaterial({color:0x787878}));gr1.scale.y=0.68;gr1.position.set(-4,5,-42);addC(gr1);
 const gr2=new THREE.Mesh(new THREE.SphereGeometry(8,10,8),new THREE.MeshPhongMaterial({color:0x686868}));gr2.scale.y=0.58;gr2.position.set(6,3,-40);addC(gr2);
-const t2=mkChar(0xf0c89a,0x7a5a40,0x3d2b1f,{apron:true,apronC:0xd8c8a0});t2.position.set(-1.8,0,3.5);addC(t2);G.npcs.push(t2);
+const t2=mkChar(0xf0c89a,0x7a5a40,0x3d2b1f,{apron:true,apronC:0xd8c8a0});t2.position.set(-1.8,rawTerrain(-1.8,3.5),3.5);addC(t2);G.npcs.push(t2);
 const j2=mkChar(0xe8b870,0x5a6840,0x4a2a10,{apron:true,apronC:0xd0c0a0});j2.position.set(1.8,0,3.5);addC(j2);G.npcs.push(j2);
-G.player.mesh=createBernadette(0);G.player.mesh.position.set(0,0,8);addC(G.player.mesh);G.player.canMove=true;
-camera.position.set(0,9,20);G.camera.offset.set(0,9,13);
+G.player.mesh=createBernadette(0);G.player.mesh.position.set(0,rawTerrain(0,8),8);addC(G.player.mesh);G.player.canMove=true;
+// Traveling shot — sees rolling Pyrenean hills, carved river valley, Pyrenees ahead
+setCam({mode:‘follow’,offset:new THREE.Vector3(2,7,13),fov:60});
+camera.position.set(2,rawTerrain(0,8)+7,21);
 G._awaitingWalk=true;G._walkTarget=new THREE.Vector3(0,0,-18);G._walkRadius=3;
-G._onWalkArrived=()=>{G._awaitingWalk=false;G.player.canMove=false;hideEl(‘walkPrompt’);transitionTo(3);};
+G._onWalkArrived=()=>{G._awaitingWalk=false;hideEl(‘walkPrompt’);transitionTo(3);};
 showAge(‘February 11, 1858 — Late Morning’);AUDIO.setWind(0.85);AUDIO.setWater(0.35);
 speak([
 {speaker:‘Narrator’,text:‘The three girls set out along the bank of the Gave, heading for the rock of Massabielle where driftwood collects. The February air is bitter cold. Bernadette has her woollen capulet pulled tight.’},
@@ -777,8 +1421,11 @@ showEl(‘walkPrompt’);}},
 // ────────── CH 3: FIRST APPARITION ──────────
 {title:‘Chapter IV — The First Apparition’,date:‘February 11, 1858 · Midday’,init:function(){
 G.bernadetteStage=0;buildGrotto({sky:0x0d1520,nicheLight:true});
-G.player.mesh=createBernadette(0);G.player.mesh.position.set(0,0,4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
-camera.position.set(0,7,13);G.camera.offset.set(0,7,11);G.player.canMove=false;
+addFireflies(18,9); // Gave grotto — fireflies in the dusk air
+G.player.mesh=createBernadette(0);G.player.mesh.position.set(0,rawTerrain(0,4),4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
+// Tight low angle — Bernadette small, grotto cliff towering above
+setCam({mode:‘follow’,offset:new THREE.Vector3(0,4.5,11),fov:52});
+camera.position.set(0,4.5,13);
 showAge(‘February 11, 1858 — First Apparition · Massabielle Grotto’);AUDIO.setChurch(0.8);AUDIO.setWind(0.15);
 speak([
 {speaker:‘Narrator’,text:‘Bernadette stops at the bank of the canal to remove her stockings. Toinette and Jeanne have already splashed through, laughing. A sound — like a rushing wind, violent and enormous. But the trees do not move. The poplars are perfectly still.’},
@@ -788,6 +1435,10 @@ let t=0;const grow=setInterval(()=>{t++;if(G._nicheLight)G._nicheLight.intensity
 function showLady(){
 G.ourLady=createOurLady();G.ourLady.position.set(0,3.1,-12);G.ourLady.scale.setScalar(0.8);addC(G.ourLady);
 showEl(‘holyGlow’);G.camera.shake=0.35;setTimeout(()=>G.camera.shake=0,2200);
+// Fog retreats slightly to reveal the apparition — supernatural light pushes it back
+scene.fog=new THREE.Fog(0xc8e8d8,22,75);
+// Slowly push in toward the apparition — most dramatic moment in the story
+setCam({fov:42,offset:new THREE.Vector3(0,3.5,8.5),focusMesh:G.ourLady,focusWeight:0.50});
 speak([
 {speaker:‘Narrator’,text:‘In the niche — a Lady. Dressed in white with a blue sash. A white veil falls to her feet. On each foot, a golden rose the same colour as the chain of her rosary. She smiles — with a sweetness and love unlike anything Bernadette has ever seen or imagined.’},
 {speaker:‘Narrator’,text:‘Bernadette reaches for her rosary. She tries to make the Sign of the Cross — but her arm will not rise. The Lady makes it first. Then Bernadette's arm can move.’},
@@ -808,26 +1459,40 @@ G.bernadetteStage=0;buildCachot();
 G.player.mesh=createBernadette(0);G.player.mesh.position.set(0,0,3);addC(G.player.mesh);
 const mama=mkChar(0xd4a870,0x4a3828,0x2a1a0a,{veil:true});mama.position.set(-2,0,-3);addC(mama);
 const papa=mkChar(0xc49060,0x3a2820,0x2a1a0a,{});papa.position.set(2,0,-3.5);addC(papa);
-camera.position.set(0,7,11);G.camera.offset.set(0,7,10);G.player.canMove=false;
+// Over-the-shoulder: sees both Bernadette and parents
+setCam({mode:‘follow’,offset:new THREE.Vector3(-1,4.5,9),fov:48,
+focusMesh:mama,focusWeight:0.3});
+camera.position.set(-1,4.5,11);
 showAge(‘February 11, 1858 — Evening’);
-speak([
-{speaker:‘Bernadette’,text:‘Maman, Papa — something happened today at Massabielle. In the grotto, in the hollow of the rock — there was a Lady. A Lady of surpassing beauty, all in white with a blue sash—’},
-{speaker:‘Louise Soubirous — Maman’,text:’(going pale) A Lady! Bernarde, you are not well — the cold crossing — you imagined it! Sit down this instant.’},
-{speaker:‘Bernadette’,text:‘I was not imagining, Maman. I have never seen anything so real in my life.’},
-{speaker:‘François Soubirous — Papa’,text:’(very quietly) You are not to speak of this to anyone outside this house. We are already watched, already talked about. We cannot afford this kind of attention.’},
-{speaker:‘Bernadette’,text:‘Yes, Papa. (a long pause) But… (tears starting) she was so beautiful.’},
-{speaker:‘Louise Soubirous — Maman’,text:‘And you are never to go back to that grotto. Never. Swear it to me.’},
-{speaker:‘Bernadette’,text:’(slowly) I will try, Maman.’},
-{speaker:‘Narrator’,text:‘That night Bernadette did not sleep. She lay in the dark seeing again that face, that smile. She could no more forget it than forget her own name.’}],()=>transitionTo(5));}},
+G.player.canMove=true;
+initTasks([{id:‘mama5’,label:‘Speak privately with Maman’},{id:‘papa5’,label:‘Speak privately with Papa’},{id:‘pray5’,label:‘Pray before sleeping’}]);
+const ch5Pot=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.1,0.1),new THREE.MeshBasicMaterial({visible:false}));ch5Pot.position.set(3.5,0.5,-6.5);addC(ch5Pot);
+createInteractable(mama,‘Speak with Maman’,()=>{if(G.completedTasks[‘mama5’])return;
+camFocus(mama,0.5,44);
+speak([{speaker:‘Bernadette’,text:‘Maman — please believe me. I was not frightened of her. She looked at me as you look at me.’},
+{speaker:‘Louise Soubirous — Maman’,text:’(gripping her daughter's hands, voice breaking) I do not doubt that you believe it, Bernarde. I am afraid for you. That is all. My fear is not your fault.’},
+{speaker:‘Bernadette’,text:’(softly) Then pray for me tonight, Maman. Just that.’}],()=>{completeTask(‘mama5’);setCam({focusMesh:null,focusWeight:0});});});
+createInteractable(papa,‘Speak with Papa’,()=>{if(G.completedTasks[‘papa5’])return;
+camFocus(papa,0.5,44);
+speak([{speaker:‘Bernadette’,text:’(taking his hand) Papa. What if it was real?’},
+{speaker:‘François Soubirous — Papa’,text:’(long silence, eyes bright with something he cannot name) Then God has chosen the strangest house in Lourdes. (a rough laugh, then quiet) Go to sleep, my child. We will see what tomorrow brings.’}],
+()=>{completeTask(‘papa5’);setCam({focusMesh:null,focusWeight:0});});});
+createInteractable(ch5Pot,‘Kneel and pray before sleeping’,()=>{if(G.completedTasks[‘pray5’])return;
+speak([{speaker:‘Bernadette’,text:’(kneeling alone in the dark, rosary in hands) Holy Mary, Mother of God… was it truly You today? I do not dare to think it. But if it was — I am not afraid. Only tell me what You want, and I will do it.’},
+{speaker:‘Narrator’,text:‘She falls asleep still kneeling. Her mother finds her there in the early hours and carries her to her pallet.’}],()=>completeTask(‘pray5’));});
+onAllTasksDone=()=>{hideTasks();speak([{speaker:‘Narrator’,text:‘That night Bernadette did not sleep long. She lay in the dark seeing again that face, that smile. She could no more forget it than forget her own name.’}],()=>transitionTo(5));};}},
 
 // ────────── CH 5: SECOND APPARITION ──────────
 {title:‘Chapter VI — The Lady Speaks’,date:‘February 14, 1858 — Second Apparition’,init:function(){
 G.bernadetteStage=1;
-buildGrotto({sky:0x1a2535});
+buildGrotto({sky:0x1a2535,pilgrims:true});
 addC(new THREE.AmbientLight(0x304050,0.55));addC(new THREE.DirectionalLight(0x809090,0.45)).position.set(10,22,6);
-for(let i=0;i<7;i++){const c=mkChar(0xf0c89a,new THREE.Color(rand(0.3,0.6),rand(0.1,0.4),0.06).getHex(),0x2a1a0a,{apron:true,apronC:0xd0c0a0});c.position.set(rand(-5,5),0,rand(2,7));addC(c);}
-G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,0,4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
-camera.position.set(0,7,13);G.camera.offset.set(0,7,11);G.player.canMove=false;
+for(let i=0;i<7;i++){const c=mkChar(0xf0c89a,new THREE.Color(rand(0.3,0.6),rand(0.1,0.4),0.06).getHex(),0x2a1a0a,{apron:true,apronC:0xd0c0a0});c.position.set(rand(-5,5),0,rand(2,7));addC(c);G.npcs.push(c);}
+addFireflies(18,9); // Gave grotto — fireflies in the dusk air
+G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,rawTerrain(0,4),4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
+// Side angle — grotto wall left, niche visible, crowd right
+setCam({mode:‘follow’,offset:new THREE.Vector3(-3,5,10),fov:50});
+camera.position.set(-3,5,13);
 showAge(‘February 14, 1858 — Second Apparition · Stage: Teen’);AUDIO.setChurch(0.72);
 speak([
 {speaker:‘Narrator’,text:‘Three days later. Her mother's prohibition wrestles with an irresistible longing. Bernadette returns to the grotto with several schoolgirls and a bottle of holy water from the church.’},
@@ -836,6 +1501,8 @@ speak([
 {speaker:‘Narrator’,text:‘The Lady smiles and moves closer, untroubled. Bernadette falls into ecstasy.’}],()=>{
 G.ourLady=createOurLady();G.ourLady.position.set(0,3.1,-12);G.ourLady.scale.setScalar(0.8);addC(G.ourLady);
 showEl(‘holyGlow’);const nl=new THREE.PointLight(0xaabbff,5,14);nl.position.set(0,5,-12);addC(nl);G._nicheLight=nl;
+// Camera pushes in toward Our Lady as she speaks
+setCam({fov:44,offset:new THREE.Vector3(-2,3.5,8),focusMesh:G.ourLady,focusWeight:0.48});
 speak([
 {speaker:‘The Lady — Our Lady’,text:’“Would you do me the favour of coming here for fifteen days?”’},
 {speaker:‘Bernadette’,text:’(barely breathing) Yes… yes, my Lady. I will come every day.’},
@@ -857,7 +1524,10 @@ const desk=new THREE.Mesh(new THREE.BoxGeometry(2.8,0.12,1.4),new THREE.MeshPhon
 const paper=new THREE.Mesh(new THREE.BoxGeometry(0.6,0.02,0.4),new THREE.MeshPhongMaterial({color:0xf0ead8}));paper.position.set(0.4,0.98,0.1);addC(paper);
 const jac=mkChar(0xc09060,0x222840,0x1a1010,{});jac.position.set(-0.5,0,-3);jac.scale.setScalar(1.1);addC(jac);G.npcs.push(jac);
 G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,0,3);addC(G.player.mesh);
-camera.position.set(0,6,10);G.camera.offset.set(0,6,10);G.player.canMove=false;
+// Low interrogation angle — desk in frame, Jacomet looms
+setCam({mode:‘follow’,offset:new THREE.Vector3(1,3.8,8),fov:46});
+camera.position.set(1,3.8,10);
+G.camera.focusMesh=jac;G.camera.focusWeight=0.35; // set after jac declared
 showAge(‘February 18, 1858 · Commissioner's Office · Lourdes’);AUDIO.setWind(0.1);
 speak([
 {speaker:‘Narrator’,text:‘Commissioner Dominique Jacomet, chief of police for Lourdes, has summoned Bernadette to his office. He is an intelligent, experienced interrogator. He intends to frighten her into retracting her story — or catch her in a contradiction.’},
@@ -873,9 +1543,12 @@ showInterrogation(()=>{speak([
 {title:‘Chapter VIII — The Candle Test’,date:‘February–March 1858 · Multiple Apparitions’,init:function(){
 G.bernadetteStage=1;
 buildGrotto({sky:0x0d1520,nicheLight:true});
-G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,0,4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
-camera.position.set(0,7,12);G.camera.offset.set(0,7,11);G.player.canMove=false;
-for(let i=0;i<22;i++){const c=mkChar(0xd4a870,new THREE.Color(rand(0.2,0.5),rand(0.1,0.3),0.05).getHex(),0x2a1a0a,{veil:(i%2===0),veilC:0xb0a080});c.position.set(rand(-9,9),0,rand(2,10));addC(c);}
+addFireflies(18,9); // Gave grotto — fireflies in the dusk air
+G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,rawTerrain(0,4),4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
+// Elevated crowd shot — sees Bernadette small among hundreds, grotto cliff above
+setCam({mode:‘follow’,offset:new THREE.Vector3(4,8,13),fov:58});
+camera.position.set(4,8,14);
+for(let i=0;i<22;i++){const c=mkChar(0xd4a870,new THREE.Color(rand(0.2,0.5),rand(0.1,0.3),0.05).getHex(),0x2a1a0a,{veil:(i%2===0),veilC:0xb0a080});c.position.set(rand(-9,9),0,rand(2,10));addC(c);G.npcs.push(c);}
 showAge(‘February–March 1858 — Multiple Apparitions · The Crowds Gather’);AUDIO.setChurch(0.9);AUDIO.setWind(0.1);
 speak([
 {speaker:‘Narrator’,text:‘The apparitions have continued. Today Doctor Pierre-Romain Dozous stands among the hundreds of witnesses. He is a trained physician and confirmed sceptic, candle in hand, his medical eye fixed on Bernadette.’},
@@ -906,9 +1579,20 @@ const desk=new THREE.Mesh(new THREE.BoxGeometry(2.8,0.12,1.4),new THREE.MeshPhon
 [[3.7,0.5],[3.7,-0.5],[2.3,0.5],[2.3,-0.5]].forEach(([x,z])=>{const l=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.92,0.1),new THREE.MeshPhongMaterial({color:0x4a3020}));l.position.set(x,0.46,z);addC(l);});
 const pey=mkChar(0xd0a870,0x0a0a15,0x1a1010,{cassock:true});pey.scale.setScalar(1.12);pey.position.set(-1,0,-4);addC(pey);G.npcs.push(pey);
 G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,0,3);addC(G.player.mesh);
-camera.position.set(0,6,11);G.camera.offset.set(0,6,10);G.player.canMove=false;
+// Looking up slightly at the large priest — Bernadette is small here
+setCam({mode:‘follow’,offset:new THREE.Vector3(-2,3.5,8),fov:46});
+camera.position.set(-2,3.5,10);
+G.camera.focusMesh=pey;G.camera.focusWeight=0.4; // set after pey declared
 showAge(‘February–March 1858 · Presbytery of Père Peyramale’);
+G.player.canMove=true;
+// Petition scroll Bernadette must hand to Peyramale
+const scrollMk=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.35,8),new THREE.MeshPhongMaterial({color:0xf0ead0}));
+scrollMk.rotation.z=Math.PI/2;scrollMk.position.set(2.5,1.05,-0.2);addC(scrollMk);
+createInteractable(scrollMk,‘Give the Lady's requests to Père Peyramale’,()=>{
+if(G.completedTasks&&G.completedTasks[‘pey’])return;
+camFocus(pey,0.55,44);
 speak([
+{speaker:‘Narrator’,text:‘Bernadette steps forward. The priest towers over her.’},
 {speaker:‘Narrator’,text:‘Dominique Peyramale — curé of Lourdes. A large, blunt, formidable man with a lion's voice and (as it will prove) a lion's heart. Bernadette has been instructed to bring the Lady's request directly to the priest.’},
 {speaker:‘Fr. Dominique Peyramale’,text:’(turning sharply) So. You are the girl causing all this uproar. What do you want?’},
 {speaker:‘Bernadette’,text:‘Father — the Lady asks that a chapel be built at Massabielle, and that people come there in procession.’},
@@ -918,17 +1602,22 @@ speak([
 {speaker:‘Bernadette’,text:’(calmly) Yes, Father. That is correct.’},
 {speaker:‘Fr. Dominique Peyramale’,text:‘Then go back and ask this Lady her name. And tell her: if she wants a chapel, let her make the wild rosebush bloom — HERE, in FEBRUARY!’},
 {speaker:‘Bernadette’,text:’(rising without reproach) I will tell her, Father.’},
-{speaker:‘Fr. Dominique Peyramale’,text:’(watching her leave, to himself) There is something about this child. She did not flinch. She seeks nothing for herself. Nothing at all.’}],()=>transitionTo(9));}},
+{speaker:‘Fr. Dominique Peyramale’,text:’(watching her leave, to himself) There is something about this child. She did not flinch. She seeks nothing for herself. Nothing at all.’}],
+()=>{completeTask(‘pey’);hideTasks();setCam({focusMesh:null,focusWeight:0});
+setTimeout(()=>transitionTo(9),1200);});});}},
 
 // ────────── CH 9: THE MIRACULOUS SPRING ──────────
 {title:‘Chapter X — Go and Drink at the Spring’,date:‘February 25, 1858 — Ninth Apparition’,init:function(){
 G.bernadetteStage=1;
-buildGrotto({sky:0x0a1420,nicheLight:false});
+buildGrotto({sky:0x0a1420,nicheLight:false,candles:true,pilgrims:true});
 addC(new THREE.AmbientLight(0x102030,0.62));addC(new THREE.DirectionalLight(0x7090b0,0.4)).position.set(-10,20,5);
-for(let i=0;i<14;i++){const c=mkChar(0xd4a870,new THREE.Color(rand(0.2,0.5),rand(0.1,0.3),0.05).getHex(),0x2a1a0a,{});c.position.set(rand(-9,9),0,rand(3,10));addC(c);}
+for(let i=0;i<14;i++){const c=mkChar(0xd4a870,new THREE.Color(rand(0.2,0.5),rand(0.1,0.3),0.05).getHex(),0x2a1a0a,{});c.position.set(rand(-9,9),0,rand(3,10));addC(c);G.npcs.push(c);}
 const springHole=new THREE.Mesh(new THREE.CircleGeometry(0.45,14),new THREE.MeshPhongMaterial({color:0x1a2a50}));springHole.rotation.x=-Math.PI/2;springHole.position.set(-2,0.02,-6);addC(springHole);
-G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,0,4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
-camera.position.set(0,7,13);G.camera.offset.set(0,7,12);
+addFireflies(18,9); // Gave grotto — fireflies in the dusk air
+G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,rawTerrain(0,4),4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
+// Low handheld feel — follows her toward the cliff, crowd watching
+setCam({mode:‘follow’,offset:new THREE.Vector3(3,4,10),fov:50});
+camera.position.set(3,4,13);
 showAge(‘February 25, 1858 — Ninth Apparition · The Spring’);AUDIO.setChurch(0.85);AUDIO.setWind(0.12);
 speak([{speaker:‘Narrator’,text:‘February 25th. The ninth apparition. Three hundred people press around the grotto. Only Bernadette sees the Lady. Today the Lady will say something that bewilders and horrifies everyone watching.’}],()=>{
 G.ourLady=createOurLady();G.ourLady.position.set(0,3.1,-12);G.ourLady.scale.setScalar(0.8);addC(G.ourLady);showEl(‘holyGlow’);
@@ -939,6 +1628,8 @@ speak([
 {speaker:‘The Lady — Our Lady’,text:’“Go and drink there. Go and wash yourself.”’},
 {speaker:‘Narrator’,text:‘✦ Walk to the muddy spot at the base of the cliff — where the Lady is pointing. ✦’}],()=>{
 G._awaitingSpring=true;G._springTarget=new THREE.Vector3(-2,0,-6);G.player.canMove=true;showEl(‘springPrompt’);
+// Nudge camera lower as she approaches the muddy ground
+setCam({mode:‘follow’,offset:new THREE.Vector3(0,3,7),fov:42});
 G._onSpringArrived=()=>{
 hideEl(‘springPrompt’);G._awaitingSpring=false;G.player.canMove=false;
 speak([
@@ -947,7 +1638,10 @@ speak([
 {speaker:‘Narrator’,text:‘A spring. Where no spring has ever been. Flowing at what hydrologists will later measure as 32,000 gallons per day.’}],()=>{
 showEl(‘springGlow’);AUDIO.setWater(1);AUDIO.setChurch(0.35);
 const sw=mkWater(1.6,1.6,0x44aaff);sw.position.set(-2,0.05,-6);addC(sw);
+sw._isSpring=true; G.springWater=sw; // gentle spring waves
 const sL=new THREE.PointLight(0x44aaff,3.2,9);sL.position.set(-2,0.6,-6);addC(sL);
+// Pull back to show crowd witnessing the miracle
+setTimeout(()=>setCam({mode:‘follow’,offset:new THREE.Vector3(-4,6,11),fov:56}),2000);
 // Spring particles
 const spN=72,spGeo=new THREE.BufferGeometry(),spPos=new Float32Array(spN*3);
 spGeo.setAttribute(‘position’,new THREE.BufferAttribute(spPos,3));
@@ -957,22 +1651,25 @@ addC(spPts);G._springPts=spPts;G._springPtsPos=spPos;
 const louis=mkChar(0xc49060,0x4a3020,0x2a1a0a,{});louis.position.set(2,0,-5);addC(louis);G.npcs.push(louis);
 createInteractable(louis,‘Speak with Louis Bouriette’,()=>{speak([
 {speaker:‘Louis Bouriette — Stone Quarryman’,text:‘Twenty years — twenty years blind in this eye from a stone blast. The doctors said: nothing to be done, ever. This morning I bathed my eye in the water of this spring. I opened it. I can see you. I can see the mountain. I can see!’},
-{speaker:‘Bernadette’,text:’(pressing his hands gently) Do not thank me, Monsieur. I am nothing. Give thanks to God and to the Lady. She made the spring — I only dug in the mud.’}],null);});
+{speaker:‘Bernadette’,text:’(pressing his hands gently) Do not thank me, Monsieur. I am nothing. Give thanks to God and to the Lady. She made the spring — I only dug in the mud.’}],()=>{G.player.canMove=true;});});
 const contSign=new THREE.Mesh(new THREE.BoxGeometry(0.15,1.2,0.1),new THREE.MeshPhongMaterial({color:0x3a2010}));contSign.position.set(-5.5,0.6,-4);addC(contSign);
 createInteractable(contSign,‘Continue the Journey →’,()=>transitionTo(10));
 speak([
 {speaker:‘Narrator’,text:‘The spring will flow from this hour forward, unceasingly, for more than 165 years. Louis Bouriette, blind for twenty years, sees. Catherine Latapie, her hand paralysed since a fall, plunges it in and moves her fingers.’},
-{speaker:‘Narrator’,text:‘Speak with Louis Bouriette, then continue when you are ready.’}],null);});};});});
+{speaker:‘Narrator’,text:‘Speak with Louis Bouriette, then continue when you are ready.’}],()=>{G.player.canMove=true;});});};});});
 }},
 
 // ────────── CH 10: PENANCE ──────────
 {title:‘Chapter XI — Penance! Penance! Penance!’,date:‘March 1858 — The Call to Repentance’,init:function(){
 G.bernadetteStage=1;
-buildGrotto({sky:0x0a1420,nicheLight:false});
+buildGrotto({sky:0x0a1420,nicheLight:false,pilgrims:true,mist:true});
 addC(new THREE.AmbientLight(0x102030,0.55));addC(new THREE.DirectionalLight(0x8090a0,0.42)).position.set(-10,20,5);
-for(let i=0;i<20;i++){const c=mkChar(0xd4a870,new THREE.Color(rand(0.2,0.5),rand(0.1,0.3),0.05).getHex(),0x2a1a0a,{veil:(i%2===0),veilC:0xb0a080});c.position.set(rand(-10,10),0,rand(3,11));addC(c);}
-G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,0,4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
-camera.position.set(0,7,13);G.camera.offset.set(0,7,12);
+for(let i=0;i<20;i++){const c=mkChar(0xd4a870,new THREE.Color(rand(0.2,0.5),rand(0.1,0.3),0.05).getHex(),0x2a1a0a,{veil:(i%2===0),veilC:0xb0a080});c.position.set(rand(-10,10),0,rand(3,11));addC(c);G.npcs.push(c);}
+addFireflies(18,9); // Gave grotto — fireflies in the dusk air
+G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,rawTerrain(0,4),4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
+// Wide reverent angle — crowd fills frame, cliff looms, Bernadette tiny
+setCam({mode:‘follow’,offset:new THREE.Vector3(-5,7,14),fov:58});
+camera.position.set(-5,7,15);
 showAge(‘March 1858 — Penance and the Chapel Request’);AUDIO.setChurch(0.92);AUDIO.setWind(0.15);
 speak([{speaker:‘Narrator’,text:‘During the apparitions the Lady's face on certain days becomes suffused with grief — profound, maternal sorrow. On these days she speaks of sinners and the world's need for repentance.’}],()=>{
 G.ourLady=createOurLady();G.ourLady.position.set(0,3.1,-12);G.ourLady.scale.setScalar(0.8);addC(G.ourLady);showEl(‘holyGlow’);
@@ -1003,21 +1700,48 @@ if(visited>=3){setTimeout(()=>{hideTasks();speak([
 // ────────── CH 11: I AM THE IMMACULATE CONCEPTION ──────────
 {title:‘Chapter XII — “I Am the Immaculate Conception”’,date:‘March 25, 1858 — Feast of the Annunciation’,init:function(){
 G.bernadetteStage=2;
-buildGrotto({sky:0x050210,nicheLight:true});
+buildGrotto({sky:0x050210,nicheLight:true,pilgrims:true,candles:true});
 addC(new THREE.AmbientLight(0x0a0820,0.42));addC(mkStars());
-G.player.mesh=createBernadette(2);G.player.mesh.position.set(0,0,4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
-camera.position.set(0,5.5,10);G.camera.offset.set(0,5.5,10);G.player.canMove=false;
+// White rose petals fall — the “heavenly snow” witnessed on this night
+(function(){
+const n=100,geo=new THREE.BufferGeometry(),pos=new Float32Array(n*3),col=new Float32Array(n*3),vel=[];
+for(let i=0;i<n;i++){pos[i*3]=rand(-11,11);pos[i*3+1]=rand(3,15);pos[i*3+2]=rand(-14,7);
+col[i*3]=1;col[i*3+1]=0.95+Math.random()*0.05;col[i*3+2]=0.90+Math.random()*0.10;
+vel.push({vx:rand(-0.015,0.015),vz:rand(-0.010,0.010),vy:rand(-0.035,-0.015),phase:Math.random()*6.28});}
+geo.setAttribute(‘position’,new THREE.BufferAttribute(pos,3));
+geo.setAttribute(‘color’,new THREE.BufferAttribute(col,3));
+const pts=new THREE.Points(geo,new THREE.PointsMaterial({size:0.20,vertexColors:true,transparent:true,opacity:0.9,sizeAttenuation:true}));
+addC(pts);
+const chapterAtStart=G.chapter;
+function animP(){if(G.chapter!==chapterAtStart)return;requestAnimationFrame(animP);
+const p=pts.geometry.attributes.position.array;
+for(let i=0;i<n;i++){p[i*3]+=vel[i].vx+Math.sin(G.time*0.9+vel[i].phase)*0.007;
+p[i*3+1]+=vel[i].vy;p[i*3+2]+=vel[i].vz;
+if(p[i*3+1]<-1){p[i*3+1]=14+rand(0,5);p[i*3]=rand(-11,11);p[i*3+2]=rand(-14,7);}}
+pts.geometry.attributes.position.needsUpdate=true;}
+animP();
+})();
+addFireflies(18,9); // Gave grotto — fireflies in the dusk air
+G.player.mesh=createBernadette(2);G.player.mesh.position.set(0,rawTerrain(0,4),4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
+// Begin wide, will zoom in during the sacred declaration
+setCam({mode:‘follow’,offset:new THREE.Vector3(0,4.5,9),fov:54});
+camera.position.set(0,4.5,11);
 showAge(‘Bernadette Soubirous · Age 14 · March 25, 1858 — Feast of the Annunciation’);AUDIO.setChurch(1);AUDIO.setWind(0);
 speak([
 {speaker:‘Narrator’,text:‘March 25th. The Feast of the Annunciation. Bernadette has asked the Lady her name three times over the preceding weeks. Each time the Lady smiled with great tenderness — and said nothing.’},
 {speaker:‘Narrator’,text:‘Today the light in the niche is brighter than it has ever been. The Lady appears — radiant, joyful, lit from within.’},
 {speaker:‘Bernadette’,text:’(her voice small against the silence) My Lady… I beg of you… will you not tell me who you are? The priest requires it of me. Who are you, my Lady?’}],()=>{
 G.ourLady=createOurLady();G.ourLady.position.set(0,3.1,-12);G.ourLady.scale.setScalar(0.8);addC(G.ourLady);showEl(‘holyGlow’);
+// Scene brightens as the declaration approaches
+scene.fog=new THREE.Fog(0xeef8f0,20,80);
+const sacredLight=new THREE.PointLight(0xffffff,4.5,25);sacredLight.position.set(0,4,-12);addC(sacredLight);
+// Maximum intimacy — push in as the name is finally revealed
+setCam({fov:38,offset:new THREE.Vector3(0,3.2,7),focusMesh:G.ourLady,focusWeight:0.55});
 const l1=new THREE.PointLight(0xffffff,7,18);l1.position.set(0,5.5,-12);addC(l1);G._nicheLight=l1;
 const l2=new THREE.PointLight(0xaabbff,4.5,22);l2.position.set(0,3,0);addC(l2);
 speak([{speaker:‘Narrator’,text:‘The Lady's face takes on a look of great solemnity and tenderness together. She joins her hands and raises her eyes to heaven. Then her arms fall open — the gesture of the Miraculous Medal, rays of golden light streaming from her palms. She smiles. And she speaks.’}],()=>{
 setTimeout(()=>{G.camera.shake=1.2;AUDIO.setChurch(1);
-const fl=new THREE.PointLight(0xffffff,22,55);fl.position.set(0,5,-5);scene.add(fl);setTimeout(()=>{scene.remove(fl);G.camera.shake=0;},900);
+const fl=addC(new THREE.PointLight(0xffffff,22,55));fl.position.set(0,5,-5);setTimeout(()=>{G.camera.shake=0;},900);
 speak([
 {speaker:‘✦ The Most Holy Virgin Mary — Our Lady of Lourdes ✦’,text:’“Que soy era Immaculata Conceptiou.”’},
 {speaker:‘English — from the Gascon dialect of Lourdes’,text:’“I am the Immaculate Conception.”’},
@@ -1061,7 +1785,9 @@ for(let i=0;i<8;i++){const child=mkChar(0xf0c89a,0xf5f2ec,0x2a1a0a,{veil:true,ve
 // Communion altar mark for player to walk to
 const commMk=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.1,0.1),new THREE.MeshBasicMaterial({visible:false}));commMk.position.set(0,0,-9.5);addC(commMk);
 G.player.mesh=createBernadette(2);G.player.mesh.position.set(2,0,4);addC(G.player.mesh);G.player.canMove=false;
-camera.position.set(0,7,14);G.camera.offset.set(0,7,13);
+// Looking down nave toward the altar, pews framing, sacred gold light
+setCam({mode:‘follow’,offset:new THREE.Vector3(0,4,10),fov:48});
+camera.position.set(0,4,14);
 showAge(‘Bernadette Soubirous · Age 14 · First Holy Communion · June 3, 1858’);AUDIO.setChurch(1);AUDIO.setWind(0);
 speak([
 {speaker:‘Narrator’,text:‘June 3, 1858. The Feast of Corpus Christi. The day that Bernadette has longed for since childhood — the day she makes her First Holy Communion. She is fourteen years old, two years later than most children her age.’},
@@ -1096,8 +1822,10 @@ const sister=mkChar(0xd0a870,0x0a0a18,0x1a1010,{cassock:true});sister.position.s
 // Students
 for(let i=0;i<6;i++){const s=mkChar(0xf0c89a,0x7a6040,0x2a1a0a,{apron:true});s.scale.setScalar(0.72);s.position.set((i%3-1)*2.2,0,-Math.floor(i/3)*2.5+4);addC(s);}
 G.player.mesh=createBernadette(2);G.player.mesh.position.set(0,0,4);addC(G.player.mesh);
-camera.position.set(0,7,12);G.camera.offset.set(0,7,11);G.player.canMove=false;
-showAge(‘Bernadette Soubirous · Age 14–16 · Hospice School, Lourdes’);AUDIO.setChurch(0.5);AUDIO.setWind(0);
+// Classroom angle — sees blackboard, Sister teacher, Bernadette at desk
+setCam({mode:‘follow’,offset:new THREE.Vector3(-1,3.5,9),fov:46});
+camera.position.set(-1,3.5,12);
+G.camera.focusMesh=sister;G.camera.focusWeight=0.3; // set after sister declared showAge(‘Bernadette Soubirous · Age 14–16 · Hospice School, Lourdes’);AUDIO.setChurch(0.5);AUDIO.setWind(0);
 speak([
 {speaker:‘Narrator’,text:‘The Sisters of Nevers who run the Hospice school take Bernadette in as a charity pupil. She is older than the other children, slower to read — but her memory for prayers is extraordinary. She can repeat perfectly what she hears once.’},
 {speaker:‘Sister Marie-Therese’,text:‘Bernadette. Today we revise the catechism before your examination. Come — you must know every answer without hesitation. The Bishop's commission will want to see that your faith has solid roots.’},
@@ -1114,7 +1842,7 @@ showCatechism(()=>{speak([
 // ────────── CH 14: BISHOP’S DECLARATION ──────────
 {title:“Chapter XV — The Bishop’s Decree”,date:‘January 18, 1862 — The Church Speaks’,init:function(){
 G.bernadetteStage=2;
-buildGrotto({sky:0x0a1525,nicheLight:true});
+buildGrotto({sky:0x0a1525,nicheLight:true,pilgrims:true,candles:true});
 addC(new THREE.AmbientLight(0x203040,0.62));
 const sun=new THREE.DirectionalLight(0x9ab5cc,0.55);sun.position.set(14,28,8);addC(sun);
 for(let i=0;i<35;i++){const c=mkChar(0xd4a870,new THREE.Color(rand(0.2,0.5),rand(0.1,0.3),0.05).getHex(),0x2a1a0a,{veil:(i%3!==0)});c.position.set(rand(-12,12),0,rand(2,12));addC(c);}
@@ -1123,7 +1851,8 @@ const bwl=new THREE.Mesh(new THREE.BoxGeometry(8,5,6),new THREE.MeshPhongMateria
 const bsp=new THREE.Mesh(new THREE.ConeGeometry(2.5,6,8),new THREE.MeshPhongMaterial({color:0x8a9898}));bsp.position.set(0,8,-35);addC(bsp);
 if(G._nicheLight)G._nicheLight.intensity=3.5;
 G.player.mesh=createBernadette(2);G.player.mesh.position.set(0,0,4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
-camera.position.set(0,7,13);G.camera.offset.set(0,7,12);G.player.canMove=false;
+setCam({mode:“follow”,offset:new THREE.Vector3(0,7,12),fov:54});
+camera.position.set(0,rawTerrain(0,13)+7,13);G.player.canMove=false;
 showAge(‘Bernadette Soubirous · Age 17-18 · 1862’);AUDIO.setChurch(0.95);AUDIO.setWind(0.2);
 speak([
 {speaker:‘Narrator’,text:‘January 18, 1862. After more than three years and hundreds of witness interviews, medical examinations, and theological consultations, the Bishop of Tarbes issues his pastoral letter.’},
@@ -1135,7 +1864,7 @@ speak([
 {speaker:‘Bernadette’,text:’(turning away from the crowd, to herself) I am the instrument — nothing more. The spring is for others. The shrine is for others. My work here is done.’}],()=>transitionTo(15));}},
 
 // ────────── CH 15: ENTERING THE CONVENT ──────────
-{title:‘Chapter XVI — Sister Marie-Bernard’,date:‘July 7, 1866 — The Convent of Saint-Gildard, Nevers’,init:function(){
+{title:‘Chapter XV — Sister Marie-Bernard’,date:‘July 7, 1866 — The Convent of Saint-Gildard, Nevers’,init:function(){
 G.bernadetteStage=3;
 scene.background=new THREE.Color(0x1a1a2a);scene.fog=new THREE.Fog(0x1a1a2a,20,85);
 addC(new THREE.AmbientLight(0x202030,0.82));
@@ -1158,7 +1887,9 @@ for(let i=0;i<5;i++){const s=mkChar(0xe0cca0,0x0a0a18,0x1a1010,{cassock:true});s
 // Lourdes visitor — mama
 const mama=mkChar(0xd4a870,0x4a3828,0x2a1a0a,{veil:true});mama.position.set(4,0,3);addC(mama);G.npcs.push(mama);
 G.player.mesh=createBernadette(3);G.player.mesh.position.set(0,0,5);addC(G.player.mesh);
-camera.position.set(0,7,13);G.camera.offset.set(0,7,12);G.player.canMove=true;
+// Courtyard angle: fountain foreground, arch behind, sisters arrayed
+setCam({mode:‘follow’,offset:new THREE.Vector3(0,6,12),fov:54});
+camera.position.set(0,6,15);
 showAge(‘Sister Marie-Bernard Soubirous · Age 22 · Convent of Saint-Gildard, Nevers · July 7, 1866’);AUDIO.setChurch(0.85);AUDIO.setWind(0.05);
 initTasks([{id:‘sup’,label:‘Speak with Mother Superior’},{id:‘mama’,label:‘Say farewell to Maman’},{id:‘vow’,label:‘Walk to the chapel to take your vows’}]);
 createInteractable(sup,‘Speak with Mother Superior Josephine Imbert’,()=>{if(G.completedTasks[‘sup’])return;speak([
@@ -1180,7 +1911,7 @@ onAllTasksDone=()=>{hideTasks();speak([
 }},
 
 // ────────── CH 16: SUFFERING AT NEVERS ──────────
-{title:‘Chapter XVII — The Long Martyrdom’,date:‘1867–1879 · The Infirmary, Saint-Gildard’,init:function(){
+{title:‘Chapter XVI — The Long Martyrdom’,date:‘1867–1879 · The Infirmary, Saint-Gildard’,init:function(){
 G.bernadetteStage=3;
 scene.background=new THREE.Color(0x0d0c18);scene.fog=new THREE.Fog(0x0d0c18,14,60);
 addC(new THREE.AmbientLight(0x202028,0.78));
@@ -1203,7 +1934,9 @@ const sL=new THREE.PointLight(0xaabbff,1.8,4);sL.position.set(-4.5,2.5,-5.5);add
 const s1=mkChar(0xe0d0b8,0x0a0a18,0x1a1010,{cassock:true});s1.position.set(-2,0,-4);addC(s1);G.npcs.push(s1);
 const s2=mkChar(0xd8c8a0,0x0a0a18,0x1a1010,{cassock:true});s2.position.set(-3.5,0,-2);addC(s2);G.npcs.push(s2);
 G.player.mesh=createBernadette(3);G.player.mesh.position.set(0,0,4);addC(G.player.mesh);
-camera.position.set(0,6.5,12);G.camera.offset.set(0,6.5,11);G.player.canMove=true;
+// Low bedside angle — the bed dominates, Our Lady statue glows in corner
+setCam({mode:‘follow’,offset:new THREE.Vector3(-2,3.2,8),fov:44});
+camera.position.set(-2,3.2,10);
 showAge(‘Sister Marie-Bernard · Age 23–35 · The Infirmary at Nevers · 1867–1879’);AUDIO.setChurch(0.45);
 initTasks([{id:‘statue’,label:‘Pray before the statue of Our Lady’},{id:‘sister’,label:‘Speak with Sister Marie-Bernard de Chamberland’},{id:‘letter’,label:‘Visit the writing desk — write to Lourdes’}]);
 createInteractable(statBase,‘Pray before the statue of Our Lady’,()=>{if(G.completedTasks[‘statue’])return;speak([
@@ -1227,7 +1960,7 @@ onAllTasksDone=()=>{hideTasks();speak([
 }},
 
 // ────────── CH 17: DEATH AND GLORY ──────────
-{title:‘Chapter XVIII — The White Chapel’,date:‘April 16, 1879 — Easter Wednesday · Nevers’,init:function(){
+{title:‘Chapter XVII — The White Chapel’,date:‘April 16, 1879 — Easter Wednesday · Nevers’,init:function(){
 G.bernadetteStage=3;
 scene.background=new THREE.Color(0x050510);scene.fog=new THREE.Fog(0x050510,10,55);
 addC(new THREE.AmbientLight(0x151520,0.65));
@@ -1249,7 +1982,10 @@ for(let i=0;i<8;i++){const s=mkChar(0xe0d0b8,0x0a0a18,0x1a1010,{cassock:true});s
 G.ourLady=createOurLady();G.ourLady.position.set(-4,1.5,-5);G.ourLady.scale.setScalar(0.55);
 G.ourLady._iL.intensity=0.8;G.ourLady._oL.intensity=0.6;addC(G.ourLady);
 G.player.mesh=createBernadette(3);G.player.mesh.position.set(0,0,3);addC(G.player.mesh);G.player.canMove=false;
-camera.position.set(0,6,11);G.camera.offset.set(0,6,10);
+// Deathbed close — candlelight, Sisters, Our Lady faintly visible
+setCam({mode:‘follow’,offset:new THREE.Vector3(2,3.5,8),fov:44,
+focusMesh:G.ourLady,focusWeight:0.2});
+camera.position.set(2,3.5,10);
 showAge(‘Sister Marie-Bernard Soubirous · Age 35 · April 16, 1879’);AUDIO.setChurch(0.8);AUDIO.setWind(0);
 speak([
 {speaker:‘Narrator’,text:‘April 16, 1879. Easter Wednesday. Sister Marie-Bernard has been on her deathbed for weeks, her body devastated by tuberculosis of the lung, the knee, and by an enormous tumour. She has refused painkillers. She has asked only for her crucifix and her rosary.’},
@@ -1266,24 +2002,33 @@ speak([
 {title:‘Epilogue — Our Lady of Lourdes’,date:‘Lourdes, France — Then and Now’,init:function(){
 G.bernadetteStage=2;
 scene.background=new THREE.Color(0x050210);scene.fog=new THREE.Fog(0x080418,25,120);
-addC(new THREE.AmbientLight(0x101028,0.45));addC(mkStars());addC(mkTerrain());addC(mkMountains());
+addC(new THREE.AmbientLight(0x101028,0.45));addC(mkStars());G.groundFn=rawTerrain;addC(mkTerrain({season:‘spring’,res:60}));addC(mkMountains());
 // Basilica
-const bwl=new THREE.Mesh(new THREE.BoxGeometry(16,10,12),new THREE.MeshPhongMaterial({color:0xeae4d8,emissive:0x221810,emissiveIntensity:0.18}));bwl.position.set(0,5,-50);addC(bwl);
-const bsp=new THREE.Mesh(new THREE.ConeGeometry(4,12,8),new THREE.MeshPhongMaterial({color:0x8a9898}));bsp.position.set(0,17,-50);addC(bsp);
-const bcrx=new THREE.Mesh(new THREE.BoxGeometry(0.4,4,0.4),new THREE.MeshBasicMaterial({color:0xf0d060}));bcrx.position.set(0,25,-50);addC(bcrx);
-const bcrxh=new THREE.Mesh(new THREE.BoxGeometry(2.2,0.4,0.4),new THREE.MeshBasicMaterial({color:0xf0d060}));bcrxh.position.set(0,24.2,-50);addC(bcrxh);
+// Basilica snaps to hill top — historically it’s built on the rock above grotto
+const basilGY=rawTerrain(0,-50);
+const bwl=new THREE.Mesh(new THREE.BoxGeometry(16,10,12),new THREE.MeshPhongMaterial({color:0xeae4d8,emissive:0x221810,emissiveIntensity:0.18}));bwl.position.set(0,basilGY+5,-50);addC(bwl);
+const bsp=new THREE.Mesh(new THREE.ConeGeometry(4,12,8),new THREE.MeshPhongMaterial({color:0x8a9898}));bsp.position.set(0,basilGY+17,-50);addC(bsp);
+const bcrx=new THREE.Mesh(new THREE.BoxGeometry(0.4,4,0.4),new THREE.MeshBasicMaterial({color:0xf0d060}));bcrx.position.set(0,basilGY+25,-50);addC(bcrx);
+const bcrxh=new THREE.Mesh(new THREE.BoxGeometry(2.2,0.4,0.4),new THREE.MeshBasicMaterial({color:0xf0d060}));bcrxh.position.set(0,basilGY+24.2,-50);addC(bcrxh);
 // Moonlight
 const moon=new THREE.DirectionalLight(0x6070a0,0.42);moon.position.set(-20,30,10);addC(moon);
 // River
-const river=mkWater(6,80,0x1a3a6a);river.position.set(8,0.05,0);addC(river);G.springWater=river;
+const epiRiverY=rawTerrain(9,0)+0.06;
+const river=mkWater(6,80,0x1a3a6a);river.position.set(9,epiRiverY,0);addC(river);G.springWater=river;
 // Candlelight procession (scattered point lights)
 for(let i=0;i<18;i++){const cl=new THREE.PointLight(0xffaa44,0.8+Math.random(),5+Math.random()*5);cl.position.set(rand(-14,14),0.5+Math.random(),rand(-35,-2));addC(cl);}
 // Pilgrims (crowd of NPCs)
 for(let i=0;i<28;i++){const c=mkChar(0xd4a870,new THREE.Color(rand(0.15,0.55),rand(0.08,0.4),rand(0,0.18)).getHex(),0x2a1a0a,{veil:(i%3!==0)});c.position.set(rand(-14,14),0,rand(-45,-5));addC(c);}
 // Our Lady in the niche
-G.ourLady=createOurLady();G.ourLady.position.set(0,5,-38);G.ourLady.scale.setScalar(1.4);addC(G.ourLady);
-G.player.mesh=createBernadette(2);G.player.mesh.position.set(0,0,6);addC(G.player.mesh);
-camera.position.set(0,9,18);G.camera.offset.set(0,9,15);G.player.canMove=false;
+// Our Lady hovers above the hilltop near the basilica
+const ladyGY=rawTerrain(0,-15);
+G.ourLady=createOurLady();G.ourLady.position.set(0,ladyGY+5,-15);G.ourLady.scale.setScalar(1.8);addC(G.ourLady);
+const epiStartY=rawTerrain(0,6);
+G.player.mesh=createBernadette(2);G.player.mesh.position.set(0,epiStartY,6);addC(G.player.mesh);
+// Grand panoramic — basilica behind, Gave valley, Pyrenees, Our Lady glowing
+setCam({mode:‘follow’,offset:new THREE.Vector3(0,10,18),fov:65,
+focusMesh:G.ourLady,focusWeight:0.28});
+camera.position.set(0,epiStartY+10,22);
 showAge(‘Our Lady of Lourdes · The Shrine · Then and Now’);AUDIO.setChurch(1);AUDIO.setWater(0.5);AUDIO.setWind(0.2);
 showEl(‘holyGlow’);
 setTimeout(()=>{speak([
@@ -1294,7 +2039,7 @@ setTimeout(()=>{speak([
 {speaker:‘Narrator’,text:‘Every night at Lourdes, thousands carry candles through the dark in the torch-lit procession — the same procession Our Lady requested. The same mountain air. The same spring.’},
 {speaker:‘Narrator’,text:‘She is still there.’},
 {speaker:‘Our Lady of Lourdes’,text:’“I am the Immaculate Conception.”’},
-],()=>showFinal());},1500);}},
+],()=>{setCam({mode:‘orbit’,orbitCenter:G.ourLady?G.ourLady.position.clone():new THREE.Vector3(-4,1.5,-5),orbitR:7,orbitY:4,orbitSpeed:0.15,fov:38});setTimeout(showFinal,800);});},1500);}},
 ]; // end CHAPTERS
 
 function showFinal(){
@@ -1304,11 +2049,14 @@ t.innerHTML=’<div class="cross" style="font-size:72px;color:#f0d080;text-shado
 ‘<h2 style="letter-spacing:0.25em;">1844 – 1879 · Canonised 1933</h2>’+
 ‘<div class="sub" style="margin-bottom:30px;font-size:clamp(11px,1.8vw,18px);max-width:600px;line-height:1.8;color:#c4a882;">“She did not come for the clever or the strong. She came for a poor asthmatic girl who could not read — and gave the world a spring.”</div>’+
 ‘<div class="sub" style="color:rgba(180,150,80,0.6);font-size:clamp(9px,1.3vw,13px);max-width:480px;line-height:1.7;">The Lourdes spring flows at 32,000 gallons per day · Unceasingly since February 25, 1858<br>200 million+ pilgrims · 70 verified miraculous cures · The shrine never closes</div>’+
-‘<button id="startBtn" style="margin-top:38px;" onclick="transitionTo(0)">Begin Again ✝</button>’;
+‘<button id="startBtn" style="margin-top:38px;min-height:52px;padding:16px 48px;" onclick="transitionTo(0)">Begin Again ✝</button>’;
 t.style.opacity=‘0’;t.style.display=‘flex’;setTimeout(()=>{t.style.opacity=‘1’;},100);fadeIn();});}
 
 // ═══════════════════════════════════════════════
 //  PLAYER UPDATE
+// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  PLAYER UPDATE — terrain-snapping movement
 // ═══════════════════════════════════════════════
 function updatePlayer(delta){
 if(!G.player.mesh)return;
@@ -1322,27 +2070,56 @@ if(G.joy.x||G.joy.y){mx=G.joy.x;mz=G.joy.y;}
 if(mx&&mz){const l=Math.sqrt(mx*mx+mz*mz);mx/=l;mz/=l;}
 }
 const moving=(mx!==0||mz!==0);
-const speed=4;
+// Speed varies slightly uphill (feels more physical)
+const speed=4.2;
 if(moving){
-G.player.mesh.position.x+=mx*speed*delta;
-G.player.mesh.position.z+=mz*speed*delta;
+const nx=G.player.mesh.position.x+mx*speed*delta;
+const nz=G.player.mesh.position.z+mz*speed*delta;
+G.player.mesh.position.x=nx;
+G.player.mesh.position.z=nz;
 G.player.mesh.rotation.y=Math.atan2(mx,mz);
 G.player.facing={x:mx,z:mz};
 }
+
+// ── TERRAIN HEIGHT SNAPPING ──
+// Bernadette walks over hills naturally — Y snaps to terrain surface
+const px=G.player.mesh.position.x,pz=G.player.mesh.position.z;
+const groundY=sampleGround(px,pz);
+// Smooth Y interpolation so she doesn’t pop — lerp at rate 12/s
+const targetY=groundY; // feet on ground
+const bounce=G.player.mesh._bounceY||0;
+G.player.mesh.position.y=(G.player.mesh.position.y-bounce)+(targetY-(G.player.mesh.position.y-bounce))*Math.min(1,delta*12)+bounce;
+
+// Tilt player mesh slightly on slopes for realism
+if(G.groundFn&&moving){
+const slopeX=sampleGround(px+0.5,pz)-sampleGround(px-0.5,pz);
+const slopeZ=sampleGround(px,pz+0.5)-sampleGround(px,pz-0.5);
+G.player.mesh.rotation.x=(G.player.mesh.rotation.x+(-slopeZ*0.18-G.player.mesh.rotation.x)*delta*8);
+G.player.mesh.rotation.z=(G.player.mesh.rotation.z+(slopeX*0.14-G.player.mesh.rotation.z)*delta*8);
+}else{
+G.player.mesh.rotation.x*=(1-delta*6);
+G.player.mesh.rotation.z*=(1-delta*6);
+}
+
+// Subtle haptic pulse on mobile for footsteps (every ~0.5 steps)
+if(moving&&navigator.vibrate&&G._stepT){
+G._stepT+=delta;
+if(G._stepT>0.45){G._stepT=0;try{navigator.vibrate(4);}catch(e){}}
+}else if(moving&&!G._stepT)G._stepT=0;
+else if(!moving)G._stepT=null;
 animWalk(G.player.mesh,delta,moving);
 
-// Walk trigger checks
+// Walk trigger checks (use XZ distance for terrain scenes)
 if(G._awaitingWalk&&G._walkTarget&&G.player.mesh&&G.player.canMove){
-const d=G.player.mesh.position.distanceTo(G._walkTarget);
+const dx=G.player.mesh.position.x-G._walkTarget.x,dz=G.player.mesh.position.z-G._walkTarget.z;
+const d=Math.sqrt(dx*dx+dz*dz); // XZ only, ignore Y
 if(d<(G._walkRadius||2)&&G._onWalkArrived){const cb=G._onWalkArrived;G._onWalkArrived=null;G._awaitingWalk=false;cb();}
 }
 if(G._awaitingSpring&&G._springTarget&&G.player.mesh){
-const d=G.player.mesh.position.distanceTo(G._springTarget);
-if(d<1.8&&G._onSpringArrived){const cb=G._onSpringArrived;G._onSpringArrived=null;cb();}
+const dx=G.player.mesh.position.x-G._springTarget.x,dz=G.player.mesh.position.z-G._springTarget.z;
+const d=Math.sqrt(dx*dx+dz*dz);
+if(d<2.2&&G._onSpringArrived){const cb=G._onSpringArrived;G._onSpringArrived=null;cb();}
 }
-
-// Chapter 2 path trigger
-if(G.chapter===2&&G.player.mesh.position.z<-18&&!G._awaitingWalk){G._awaitingWalk=false;G.player.canMove=false;transitionTo(3);}
 
 // Interact
 if(G.keys[‘KeyE’]&&!G._eHeld){G._eHeld=true;if(G.nearbyInteractable&&!G.dialogueActive)G.nearbyInteractable.onInteract();}
@@ -1352,14 +2129,86 @@ if(!G.keys[‘KeyE’])G._eHeld=false;
 // ═══════════════════════════════════════════════
 //  CAMERA
 // ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  CAMERA HELPERS — call from chapter inits
+// ═══════════════════════════════════════════════
+function setCam(opts){
+// opts: {mode, offset, pos, look, fov, focusMesh, focusWeight, orbitCenter, orbitR, orbitY, orbitSpeed}
+const c=G.camera;
+if(opts.mode!==undefined)c.mode=opts.mode;
+if(opts.offset)c.offset.copy(opts.offset);
+if(opts.pos!==undefined)c.pos=opts.pos;   // THREE.Vector3 or null
+if(opts.look!==undefined)c.look=opts.look; // THREE.Vector3 or null
+if(opts.fov!==undefined)c.fov=opts.fov;
+if(opts.focusMesh!==undefined)c.focusMesh=opts.focusMesh;
+if(opts.focusWeight!==undefined)c.focusWeight=opts.focusWeight||0;
+if(opts.orbitCenter!==undefined){c.orbitCenter=opts.orbitCenter;c.orbitR=opts.orbitR||8;c.orbitY=opts.orbitY||4;c.orbitSpeed=opts.orbitSpeed||0.3;}
+}
+// Instantly look at a mesh during dialogue — smooth cinematic focus
+function camFocus(mesh,weight,fov){
+G.camera.focusMesh=mesh;G.camera.focusWeight=weight||0.4;
+if(fov)G.camera.fov=fov;
+}
+// Snap camera to a fixed cinematic angle immediately
+function camSnap(x,y,z,lx,ly,lz){
+camera.position.set(x,y,z);
+const lv=new THREE.Vector3(lx||0,ly||1.4,lz||0);
+camera.lookAt(lv);
+}
+
 function updateCamera(delta){
-if(!G.player.mesh)return;
-const target=G.player.mesh.position.clone().add(G.camera.offset);
-camera.position.lerp(target,delta*4);
-let look=G.player.mesh.position.clone();look.y+=1;
-if(G.ourLady)look.lerp(G.ourLady.position.clone(),0.28);
-camera.lookAt(look);
-if(G.camera.shake>0){camera.position.x+=rand(-1,1)*G.camera.shake;camera.position.y+=rand(-0.5,0.5)*G.camera.shake;G.camera.shake=Math.max(0,G.camera.shake-delta*2);}
+// ── FOV smooth interpolation ──
+const fovSpd=delta*3.5;
+G.camera.fovCur+=(G.camera.fov-G.camera.fovCur)*fovSpd;
+camera.fov=G.camera.fovCur;camera.updateProjectionMatrix();
+
+const c=G.camera,pp=G.player.mesh?G.player.mesh.position:new THREE.Vector3();
+
+// ── Compute player look-point (what camera wants to aim at) ──
+let baseLook=pp.clone();baseLook.y+=1.2;
+// Bias toward Our Lady during apparitions
+if(G.ourLady)baseLook.lerp(G.ourLady.position.clone().add(new THREE.Vector3(0,1.5,0)),0.25);
+// Extra cinematic focus on a specific NPC (set via camFocus)
+if(c.focusMesh&&c.focusWeight>0){
+const fp=c.focusMesh.position.clone();fp.y+=1.0;
+baseLook.lerp(fp,c.focusWeight);
+}
+
+if(c.mode===‘orbit’&&c.orbitCenter){
+// Orbit around a fixed point (grotto, Our Lady)
+c._orbitAngle=(c._orbitAngle||0)+c.orbitSpeed*delta;
+const tx=c.orbitCenter.x+Math.sin(c._orbitAngle)*c.orbitR;
+const tz=c.orbitCenter.z+Math.cos(c._orbitAngle)*c.orbitR;
+const ty=c.orbitCenter.y+c.orbitY;
+camera.position.lerp(new THREE.Vector3(tx,ty,tz),delta*1.5);
+camera.lookAt(c.orbitCenter.clone().add(new THREE.Vector3(0,1.5,0)));
+
+}else if(c.mode===‘fixed’&&c.pos){
+// Fixed cinematic position
+camera.position.lerp(c.pos,delta*2.5);
+const lookAt=c.look||baseLook;
+camera.lookAt(lookAt);
+
+}else{
+// ── FOLLOW mode — terrain-aware third-person ──
+const offX=c.offset.x,offY=c.offset.y,offZ=c.offset.z;
+// Camera position trails behind player
+const camTargetX=pp.x+offX;
+const camTargetZ=pp.z+offZ;
+const groundAtCam=sampleGround(camTargetX,camTargetZ);
+const minY=Math.max(pp.y+offY, groundAtCam+3.5);
+const targetPos=new THREE.Vector3(camTargetX,minY,camTargetZ);
+const lerpSpd=c.mode===‘dialogue’?delta*2.2:delta*4.0;
+camera.position.lerp(targetPos,lerpSpd);
+camera.lookAt(baseLook);
+}
+
+// ── Cinematic shake ──
+if(c.shake>0){
+camera.position.x+=rand(-1,1)*c.shake;
+camera.position.y+=rand(-0.5,0.5)*c.shake;
+c.shake=Math.max(0,c.shake-delta*1.8);
+}
 }
 
 // ═══════════════════════════════════════════════
@@ -1367,15 +2216,24 @@ if(G.camera.shake>0){camera.position.x+=rand(-1,1)*G.camera.shake;camera.positio
 // ═══════════════════════════════════════════════
 function updateInteractables(){
 G.nearbyInteractable=null;if(!G.player.mesh)return;
-let closest=2.5,closestItem=null;
+let closest=2.8,closestItem=null;
 G.interactables.forEach(item=>{
 const d=G.player.mesh.position.distanceTo(item.mesh.position);
 if(d<closest){closest=d;closestItem=item;}
-if(item.glowMesh){item.glowMesh.position.y=item.mesh.position.y+1.6+Math.sin(G.time*2)*0.1;item.glowMat.opacity=0.5+Math.sin(G.time*3)*0.3;}
+if(item.glowMesh){
+const bob=Math.sin(G.time*2.2)*0.12;
+const baseY=item.mesh.position.y+1.85;
+item.glowMesh.position.y=baseY+bob;
+item.glowMat.opacity=0.55+Math.sin(G.time*3.4)*0.32;
+// Animate the cross marker
+if(item._crx){item._crx.position.y=baseY+bob+0.22;item._crx.rotation.y=G.time*0.8;}
+if(item._crxh){item._crxh.position.y=baseY+bob+0.27;item._crxh.rotation.y=G.time*0.8;}
+}
 });
 G.nearbyInteractable=closestItem;
 const prompt=document.getElementById(‘interactPrompt’);
-if(closestItem&&!G.dialogueActive){prompt.style.display=‘block’;prompt.textContent=’[ E ]  ’+closestItem.label;}
+if(closestItem&&!G.dialogueActive){prompt.style.display=‘block’;const isMobile=‘ontouchstart’ in window;
+prompt.textContent=(isMobile?’✋  ‘:’[ E ]  ’)+closestItem.label;}
 else prompt.style.display=‘none’;
 }
 
@@ -1383,9 +2241,23 @@ else prompt.style.display=‘none’;
 //  LIGHTS
 // ═══════════════════════════════════════════════
 function updateLights(){
-if(G._fireLight)G._fireLight.intensity=2+Math.sin(G.time*8)*0.8+Math.sin(G.time*13)*0.4;
-if(G._candleLight)G._candleLight.intensity=1.2+Math.sin(G.time*7)*0.3;
-if(G._nicheLight)G._nicheLight.intensity=4.5+Math.sin(G.time*1.8)*0.8;
+// Fireplace — realistic flickering with multiple frequencies (Cachot scenes)
+if(G._fireLight){
+G._fireLight.intensity=2.2+Math.sin(G.time*9.1)*0.9+Math.sin(G.time*14.3)*0.5+Math.sin(G.time*5.7)*0.3;
+G._fireLight.color.setHSL(0.07+Math.sin(G.time*3.2)*0.02, 0.95, 0.5);
+}
+// Candle — gentle breathing flame
+if(G._candleLight){
+G._candleLight.intensity=1.3+Math.sin(G.time*6.8)*0.35+Math.sin(G.time*11.2)*0.12;
+}
+// Niche apparition light — “blinding white light” as witnesses described
+// Pulses with slow spiritual rhythm, peaks in intensity
+if(G._nicheLight){
+const pulse=Math.sin(G.time*1.4)*0.6+Math.sin(G.time*2.9)*0.3+Math.sin(G.time*0.5)*0.15;
+G._nicheLight.intensity=5.2+pulse;
+// Shift slightly warm/cool — “light that neither dazzled nor hurt the eyes”
+G._nicheLight.color.setHSL(0.60+Math.sin(G.time*0.7)*0.04, 0.3, 0.95+Math.sin(G.time*1.1)*0.03);
+}
 }
 
 // ═══════════════════════════════════════════════
@@ -1409,7 +2281,48 @@ updatePlayer(delta);updateCamera(delta);updateInteractables();updateLights();
 if(G.ourLady)animOurLady(G.ourLady,G.time);
 if(G.springWater)animWater(G.springWater,delta);
 updateSpringParticles();
-G.npcs.forEach((npc,i)=>{npc.rotation.y=Math.sin(G.time*0.5+i)*0.05;});
+// NPC behavior — look toward Bernadette when near, idle sway otherwise
+G.npcs.forEach((npc,i)=>{
+const idleSway=Math.sin(G.time*0.28+i*1.4)*0.04;
+if(G.player.mesh){
+const dx=G.player.mesh.position.x-npc.position.x;
+const dz=G.player.mesh.position.z-npc.position.z;
+const dist=Math.sqrt(dx*dx+dz*dz);
+if(dist<4.5){
+// Turn to face Bernadette
+const targetY=Math.atan2(dx,dz);
+const diff=((targetY-npc.rotation.y)+Math.PI*3)%(Math.PI*2)-Math.PI;
+npc.rotation.y+=diff*0.04;
+// Lean head toward her slightly
+if(npc._head)npc._head.rotation.x=-0.06+Math.sin(G.time*0.8+i)*0.015;
+}else{
+npc.rotation.y+=idleSway*0.06;
+if(npc._head)npc._head.rotation.x=Math.sin(G.time*0.8+i)*0.02;
+}
+}else{
+npc.rotation.y+=idleSway*0.06;
+}
+// Idle breathing — subtle body bob
+if(npc._armL)npc._armL.rotation.x=Math.sin(G.time*0.5+i)*0.015;
+if(npc._armR)npc._armR.rotation.x=-Math.sin(G.time*0.5+i)*0.015;
+// Smooth Y snap to terrain (only in outdoor scenes)
+if(G.groundFn){
+const gy=sampleGround(npc.position.x,npc.position.z);
+npc.position.y+=(gy-npc.position.y)*Math.min(1,0.08);
+}
+});
+// Firefly particles in grotto scenes (atmospheric glow points)
+if(G._fireflies){
+const fp=G._fireflies.geometry.attributes.position.array;
+const n=fp.length/3;
+for(let i=0;i<n;i++){
+fp[i*3]+=Math.sin(G.time*0.8+i*2.1)*0.008;
+fp[i*3+1]+=Math.cos(G.time*1.1+i*1.7)*0.005;
+fp[i*3+2]+=Math.sin(G.time*0.6+i*2.8)*0.007;
+}
+G._fireflies.geometry.attributes.position.needsUpdate=true;
+G._fireflies.material.opacity=0.5+Math.sin(G.time*2.2)*0.3;
+}
 renderer.render(scene,camera);
 }
 
@@ -1417,20 +2330,96 @@ renderer.render(scene,camera);
 //  START
 // ═══════════════════════════════════════════════
 function startGame(){
+// Auto-hide zoom hint
+setTimeout(()=>{const h=document.getElementById(‘zoomHint’);if(h)h.style.opacity=‘0’;},5000);
+onResize();
 const title=document.getElementById(‘titleScreen’);title.style.opacity=‘0’;
 setTimeout(()=>title.style.display=‘none’,1800);
 setTimeout(()=>transitionTo(0),900);
 }
 
-// Title scene init
+// ═══════════════════════════════════════════════
+// TITLE SCENE — Lourdes valley at twilight with Gave de Pau and Pyrenees
+// ═══════════════════════════════════════════════
 (function(){
-scene.background=new THREE.Color(0x050212);scene.fog=new THREE.Fog(0x050212,30,200);
-addC(new THREE.AmbientLight(0x101028,0.5));addC(mkStars());addC(mkTerrain());addC(mkMountains());
-const moon=new THREE.DirectionalLight(0x6070a0,0.4);moon.position.set(-20,30,10);addC(moon);
-const lady=createOurLady();lady.position.set(0,3,-20);lady.scale.set(1.5,1.5,1.5);addC(lady);G.ourLady=lady;
-const river=mkWater(4,60,0x1a2a5a);river.position.set(8,0.05,0);addC(river);G.springWater=river;
-camera.position.set(0,8,12);
-for(let i=0;i<10;i++){const cl=new THREE.PointLight(0xffaa44,0.8+Math.random(),4+Math.random()*4);cl.position.set(rand(-15,15),0.5+Math.random(),rand(-30,5));addC(cl);}
+scene.background=new THREE.Color(0x040212);
+scene.fog=new THREE.Fog(0x060318,25,180);
+// Twilight sky gradient — the purple-indigo sky above Lourdes
+addC(new THREE.AmbientLight(0x18103a,0.55));
+const moon=new THREE.DirectionalLight(0x5060a0,0.5);moon.position.set(-25,35,8);addC(moon);
+const rimLight=new THREE.DirectionalLight(0x8070c0,0.22);rimLight.position.set(20,15,-10);addC(rimLight);
+addC(mkStars());
+
+// Terrain — rolling Pyrenean foothills surrounding Lourdes valley
+G.groundFn=rawTerrain;
+addC(mkTerrain({season:‘spring’,res:60}));
+addC(mkMountains());
+
+// Sky dome — purple twilight above Lourdes
+const skyDome=new THREE.Mesh(new THREE.SphereGeometry(240,16,8,0,Math.PI*2,0,Math.PI*0.5),new THREE.MeshBasicMaterial({color:0x080315,side:THREE.BackSide}));
+skyDome.position.y=-10;addC(skyDome);
+// Pyrenean twilight glow on the horizon
+const horiz=new THREE.PointLight(0xff7733,1.2,250);horiz.position.set(-40,10,-80);addC(horiz);
+
+// The Gave de Pau — the sacred river
+const gave=mkWater(8,120,0x0d1a3a);gave.position.set(9,0.08,0);addC(gave);G.springWater=gave;
+
+// Our Lady — luminous, hovering above valley near Massabielle cliff
+const titleLadyGY=rawTerrain(0,-22);
+const lady=createOurLady();
+lady.position.set(0,titleLadyGY+4.5,-22);lady.scale.setScalar(2.0);addC(lady);G.ourLady=lady;
+// Extra radiance around her
+const radiance=new THREE.PointLight(0xaaccff,3.5,28);radiance.position.set(0,5,-22);addC(radiance);
+const warmGlow=new THREE.PointLight(0xffeebb,1.8,18);warmGlow.position.set(0,2,-18);addC(warmGlow);
+
+// Silhouette of the Basilica of Our Lady of the Immaculate Conception
+// (built 1866-1872 atop the Massabielle cliff — historically, the Lady asked for a chapel)
+// Simple distinctive Gothic silhouette
+const bM=new THREE.MeshPhongMaterial({color:0x0a0a18,emissive:0x050510,emissiveIntensity:0.8});
+// Main nave
+addC(pm(new THREE.Mesh(new THREE.BoxGeometry(8,6,16),bM),0,3,-42));
+// Spire
+addC(pm(new THREE.Mesh(new THREE.ConeGeometry(1.4,10,8),bM),0,12,-42));
+// Stained glass glow (golden light within)
+const w1=new THREE.PointLight(0xffbb55,2.5,12);w1.position.set(0,4,-42);addC(w1);
+// Bell towers
+[-4.5,4.5].forEach(x=>{
+addC(pm(new THREE.Mesh(new THREE.BoxGeometry(2.2,8,2.2),bM),x,4,-38));
+addC(pm(new THREE.Mesh(new THREE.ConeGeometry(1.2,5,6),bM),x,12,-38));
+});
+// The Crowned Basilica ramparts
+addC(pm(new THREE.Mesh(new THREE.BoxGeometry(14,1.5,2),bM),0,5,-35));
+
+// Candle procession dots (thousands of pilgrims carry candles)
+const candleGeo=new THREE.BufferGeometry(),cn=300,cp=new Float32Array(cn*3),cc=new Float32Array(cn*3);
+for(let i=0;i<cn;i++){
+const t=i/cn,curve=Math.sin(t*Math.PI)*3;
+cp[i*3]=rand(-10,10);cp[i*3+1]=0.8+rand(0,0.3);cp[i*3+2]=rand(-40,2);
+cc[i*3]=1;cc[i*3+1]=0.82+rand(0,0.15);cc[i*3+2]=rand(0,0.3);
+}
+candleGeo.setAttribute(‘position’,new THREE.BufferAttribute(cp,3));
+candleGeo.setAttribute(‘color’,new THREE.BufferAttribute(cc,3));
+const candlePts=new THREE.Points(candleGeo,new THREE.PointsMaterial({size:0.18,vertexColors:true,transparent:true,opacity:0.9,sizeAttenuation:true}));
+addC(candlePts);
+
+// Roadside candles and shrines — Chemin du Rosaire
+for(let i=0;i<18;i++){
+const cz=rand(-35,-2),cx=rand(-4,4);
+const cl=new THREE.PointLight(0xffaa33,rand(0.6,1.5),rand(2.5,5));
+cl.position.set(cx,0.8+rand(0,0.4),cz);addC(cl);
+}
+
+// Trees framing the valley
+for(let i=0;i<25;i++){
+const tx=rand(-22,22),tz=rand(-50,-5),th=rand(4,9);
+const tr=new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.18,th,7),new THREE.MeshPhongMaterial({color:0x2a1a10}));
+tr.position.set(tx,th/2,tz);addC(tr);
+const cr=new THREE.Mesh(new THREE.SphereGeometry(rand(1.2,2.4),8,7),new THREE.MeshPhongMaterial({color:new THREE.Color(0.04,0.12,0.06)}));
+cr.position.set(tx,th+1.2,tz);addC(cr);
+}
+
+camera.position.set(0,7,14);
+camera.lookAt(0,3,0);
 })();
 
 animate();
