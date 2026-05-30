@@ -1,258 +1,116 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#040212">
 <title>I Am Bernadette — The Sacred Journey of Lourdes</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html{height:100%;-webkit-text-size-adjust:100%;text-size-adjust:100%}
-body{background:#000;overflow:hidden;font-family:'IM Fell English',Georgia,serif;touch-action:none;overscroll-behavior:none;-webkit-overscroll-behavior:none;position:fixed;width:100%;height:100%;
-  height:100%;height:100dvh;-webkit-overflow-scrolling:touch;}
+body{background:#000;overflow:hidden;font-family:'IM Fell English',Georgia,serif;touch-action:none;overscroll-behavior:none;-webkit-overscroll-behavior:none;position:fixed;width:100%;height:100%;height:100dvh;-webkit-overflow-scrolling:touch;}
 #gameCanvas{display:block;position:fixed;top:0;left:0;width:100%;height:100%;}
 #ui{position:fixed;inset:0;pointer-events:none;z-index:10}
-
-/* ── TITLE SCREEN ── */
-#titleScreen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-background:radial-gradient(ellipse at 50% 60%,rgba(8,4,28,0.55),rgba(0,0,0,0.93));
-z-index:100;pointer-events:all;transition:opacity 1.8s;
-padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);}
-#titleScreen h1{font-family:‘Cinzel Decorative’,serif;font-size:clamp(22px,5vw,56px);color:#f5e6c0;
-text-shadow:0 0 40px rgba(255,200,80,0.9),0 0 90px rgba(255,150,30,0.4);
-letter-spacing:0.07em;text-align:center;line-height:1.25;margin-bottom:8px;padding:0 16px;}
-#titleScreen h2{font-family:‘Cinzel’,serif;font-size:clamp(12px,2.5vw,21px);color:#c4a882;letter-spacing:0.18em;margin-bottom:5px;text-align:center;}
-#titleScreen .sub{font-family:‘IM Fell English’,serif;font-style:italic;font-size:clamp(11px,2vw,16px);color:#9a7850;margin-bottom:32px;text-align:center;padding:0 20px;}
+#titleScreen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 60%,rgba(8,4,28,0.55),rgba(0,0,0,0.93));z-index:100;pointer-events:all;transition:opacity 1.8s;padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);}
+#titleScreen h1{font-family:'Cinzel Decorative',serif;font-size:clamp(22px,5vw,56px);color:#f5e6c0;text-shadow:0 0 40px rgba(255,200,80,0.9),0 0 90px rgba(255,150,30,0.4);letter-spacing:0.07em;text-align:center;line-height:1.25;margin-bottom:8px;padding:0 16px;}
+#titleScreen h2{font-family:'Cinzel',serif;font-size:clamp(12px,2.5vw,21px);color:#c4a882;letter-spacing:0.18em;margin-bottom:5px;text-align:center;}
+#titleScreen .sub{font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(11px,2vw,16px);color:#9a7850;margin-bottom:32px;text-align:center;padding:0 20px;}
 #titleScreen .cross{font-size:clamp(36px,7vw,72px);color:#f0d080;margin-bottom:24px;animation:GLOW 2s infinite alternate;}
 @keyframes GLOW{from{text-shadow:0 0 18px rgba(255,220,80,0.5)}to{text-shadow:0 0 60px #ffd700,0 0 130px rgba(255,160,30,0.5)}}
-#startBtn{font-family:‘Cinzel’,serif;font-size:clamp(13px,2.2vw,17px);letter-spacing:0.16em;color:#f5e6c0;
-background:rgba(255,200,80,0.1);border:1px solid rgba(255,200,80,0.45);padding:16px 48px;
-cursor:pointer;pointer-events:all;transition:all 0.4s;text-transform:uppercase;
--webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:52px;}
+#startBtn{font-family:'Cinzel',serif;font-size:clamp(13px,2.2vw,17px);letter-spacing:0.16em;color:#f5e6c0;background:rgba(255,200,80,0.1);border:1px solid rgba(255,200,80,0.45);padding:16px 48px;cursor:pointer;pointer-events:all;transition:all 0.4s;text-transform:uppercase;-webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:52px;}
 #startBtn:hover,#startBtn:active{background:rgba(255,200,80,0.22);border-color:rgba(255,200,80,0.85);box-shadow:0 0 28px rgba(255,200,80,0.35);}
-.tv{font-family:‘IM Fell English’,serif;font-style:italic;font-size:clamp(10px,1.5vw,14px);
-color:rgba(180,150,80,0.7);margin-top:24px;text-align:center;max-width:500px;line-height:1.6;padding:0 20px;}
-
-/* ── CHAPTER BANNER ── */
-#chapterBanner{position:fixed;top:0;left:0;width:100%;padding:max(14px,env(safe-area-inset-top,14px)) 16px 18px;text-align:center;
-background:linear-gradient(to bottom,rgba(0,0,0,0.82),transparent);
-opacity:0;transition:opacity 1s;pointer-events:none;}
+.tv{font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(10px,1.5vw,14px);color:rgba(180,150,80,0.7);margin-top:24px;text-align:center;max-width:500px;line-height:1.6;padding:0 20px;}
+#chapterBanner{position:fixed;top:0;left:0;width:100%;padding:max(14px,env(safe-area-inset-top,14px)) 16px 18px;text-align:center;background:linear-gradient(to bottom,rgba(0,0,0,0.82),transparent);opacity:0;transition:opacity 1s;pointer-events:none;}
 #chapterBanner.show{opacity:1}
-#chapterTitle{font-family:‘Cinzel Decorative’,serif;font-size:clamp(12px,2.8vw,28px);color:#f5e6c0;
-text-shadow:0 0 22px rgba(255,200,80,0.65);letter-spacing:0.08em;}
-#chapterDate{font-family:‘Cinzel’,serif;font-size:clamp(9px,1.6vw,14px);color:#c4a870;letter-spacing:0.18em;margin-top:4px;}
-#ageBadge{position:fixed;top:max(68px, calc(env(safe-area-inset-top,0px) + 56px));left:50%;transform:translateX(-50%);
-font-family:‘Cinzel’,serif;font-size:clamp(9px,1.3vw,11px);letter-spacing:0.1em;color:rgba(200,170,80,0.85);
-background:rgba(5,3,20,0.72);border:1px solid rgba(200,160,60,0.3);padding:5px 14px;
-display:none;pointer-events:none;z-index:60;text-align:center;white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;}
-
-/* ── DIALOGUE ── */
-#dialogue{position:fixed;top:max(10%, env(safe-area-inset-top,10px));left:50%;transform:translateX(-50%);
-width:min(96vw,830px);max-height:55vh;overflow-y:auto;
-background:rgba(4,2,18,0.78);
-backdrop-filter:blur(16px) saturate(1.5);-webkit-backdrop-filter:blur(16px) saturate(1.5);
-border:1.5px solid rgba(215,175,65,0.52);border-radius:8px;
-box-shadow:0 8px 50px rgba(0,0,0,0.72),inset 0 1px 0 rgba(255,230,120,0.1);
-padding:20px 24px 16px;display:none;pointer-events:all;z-index:500;cursor:pointer;}
-#dialogue::before,#dialogue::after{content:’’;position:absolute;width:18px;height:18px;
-border-color:rgba(215,175,65,0.72);border-style:solid;pointer-events:none;}
+#chapterTitle{font-family:'Cinzel Decorative',serif;font-size:clamp(12px,2.8vw,28px);color:#f5e6c0;text-shadow:0 0 22px rgba(255,200,80,0.65);letter-spacing:0.08em;}
+#chapterDate{font-family:'Cinzel',serif;font-size:clamp(9px,1.6vw,14px);color:#c4a870;letter-spacing:0.18em;margin-top:4px;}
+#ageBadge{position:fixed;top:max(68px, calc(env(safe-area-inset-top,0px) + 56px));left:50%;transform:translateX(-50%);font-family:'Cinzel',serif;font-size:clamp(9px,1.3vw,11px);letter-spacing:0.1em;color:rgba(200,170,80,0.85);background:rgba(5,3,20,0.72);border:1px solid rgba(200,160,60,0.3);padding:5px 14px;display:none;pointer-events:none;z-index:60;text-align:center;white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;}
+#dialogue{position:fixed;top:max(10%, env(safe-area-inset-top,10px));left:50%;transform:translateX(-50%);width:min(96vw,830px);max-height:55vh;overflow-y:auto;background:rgba(4,2,18,0.78);backdrop-filter:blur(16px) saturate(1.5);-webkit-backdrop-filter:blur(16px) saturate(1.5);border:1.5px solid rgba(215,175,65,0.52);border-radius:8px;box-shadow:0 8px 50px rgba(0,0,0,0.72),inset 0 1px 0 rgba(255,230,120,0.1);padding:20px 24px 16px;display:none;pointer-events:all;z-index:500;cursor:pointer;}
+#dialogue::before,#dialogue::after{content:'';position:absolute;width:18px;height:18px;border-color:rgba(215,175,65,0.72);border-style:solid;pointer-events:none;}
 #dialogue::before{top:-1px;left:-1px;border-width:2px 0 0 2px;border-radius:5px 0 0 0;}
 #dialogue::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0;border-radius:0 0 5px 0;}
-#dialogueSpeaker{font-family:‘Cinzel’,serif;font-size:clamp(10px,2.4vw,14px);color:#ffd055;
-letter-spacing:0.18em;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;
-border-bottom:1px solid rgba(215,175,65,0.28);text-align:center;
-text-shadow:0 0 16px rgba(255,210,55,0.65),0 0 3px rgba(0,0,0,0.9);min-height:1.3em;}
-#dialogueText{font-family:‘IM Fell English’,serif;font-size:clamp(15px,3.2vw,23px);color:#fff8ec;
-line-height:1.8;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,1);padding:0 4px;}
-#dialogueContinue{font-family:‘Cinzel’,serif;font-size:clamp(9px,1.8vw,12px);color:rgba(215,178,68,0.78);
-text-align:center;margin-top:12px;letter-spacing:0.15em;animation:BLINK 1.3s infinite;}
+#dialogueSpeaker{font-family:'Cinzel',serif;font-size:clamp(10px,2.4vw,14px);color:#ffd055;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(215,175,65,0.28);text-align:center;text-shadow:0 0 16px rgba(255,210,55,0.65),0 0 3px rgba(0,0,0,0.9);min-height:1.3em;}
+#dialogueText{font-family:'IM Fell English',serif;font-size:clamp(15px,3.2vw,23px);color:#fff8ec;line-height:1.8;text-align:center;text-shadow:0 2px 10px rgba(0,0,0,1);padding:0 4px;}
+#dialogueContinue{font-family:'Cinzel',serif;font-size:clamp(9px,1.8vw,12px);color:rgba(215,178,68,0.78);text-align:center;margin-top:12px;letter-spacing:0.15em;animation:BLINK 1.3s infinite;}
 @keyframes BLINK{0%,100%{opacity:0.28}50%{opacity:1}}
 .kb-hint{display:inline;}
 @media (pointer:coarse){.kb-hint{display:none;}}
-#dialogueDimmer{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 20%,rgba(0,0,0,0),rgba(0,0,0,0.32));
-display:none;z-index:499;pointer-events:none;}
-
-/* ── TASKS ── */
-#taskPanel{position:fixed;top:max(88px, calc(env(safe-area-inset-top,0px) + 80px));right:max(12px,env(safe-area-inset-right,12px));
-background:rgba(5,3,20,0.88);border:1px solid rgba(200,160,60,0.3);
-padding:12px 16px;min-width:min(185px,42vw);max-width:min(220px,48vw);display:none;z-index:60;border-radius:4px;}
-#taskPanel h3{font-family:‘Cinzel’,serif;font-size:clamp(9px,1.4vw,12px);color:#f0c060;letter-spacing:0.1em;margin-bottom:8px;text-transform:uppercase;}
-.task-item{font-family:‘IM Fell English’,serif;font-size:clamp(11px,1.8vw,14px);color:#c0b090;margin:4px 0;
-padding-left:18px;position:relative;transition:color 0.5s;line-height:1.4;}
-.task-item::before{content:‘○’;position:absolute;left:0;color:#6a5830;}
+#dialogueDimmer{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 20%,rgba(0,0,0,0),rgba(0,0,0,0.32));display:none;z-index:499;pointer-events:none;}
+#taskPanel{position:fixed;top:max(88px, calc(env(safe-area-inset-top,0px) + 80px));right:max(12px,env(safe-area-inset-right,12px));background:rgba(5,3,20,0.88);border:1px solid rgba(200,160,60,0.3);padding:12px 16px;min-width:min(185px,42vw);max-width:min(220px,48vw);display:none;z-index:60;border-radius:4px;}
+#taskPanel h3{font-family:'Cinzel',serif;font-size:clamp(9px,1.4vw,12px);color:#f0c060;letter-spacing:0.1em;margin-bottom:8px;text-transform:uppercase;}
+.task-item{font-family:'IM Fell English',serif;font-size:clamp(11px,1.8vw,14px);color:#c0b090;margin:4px 0;padding-left:18px;position:relative;transition:color 0.5s;line-height:1.4;}
+.task-item::before{content:'○';position:absolute;left:0;color:#6a5830;}
 .task-item.done{color:#80c080;text-decoration:line-through;}
-.task-item.done::before{content:‘✓’;color:#80c080;}
-
-/* ── INTERACT PROMPT ── */
-#interactPrompt{position:fixed;bottom:max(190px, calc(env(safe-area-inset-bottom,0px) + 190px));left:50%;transform:translateX(-50%);border-radius:20px;
-font-family:‘Cinzel’,serif;font-size:clamp(11px,1.6vw,14px);letter-spacing:0.12em;
-color:#f0e0a0;background:rgba(5,3,20,0.85);border:1px solid rgba(200,160,60,0.5);
-padding:9px 26px;display:none;text-transform:uppercase;animation:PULSE 1.5s infinite;z-index:200;border-radius:3px;
-white-space:nowrap;}
+.task-item.done::before{content:'✓';color:#80c080;}
+#interactPrompt{position:fixed;bottom:max(190px, calc(env(safe-area-inset-bottom,0px) + 190px));left:50%;transform:translateX(-50%);border-radius:20px;font-family:'Cinzel',serif;font-size:clamp(11px,1.6vw,14px);letter-spacing:0.12em;color:#f0e0a0;background:rgba(5,3,20,0.85);border:1px solid rgba(200,160,60,0.5);padding:9px 26px;display:none;text-transform:uppercase;animation:PULSE 1.5s infinite;z-index:200;border-radius:3px;white-space:nowrap;}
 @keyframes PULSE{0%,100%{border-color:rgba(200,160,60,0.35)}50%{border-color:rgba(200,160,60,0.85)}}
-
-/* ── CONTROLS HINT ── */
-#controls{position:fixed;bottom:max(8px,env(safe-area-inset-bottom,8px));left:50%;transform:translateX(-50%);
-font-family:‘Cinzel’,serif;font-size:clamp(7px,1.2vw,10px);color:rgba(180,160,100,0.38);
-letter-spacing:0.1em;text-align:center;pointer-events:none;display:none;}
-
-/* ── NOTIFICATION ── */
-#notification{position:fixed;top:48%;left:50%;transform:translate(-50%,-50%);
-font-family:‘Cinzel Decorative’,serif;font-size:clamp(13px,2.5vw,22px);
-color:#f5e6c0;text-shadow:0 0 28px rgba(255,200,80,0.85);text-align:center;
-display:none;pointer-events:none;padding:18px 24px;z-index:601;}
-
-/* ── FADE ── */
+#controls{position:fixed;bottom:max(8px,env(safe-area-inset-bottom,8px));left:50%;transform:translateX(-50%);font-family:'Cinzel',serif;font-size:clamp(7px,1.2vw,10px);color:rgba(180,160,100,0.38);letter-spacing:0.1em;text-align:center;pointer-events:none;display:none;}
+#notification{position:fixed;top:48%;left:50%;transform:translate(-50%,-50%);font-family:'Cinzel Decorative',serif;font-size:clamp(13px,2.5vw,22px);color:#f5e6c0;text-shadow:0 0 28px rgba(255,200,80,0.85);text-align:center;display:none;pointer-events:none;padding:18px 24px;z-index:601;}
 #fade{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;z-index:99;transition:opacity 1.5s;}
 #fade.in{opacity:1;pointer-events:all;}
-#vignette{position:fixed;inset:0;pointer-events:none;z-index:8;
-background:radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.62) 100%);
-transition:opacity 0.8s;}
-
-/* ── ATMOSPHERE ── */
-#springGlow{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 62%,rgba(0,180,255,0.14),transparent 68%);
-display:none;pointer-events:none;animation:SPING 3s infinite;}
+#vignette{position:fixed;inset:0;pointer-events:none;z-index:8;background:radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.62) 100%);transition:opacity 0.8s;}
+#springGlow{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 62%,rgba(0,180,255,0.14),transparent 68%);display:none;pointer-events:none;animation:SPING 3s infinite;}
 @keyframes SPING{0%,100%{opacity:0.3}50%{opacity:1}}
-#holyGlow{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 28%,rgba(255,255,200,0.18),transparent 58%);
-display:none;pointer-events:none;animation:HPULSE 2s infinite;}
+#holyGlow{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 28%,rgba(255,255,200,0.18),transparent 58%);display:none;pointer-events:none;animation:HPULSE 2s infinite;}
 @keyframes HPULSE{0%,100%{opacity:0.45}50%{opacity:1}}
-
-/* ── SOUND HINT ── */
-#soundHint{position:fixed;top:max(8px,env(safe-area-inset-top,8px));left:max(8px,env(safe-area-inset-left,8px));z-index:200;
-font-family:‘Cinzel’,serif;font-size:clamp(9px,1.2vw,11px);letter-spacing:0.1em;color:rgba(200,170,70,0.5);
-pointer-events:all;cursor:pointer;background:rgba(5,3,20,0.6);padding:6px 10px;
-border:1px solid rgba(200,160,60,0.2);border-radius:3px;touch-action:manipulation;
--webkit-tap-highlight-color:transparent;min-height:36px;display:flex;align-items:center;}
+#soundHint{position:fixed;top:max(8px,env(safe-area-inset-top,8px));left:max(8px,env(safe-area-inset-left,8px));z-index:200;font-family:'Cinzel',serif;font-size:clamp(9px,1.2vw,11px);letter-spacing:0.1em;color:rgba(200,170,70,0.5);pointer-events:all;cursor:pointer;background:rgba(5,3,20,0.6);padding:6px 10px;border:1px solid rgba(200,160,60,0.2);border-radius:3px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:36px;display:flex;align-items:center;}
 #soundHint:hover,#soundHint:active{color:rgba(200,170,70,0.9);}
-
-/* ── WALK / SPRING / COMMUNION PROMPTS ── */
-#springPrompt,#communionPrompt,#walkPrompt{position:fixed;top:28%;left:50%;transform:translateX(-50%);
-font-family:‘Cinzel’,serif;font-size:clamp(12px,2.2vw,15px);letter-spacing:0.1em;
-background:rgba(5,3,20,0.8);border:1px solid rgba(100,160,255,0.48);
-padding:11px 28px;display:none;text-align:center;animation:PULSE 1.5s infinite;z-index:200;
-border-radius:4px;max-width:90vw;}
+#springPrompt,#communionPrompt,#walkPrompt{position:fixed;top:28%;left:50%;transform:translateX(-50%);font-family:'Cinzel',serif;font-size:clamp(12px,2.2vw,15px);letter-spacing:0.1em;background:rgba(5,3,20,0.8);border:1px solid rgba(100,160,255,0.48);padding:11px 28px;display:none;text-align:center;animation:PULSE 1.5s infinite;z-index:200;border-radius:4px;max-width:90vw;}
 #springPrompt{color:#88ccff;border-color:rgba(100,160,255,0.48);text-shadow:0 0 10px rgba(100,180,255,0.65);}
 #communionPrompt{color:#f0d060;border-color:rgba(200,160,60,0.48);text-shadow:0 0 10px rgba(255,200,60,0.5);}
 #walkPrompt{color:#c0e0a0;border-color:rgba(100,180,100,0.48);text-shadow:0 0 10px rgba(120,200,80,0.5);}
-
-/* ── OVERLAY PANELS (rosary, quiz, interrogation, candle) ── */
-.overlay-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-display:none;flex-direction:column;align-items:center;gap:12px;
-backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
-border-radius:10px;padding:24px 20px;
-width:min(96vw,620px);max-height:90vh;overflow-y:auto;
-z-index:600;pointer-events:all;}
+.overlay-panel{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);display:none;flex-direction:column;align-items:center;gap:12px;backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);border-radius:10px;padding:24px 20px;width:min(96vw,620px);max-height:90vh;overflow-y:auto;z-index:600;pointer-events:all;}
 .overlay-panel.show{display:flex;}
 #rosaryUI{background:rgba(4,2,18,0.92);border:1.5px solid rgba(215,175,65,0.55);}
-#rosaryTitle{font-family:‘Cinzel Decorative’,serif;font-size:clamp(14px,3vw,20px);color:#f0d060;
-text-shadow:0 0 18px rgba(255,200,60,0.75);letter-spacing:0.1em;text-align:center;}
-#rosaryMystery{font-family:‘IM Fell English’,serif;font-style:italic;font-size:clamp(14px,2.4vw,17px);
-color:#f8f0e0;text-align:center;max-width:480px;line-height:1.65;text-shadow:0 2px 8px rgba(0,0,0,0.9);}
+#rosaryTitle{font-family:'Cinzel Decorative',serif;font-size:clamp(14px,3vw,20px);color:#f0d060;text-shadow:0 0 18px rgba(255,200,60,0.75);letter-spacing:0.1em;text-align:center;}
+#rosaryMystery{font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(14px,2.4vw,17px);color:#f8f0e0;text-align:center;max-width:480px;line-height:1.65;text-shadow:0 2px 8px rgba(0,0,0,0.9);}
 #rosaryBeads{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:6px 0;}
-.rbead{width:44px;height:44px;border-radius:50%;cursor:pointer;touch-action:manipulation;
-background:radial-gradient(circle at 35% 30%,rgba(255,230,120,0.95),rgba(160,100,20,0.82));
-border:2px solid rgba(255,210,70,0.82);box-shadow:0 3px 10px rgba(0,0,0,0.6);
-transition:transform 0.12s;display:grid;place-items:center;font-size:16px;color:rgba(80,40,0,0.8);
--webkit-tap-highlight-color:transparent;}
+.rbead{width:44px;height:44px;border-radius:50%;cursor:pointer;touch-action:manipulation;background:radial-gradient(circle at 35% 30%,rgba(255,230,120,0.95),rgba(160,100,20,0.82));border:2px solid rgba(255,210,70,0.82);box-shadow:0 3px 10px rgba(0,0,0,0.6);transition:transform 0.12s;display:grid;place-items:center;font-size:16px;color:rgba(80,40,0,0.8);-webkit-tap-highlight-color:transparent;}
 .rbead:hover,.rbead:active{transform:scale(1.22);box-shadow:0 3px 18px rgba(0,0,0,0.85),0 0 20px rgba(255,190,40,0.85);}
-.rbead.prayed{background:radial-gradient(circle at 35% 30%,rgba(200,230,255,0.95),rgba(30,60,160,0.82));
-border-color:rgba(140,180,255,0.9);}
-#rosaryProgress{font-family:‘Cinzel’,serif;font-size:clamp(10px,1.8vw,13px);color:rgba(200,170,70,0.9);letter-spacing:0.12em;text-align:center;}
-
+.rbead.prayed{background:radial-gradient(circle at 35% 30%,rgba(200,230,255,0.95),rgba(30,60,160,0.82));border-color:rgba(140,180,255,0.9);}
+#rosaryProgress{font-family:'Cinzel',serif;font-size:clamp(10px,1.8vw,13px);color:rgba(200,170,70,0.9);letter-spacing:0.12em;text-align:center;}
 #quizUI{background:rgba(4,2,18,0.92);border:1.5px solid rgba(215,175,65,0.55);}
-#quizTitle{font-family:‘Cinzel Decorative’,serif;font-size:clamp(13px,2.6vw,18px);color:#f0d060;letter-spacing:0.08em;text-align:center;}
-#quizQ{font-family:‘IM Fell English’,serif;font-size:clamp(15px,2.8vw,19px);color:#f8f0e0;text-align:center;line-height:1.7;max-width:500px;}
+#quizTitle{font-family:'Cinzel Decorative',serif;font-size:clamp(13px,2.6vw,18px);color:#f0d060;letter-spacing:0.08em;text-align:center;}
+#quizQ{font-family:'IM Fell English',serif;font-size:clamp(15px,2.8vw,19px);color:#f8f0e0;text-align:center;line-height:1.7;max-width:500px;}
 #quizAnswers{display:flex;flex-direction:column;gap:10px;width:100%;}
-.qAnswer{font-family:‘Cinzel’,serif;font-size:clamp(12px,2vw,14px);color:#f5e6c0;
-background:rgba(255,200,80,0.08);border:1px solid rgba(200,160,60,0.38);
-padding:13px 18px;cursor:pointer;text-align:center;letter-spacing:0.06em;
-transition:all 0.2s;border-radius:4px;touch-action:manipulation;
--webkit-tap-highlight-color:transparent;min-height:48px;display:flex;align-items:center;justify-content:center;}
+.qAnswer{font-family:'Cinzel',serif;font-size:clamp(12px,2vw,14px);color:#f5e6c0;background:rgba(255,200,80,0.08);border:1px solid rgba(200,160,60,0.38);padding:13px 18px;cursor:pointer;text-align:center;letter-spacing:0.06em;transition:all 0.2s;border-radius:4px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:48px;display:flex;align-items:center;justify-content:center;}
 .qAnswer:hover,.qAnswer:active{background:rgba(255,200,80,0.22);border-color:rgba(200,160,60,0.85);}
 .qAnswer.correct{background:rgba(80,200,80,0.25);border-color:rgba(100,220,100,0.85);color:#90f090;}
 .qAnswer.wrong{background:rgba(200,60,60,0.22);border-color:rgba(220,80,80,0.75);color:#f08080;}
-#quizProgress{font-family:‘Cinzel’,serif;font-size:clamp(10px,1.6vw,11px);color:rgba(200,170,70,0.7);letter-spacing:0.12em;}
-
+#quizProgress{font-family:'Cinzel',serif;font-size:clamp(10px,1.6vw,11px);color:rgba(200,170,70,0.7);letter-spacing:0.12em;}
 #interrUI{background:rgba(4,2,18,0.94);border:1.5px solid rgba(180,100,60,0.55);}
-#interrLabel{font-family:‘Cinzel’,serif;font-size:clamp(11px,2.2vw,15px);color:#f0c080;letter-spacing:0.06em;text-align:center;text-transform:uppercase;}
-#interrText{font-family:‘IM Fell English’,serif;font-size:clamp(14px,2.6vw,18px);color:#f8f0e0;text-align:center;line-height:1.7;max-width:480px;}
+#interrLabel{font-family:'Cinzel',serif;font-size:clamp(11px,2.2vw,15px);color:#f0c080;letter-spacing:0.06em;text-align:center;text-transform:uppercase;}
+#interrText{font-family:'IM Fell English',serif;font-size:clamp(14px,2.6vw,18px);color:#f8f0e0;text-align:center;line-height:1.7;max-width:480px;}
 #interrChoices{display:flex;flex-direction:column;gap:10px;width:100%;}
-.iChoice{font-family:‘IM Fell English’,serif;font-style:italic;font-size:clamp(14px,2.4vw,17px);
-color:#f5e6c0;background:rgba(180,100,60,0.1);border:1px solid rgba(180,100,60,0.38);
-padding:13px 18px;cursor:pointer;text-align:center;transition:all 0.2s;border-radius:4px;
-touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:52px;
-display:flex;align-items:center;justify-content:center;}
+.iChoice{font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(14px,2.4vw,17px);color:#f5e6c0;background:rgba(180,100,60,0.1);border:1px solid rgba(180,100,60,0.38);padding:13px 18px;cursor:pointer;text-align:center;transition:all 0.2s;border-radius:4px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:52px;display:flex;align-items:center;justify-content:center;}
 .iChoice:hover,.iChoice:active{background:rgba(180,100,60,0.28);border-color:rgba(180,100,60,0.85);}
-
 #candleUI{background:rgba(4,2,18,0.92);border:1.5px solid rgba(255,160,30,0.55);}
-#candleTitle{font-family:‘Cinzel’,serif;font-size:clamp(13px,2.5vw,17px);color:#ffa040;letter-spacing:0.1em;text-align:center;}
-#candleDesc{font-family:‘IM Fell English’,serif;font-style:italic;font-size:clamp(13px,2.4vw,17px);color:#f8f0e0;text-align:center;line-height:1.7;max-width:420px;}
+#candleTitle{font-family:'Cinzel',serif;font-size:clamp(13px,2.5vw,17px);color:#ffa040;letter-spacing:0.1em;text-align:center;}
+#candleDesc{font-family:'IM Fell English',serif;font-style:italic;font-size:clamp(13px,2.4vw,17px);color:#f8f0e0;text-align:center;line-height:1.7;max-width:420px;}
 #candleFlame{font-size:clamp(48px,10vw,72px);text-align:center;animation:FLICKER 0.3s infinite alternate;}
 @keyframes FLICKER{from{transform:scaleY(1) rotate(-1deg)}to{transform:scaleY(1.08) rotate(1.5deg)}}
 #candleBar{width:min(280px,78vw);height:20px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,160,30,0.5);border-radius:10px;overflow:hidden;margin:4px 0;}
 #candleFill{height:100%;width:0%;background:linear-gradient(90deg,#ff6600,#ffd700);transition:width 0.1s;border-radius:10px;}
-#candleBtn{font-family:‘Cinzel’,serif;font-size:clamp(13px,2.2vw,15px);letter-spacing:0.1em;
-color:#ffa040;background:rgba(255,160,30,0.12);border:1.5px solid rgba(255,160,30,0.5);
-padding:16px 40px;cursor:pointer;transition:all 0.2s;user-select:none;-webkit-user-select:none;
-border-radius:6px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:56px;}
+#candleBtn{font-family:'Cinzel',serif;font-size:clamp(13px,2.2vw,15px);letter-spacing:0.1em;color:#ffa040;background:rgba(255,160,30,0.12);border:1.5px solid rgba(255,160,30,0.5);padding:16px 40px;cursor:pointer;transition:all 0.2s;user-select:none;-webkit-user-select:none;border-radius:6px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:56px;}
 #candleBtn.held{background:rgba(255,160,30,0.38);border-color:rgba(255,160,30,0.9);box-shadow:0 0 22px rgba(255,160,30,0.55);}
-
-/* ── JOYSTICK ── */
-#joystickWrap{position:fixed;bottom:max(30px,env(safe-area-inset-bottom,30px));
-left:max(24px,env(safe-area-inset-left,24px));
-width:clamp(130px,20vw,160px);height:clamp(130px,20vw,160px);
-pointer-events:all;user-select:none;-webkit-user-select:none;z-index:50;touch-action:none;}
-#joystickBase{position:absolute;inset:0;border-radius:50%;
-background:radial-gradient(circle at 38% 35%,rgba(255,220,120,0.16),rgba(10,5,30,0.72));
-border:2px solid rgba(200,160,60,0.48);box-shadow:0 0 16px rgba(200,160,60,0.14);backdrop-filter:blur(4px);}
-#joystickBase::before{content:’’;position:absolute;inset:10px;border-radius:50%;border:1px dashed rgba(200,160,60,0.22);}
-#joystickBase::after{content:’’;position:absolute;inset:0;border-radius:50%;
-background:linear-gradient(rgba(200,160,60,0.12) 0,rgba(200,160,60,0.12) 100%) center/1px 100% no-repeat,
-linear-gradient(rgba(200,160,60,0.12) 0,rgba(200,160,60,0.12) 100%) center/100% 1px no-repeat;}
-#joystickKnob{position:absolute;width:clamp(46px,8vw,58px);height:clamp(46px,8vw,58px);
-top:50%;left:50%;transform:translate(-50%,-50%);
-border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,230,140,0.95),rgba(160,100,20,0.88));
-border:2px solid rgba(255,210,80,0.88);box-shadow:0 4px 18px rgba(0,0,0,0.62),0 0 13px rgba(255,200,60,0.32);
-display:grid;place-items:center;font-size:18px;color:rgba(255,240,180,0.72);cursor:grab;touch-action:none;}
-.jDir{position:absolute;font-size:10px;color:rgba(200,160,60,0.44);pointer-events:none;}
-.jDir.u{top:3px;left:50%;transform:translateX(-50%)}
-.jDir.d{bottom:3px;left:50%;transform:translateX(-50%)}
-.jDir.l{left:3px;top:50%;transform:translateY(-50%)}
-.jDir.r{right:3px;top:50%;transform:translateY(-50%)}
-
-/* ── ACTION BUTTONS ── */
-#actionButtons{position:fixed;bottom:max(26px,env(safe-area-inset-bottom,26px));
-right:max(22px,env(safe-area-inset-right,22px));
-display:flex;flex-direction:column;align-items:center;gap:12px;
-pointer-events:all;z-index:50;user-select:none;}
-.actBtn{width:clamp(62px,12vw,76px);height:clamp(62px,12vw,76px);border-radius:50%;
-display:grid;place-items:center;font-family:‘Cinzel’,serif;font-weight:600;
-cursor:pointer;border:none;outline:none;transition:transform 0.08s,filter 0.08s;
--webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;overflow:hidden;}
+#dpad{position:fixed;bottom:max(30px,env(safe-area-inset-bottom,30px));left:max(24px,env(safe-area-inset-left,24px));display:grid;grid-template-columns:repeat(3,clamp(44px,12vw,56px));grid-template-rows:repeat(3,clamp(44px,12vw,56px));gap:6px;pointer-events:all;user-select:none;-webkit-user-select:none;z-index:50;touch-action:none;}
+.dbtn{display:flex;align-items:center;justify-content:center;font-size:clamp(20px,5vw,26px);line-height:1;color:rgba(255,240,180,0.92);background:radial-gradient(circle at 38% 32%,rgba(255,220,120,0.18),rgba(10,5,30,0.74));border:2px solid rgba(200,160,60,0.5);border-radius:14px;box-shadow:0 3px 12px rgba(0,0,0,0.5);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);-webkit-tap-highlight-color:transparent;touch-action:none;cursor:pointer;padding:0;transition:background 0.08s,transform 0.08s,border-color 0.08s;}
+.dbtn.diag{font-size:clamp(15px,4vw,20px);color:rgba(255,235,170,0.7);}
+.dbtn.active{background:radial-gradient(circle at 35% 30%,rgba(255,230,140,0.96),rgba(180,120,30,0.92));border-color:rgba(255,210,80,0.95);color:#1a1208;transform:scale(0.92);box-shadow:0 0 15px rgba(255,200,60,0.42);}
+.dcenter{display:flex;align-items:center;justify-content:center;font-size:clamp(16px,4vw,20px);color:rgba(200,160,60,0.5);pointer-events:none;}
+#actionButtons{position:fixed;bottom:max(26px,env(safe-area-inset-bottom,26px));right:max(22px,env(safe-area-inset-right,22px));display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:all;z-index:50;user-select:none;}
+.actBtn{width:clamp(62px,12vw,76px);height:clamp(62px,12vw,76px);border-radius:50%;display:grid;place-items:center;font-family:'Cinzel',serif;font-weight:600;cursor:pointer;border:none;outline:none;transition:transform 0.08s,filter 0.08s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;position:relative;overflow:hidden;}
 .actBtn:active{transform:scale(0.84);filter:brightness(1.38);}
-#btnE{background:radial-gradient(circle at 38% 32%,rgba(255,230,120,0.95),rgba(155,88,10,0.9));
-border:2.5px solid rgba(255,210,70,0.9);box-shadow:0 4px 20px rgba(0,0,0,0.72),0 0 18px rgba(255,190,40,0.4);
-font-size:clamp(18px,4vw,24px);color:#3a1a00;}
-#btnContinue{background:radial-gradient(circle at 38% 32%,rgba(180,210,255,0.9),rgba(38,58,120,0.88));
-border:2.5px solid rgba(140,180,255,0.8);box-shadow:0 4px 20px rgba(0,0,0,0.72),0 0 18px rgba(100,140,255,0.28);
-font-size:clamp(20px,4.5vw,26px);color:#f5f0ff;}
-.actLabel{font-family:‘Cinzel’,serif;font-size:clamp(7px,1.4vw,10px);letter-spacing:0.1em;
-color:rgba(200,170,80,0.65);text-transform:uppercase;margin-top:-6px;pointer-events:none;}
-
-/* ── LANDSCAPE-ONLY ORIENTATION HINT (show in portrait on tiny phones) ── */
-#orientHint{position:fixed;inset:0;background:rgba(4,2,18,0.96);z-index:9999;
-display:none;flex-direction:column;align-items:center;justify-content:center;
-font-family:‘Cinzel’,serif;color:#f5e6c0;text-align:center;gap:18px;pointer-events:none;}
+#btnE{background:radial-gradient(circle at 38% 32%,rgba(255,230,120,0.95),rgba(155,88,10,0.9));border:2.5px solid rgba(255,210,70,0.9);box-shadow:0 4px 20px rgba(0,0,0,0.72),0 0 18px rgba(255,190,40,0.4);font-size:clamp(18px,4vw,24px);color:#3a1a00;}
+#btnContinue{background:radial-gradient(circle at 38% 32%,rgba(180,210,255,0.9),rgba(38,58,120,0.88));border:2.5px solid rgba(140,180,255,0.8);box-shadow:0 4px 20px rgba(0,0,0,0.72),0 0 18px rgba(100,140,255,0.28);font-size:clamp(20px,4.5vw,26px);color:#f5f0ff;}
+.actLabel{font-family:'Cinzel',serif;font-size:clamp(7px,1.4vw,10px);letter-spacing:0.1em;color:rgba(200,170,80,0.65);text-transform:uppercase;margin-top:-6px;pointer-events:none;}
+#orientHint{position:fixed;inset:0;background:rgba(4,2,18,0.96);z-index:9999;display:none;flex-direction:column;align-items:center;justify-content:center;font-family:'Cinzel',serif;color:#f5e6c0;text-align:center;gap:18px;pointer-events:none;}
 #orientHint .oh-icon{font-size:56px;animation:ROTATE 2s ease-in-out infinite;}
 @keyframes ROTATE{0%,100%{transform:rotate(0deg)}50%{transform:rotate(90deg)}}
 #orientHint p{font-size:clamp(13px,3vw,18px);letter-spacing:0.12em;color:#c4a870;padding:0 24px;}
-
-/* ── RESPONSIVE — SMALL PHONES ── */
 @media (max-width: 480px) {
 #dialogue{top:max(8%, env(safe-area-inset-top,8%));padding:16px 16px 14px;}
 #dialogueText{font-size:clamp(14px,4.2vw,20px);}
@@ -262,20 +120,17 @@ font-family:‘Cinzel’,serif;color:#f5e6c0;text-align:center;gap:18px;pointer-
 #rosaryBeads{gap:8px;}
 .rbead{width:40px;height:40px;}
 }
-
-/* ── RESPONSIVE — LANDSCAPE MOBILE ── */  
 @media (max-height: 450px) and (orientation: landscape) {
 #dialogue{top:max(6%, env(safe-area-inset-top,6%));max-height:60vh;padding:14px 20px 12px;}
 #dialogueText{font-size:clamp(13px,2.8vw,18px);line-height:1.6;}
 #taskPanel{top:max(52px, calc(env(safe-area-inset-top,0px) + 48px));}
 #chapterBanner{padding:max(8px,env(safe-area-inset-top,8px)) 12px 12px;}
-#joystickWrap{bottom:max(16px,env(safe-area-inset-bottom,16px));left:max(16px,env(safe-area-inset-left,16px));width:120px;height:120px;}
+#dpad{bottom:max(12px,env(safe-area-inset-bottom,12px));left:max(12px,env(safe-area-inset-left,12px));gap:5px;grid-template-columns:repeat(3,clamp(40px,11vw,52px));grid-template-rows:repeat(3,clamp(40px,11vw,52px));}
 #actionButtons{bottom:max(16px,env(safe-area-inset-bottom,16px));right:max(16px,env(safe-area-inset-right,16px));gap:8px;}
 .actBtn{width:58px;height:58px;}
 .overlay-panel{max-height:88vh;padding:14px 16px;gap:8px;}
 }
 </style>
-
 </head>
 <body>
 <canvas id="gameCanvas"></canvas>
@@ -305,9 +160,7 @@ font-family:‘Cinzel’,serif;color:#f5e6c0;text-align:center;gap:18px;pointer-
   <div id="notification"></div>
   <div id="controls">WASD · Joystick to Move &nbsp;|&nbsp; E to Interact</div>
   <div id="vignette"></div>
-  <div id="zoomHint" style="position:fixed;bottom:8px;left:50%;transform:translateX(-50%);
-    color:rgba(255,255,255,0.32);font-size:11px;font-family:inherit;pointer-events:none;
-    letter-spacing:0.08em;z-index:20;text-align:center;transition:opacity 1.5s;">
+  <div id="zoomHint" style="position:fixed;bottom:8px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.32);font-size:11px;font-family:inherit;pointer-events:none;letter-spacing:0.08em;z-index:20;text-align:center;transition:opacity 1.5s;">
     <span class="kb-hint">Q = zoom out &nbsp;·&nbsp; Z = reset &nbsp;·&nbsp; </span>Pinch to zoom</div>
   <div id="fade"></div>
   <div id="springGlow"></div>
@@ -340,12 +193,16 @@ font-family:‘Cinzel’,serif;color:#f5e6c0;text-align:center;gap:18px;pointer-
     <div id="candleBar"><div id="candleFill"></div></div>
     <button id="candleBtn">Hold to Pray in Ecstasy</button>
   </div>
-  <div id="joystickWrap">
-    <div id="joystickBase">
-      <span class="jDir u">▲</span><span class="jDir d">▼</span>
-      <span class="jDir l">◀</span><span class="jDir r">▶</span>
-    </div>
-    <div id="joystickKnob">✝</div>
+  <div id="dpad">
+    <button class="dbtn diag" data-x="-1" data-y="-1" aria-label="up-left">↖</button>
+    <button class="dbtn" data-x="0" data-y="-1" aria-label="up">↑</button>
+    <button class="dbtn diag" data-x="1" data-y="-1" aria-label="up-right">↗</button>
+    <button class="dbtn" data-x="-1" data-y="0" aria-label="left">←</button>
+    <div class="dcenter">✝</div>
+    <button class="dbtn" data-x="1" data-y="0" aria-label="right">→</button>
+    <button class="dbtn diag" data-x="-1" data-y="1" aria-label="down-left">↙</button>
+    <button class="dbtn" data-x="0" data-y="1" aria-label="down">↓</button>
+    <button class="dbtn diag" data-x="1" data-y="1" aria-label="down-right">↘</button>
   </div>
   <div id="actionButtons">
     <button class="actBtn" id="btnContinue">⏩</button>
@@ -358,11 +215,10 @@ font-family:‘Cinzel’,serif;color:#f5e6c0;text-align:center;gap:18px;pointer-
 <script>
 'use strict';
 
-// Position helper — avoids overwriting THREE.Vector3
 function pm(mesh,x,y,z){mesh.position.set(x,y,z);return mesh;}
-const canvas=document.getElementById(‘gameCanvas’);
+const canvas=document.getElementById(`gameCanvas`);
 let W=window.innerWidth,H=window.innerHeight;
-const renderer=new THREE.WebGLRenderer({canvas,antialias:window.devicePixelRatio<2,powerPreference:‘high-performance’});
+const renderer=new THREE.WebGLRenderer({canvas,antialias:window.devicePixelRatio<2,powerPreference:`high-performance`});
 renderer.setSize(W,H);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
@@ -372,31 +228,25 @@ const clock=new THREE.Clock();
 function onResize(){
 W=window.innerWidth;H=window.innerHeight;
 renderer.setSize(W,H);camera.aspect=W/H;camera.updateProjectionMatrix();
-// Show orientation hint on portrait phones (not tablets)
-const oh=document.getElementById(‘orientHint’);
+const oh=document.getElementById(`orientHint`);
 if(oh){const isPortrait=W<H,isPhone=Math.min(W,H)<600;
-oh.style.display=(isPortrait&&isPhone&&G.chapter>=0)?‘flex’:‘none’;}
+oh.style.display=(isPortrait&&isPhone&&G.chapter>=0)?`flex`:`none`;}
 }
-window.addEventListener(‘resize’,onResize);
-window.addEventListener(‘orientationchange’,()=>setTimeout(onResize,300));
+window.addEventListener(`resize`,onResize);
+window.addEventListener(`orientationchange`,()=>setTimeout(onResize,300));
 
 const G={
 chapter:-1,dialogueActive:false,dialogueQueue:[],dialogueIdx:0,dialogueCb:null,
 tasks:{},completedTasks:{},
 player:{mesh:null,canMove:true},
 camera:{
-// follow: trails behind player. fixed: locked position. cinematic: scripted arc. zoom: close-up
-mode:‘follow’,
-offset:new THREE.Vector3(0,9,13),  // used in follow mode
-// fixed/cinematic/zoom targets (set per chapter)
+mode:`follow`,
+offset:new THREE.Vector3(0,9,13),
 pos:null, look:null,
-// Dynamic FOV — zoom in for intimate scenes, out for vistas
 fov:56, fovCur:56,
-// Who/what to look toward (overrides default player-tracking)
 focusMesh:null, focusWeight:0,
-// Cinematic orbit
 orbitCenter:null, orbitR:0, orbitY:0, orbitSpeed:0, _orbitAngle:0,
-shake:0, _orbitAngle:0,
+shake:0,
 },
 nearbyInteractable:null,interactables:[],npcs:[],chapterObjects:[],
 ourLady:null,springWater:null,keys:{},joy:{x:0,y:0},groundFn:null,
@@ -406,152 +256,149 @@ _awaitingWalk:false,_walkTarget:null,_walkRadius:2,_onWalkArrived:null,
 _nicheLight:null,_fireLight:null,_candleLight:null,_springPts:null,_springPtsPos:null,
 };
 
-window.addEventListener(‘keydown’,e=>{
+window.addEventListener(`keydown`,e=>{
 G.keys[e.code]=true;
-if(e.code===‘Space’||e.code===‘Enter’)advanceDialogue();
-// Q/E zoom out/in manually
-if(e.code===‘KeyQ’)G.camera.fov=Math.min(G.camera.fov+6,75);
-if(e.code===‘KeyE’&&!G._eHeld){
-// E is interact; only zoom if no interactable nearby
+if(e.code===`Space`||e.code===`Enter`)advanceDialogue();
+if(e.code===`KeyQ`)G.camera.fov=Math.min(G.camera.fov+6,75);
+if(e.code===`KeyE`&&!G._eHeld){
 if(!G.nearbyInteractable&&!G.dialogueActive)G.camera.fov=Math.max(G.camera.fov-6,30);
 }
-// Z = reset zoom
-if(e.code===‘KeyZ’){G.camera.fov=56;G.camera.mode=‘follow’;}
+if(e.code===`KeyZ`){G.camera.fov=56;G.camera.mode=`follow`;}
 });
 
-// Tap dialogue to advance (mobile)
 (function(){
-const dlg=document.getElementById(‘dialogue’);
+const dlg=document.getElementById(`dialogue`);
 let lastTap=0;
-dlg.addEventListener(‘touchend’,e=>{
+dlg.addEventListener(`touchend`,e=>{
 const now=Date.now();
-if(now-lastTap<600)return; // debounce
+if(now-lastTap<600)return;
 lastTap=now;
 e.preventDefault();
 advanceDialogue();
 },{passive:false});
-dlg.addEventListener(‘click’,advanceDialogue);
+dlg.addEventListener(`click`,advanceDialogue);
 })();
-window.addEventListener(‘keyup’,e=>{G.keys[e.code]=false;});
+window.addEventListener(`keyup`,e=>{G.keys[e.code]=false;});
 
-// Joystick
+// ── Directional TAP / HOLD pad (press a direction to move, release to stop) ──
 (function(){
-const wrap=document.getElementById(‘joystickWrap’),base=document.getElementById(‘joystickBase’),knob=document.getElementById(‘joystickKnob’);
-const R=52,DEAD=0.14,SZ=152;let active=false,touchId=null,ox=0,oy=0;
-function centre(){const r=wrap.getBoundingClientRect();return{cx:r.left+r.width/2,cy:r.top+r.height/2};}
-function place(x,y){let l=Math.max(8,Math.min(W-SZ-8,x-SZ/2)),t=Math.max(8,Math.min(H-SZ-8,y-SZ/2));
-wrap.style.cssText+=`;left:${l}px;top:${t}px;bottom:auto;right:auto;`;}
-function move(cx,cy){const dx=cx-ox,dy=cy-oy,dist=Math.sqrt(dx*dx+dy*dy),cl=Math.min(dist,R),a=Math.atan2(dy,dx);
-const kx=Math.cos(a)*cl,ky=Math.sin(a)*cl;
-knob.style.transform=`translate(calc(-50% + ${kx}px),calc(-50% + ${ky}px))`;
-const nx=kx/R,ny=ky/R;
-if(Math.abs(nx)<DEAD&&Math.abs(ny)<DEAD){G.joy.x=0;G.joy.y=0;}
-else{const a8=Math.round(Math.atan2(ny,nx)/(Math.PI/4))*(Math.PI/4),mag=Math.min(Math.sqrt(nx*nx+ny*ny),1);
-G.joy.x=+(Math.cos(a8)*mag).toFixed(2);G.joy.y=+(Math.sin(a8)*mag).toFixed(2);}}
-function reset(){active=false;touchId=null;G.joy.x=0;G.joy.y=0;knob.style.transform=‘translate(-50%,-50%)’;}
-base.addEventListener(‘mousedown’,e=>{if(active)return;e.preventDefault();active=true;const c=centre();ox=c.cx;oy=c.cy;move(e.clientX,e.clientY);});
-window.addEventListener(‘mousemove’,e=>{if(!active||touchId!==null)return;move(e.clientX,e.clientY);});
-window.addEventListener(‘mouseup’,()=>{if(active&&touchId===null)reset();});
-window.addEventListener(‘touchstart’,e=>{
-if(active)return;
-// Don’t intercept touches on UI panels, dialogue, or buttons
-const target=e.target;
-const isUI=target.closest(’.overlay-panel,#dialogue,#actionButtons,#soundHint,#titleScreen,#taskPanel,#interrUI,#quizUI,#rosaryUI,#candleUI’);
-if(isUI)return;
-const t=Array.from(e.changedTouches).find(t=>t.clientX<W*0.65);
-if(!t)return;
-e.preventDefault();active=true;touchId=t.identifier;ox=t.clientX;oy=t.clientY;place(ox,oy);move(ox,oy);
-},{passive:false});
-window.addEventListener(‘touchmove’,e=>{if(!active)return;e.preventDefault();for(const t of e.changedTouches){if(t.identifier===touchId){move(t.clientX,t.clientY);break;}}},{passive:false});
-window.addEventListener(‘touchend’,e=>{for(const t of e.changedTouches){if(t.identifier===touchId){reset();break;}}});
-window.addEventListener(‘touchcancel’,()=>reset());
-wrap.addEventListener(‘touchcancel’,()=>reset());
+const pad=document.getElementById(`dpad`);
+if(!pad)return;
+const btns=Array.from(pad.querySelectorAll(`.dbtn`));
+// Track which directions are currently pressed (supports multi-touch holds)
+const held=new Map(); // pointerId/btn -> {bx,by}
+function recompute(){
+let x=0,y=0;
+held.forEach(d=>{x+=d.bx;y+=d.by;});
+// Clamp each axis to -1..1 so opposite presses cancel; diagonal magnitude is
+// normalised downstream in updatePlayer.
+x=Math.max(-1,Math.min(1,x));
+y=Math.max(-1,Math.min(1,y));
+G.joy.x=x;G.joy.y=y;
+}
+function press(btn){
+if(!btn)return;
+const bx=parseFloat(btn.dataset.x),by=parseFloat(btn.dataset.y);
+held.set(btn,{bx,by});
+btn.classList.add(`active`);
+recompute();
+if(navigator.vibrate){try{navigator.vibrate(8);}catch(e){}}
+}
+function release(btn){
+if(!btn)return;
+held.delete(btn);
+btn.classList.remove(`active`);
+recompute();
+}
+btns.forEach(btn=>{
+btn.addEventListener(`touchstart`,e=>{e.preventDefault();e.stopPropagation();press(btn);},{passive:false});
+btn.addEventListener(`touchend`,e=>{e.preventDefault();release(btn);},{passive:false});
+btn.addEventListener(`touchcancel`,e=>{release(btn);});
+btn.addEventListener(`mousedown`,e=>{e.preventDefault();press(btn);});
+btn.addEventListener(`mouseup`,e=>{e.preventDefault();release(btn);});
+btn.addEventListener(`mouseleave`,e=>{release(btn);});
+// Prevent the held style sticking if a touch slides off the button
+btn.addEventListener(`contextmenu`,e=>e.preventDefault());
+});
+// Release everything if the window loses focus
+window.addEventListener(`blur`,()=>{btns.forEach(release);});
 })();
 
-// ── Pinch-to-zoom ──
 (function(){
 let lastDist=0;
-window.addEventListener(‘touchstart’,e=>{if(e.touches.length===2)lastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);},{passive:true});
-window.addEventListener(‘touchmove’,e=>{
+window.addEventListener(`touchstart`,e=>{if(e.touches.length===2)lastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);},{passive:true});
+window.addEventListener(`touchmove`,e=>{
 if(e.touches.length!==2)return;
 const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
 if(lastDist>0){const delta=(lastDist-d)*0.08;G.camera.fov=Math.max(28,Math.min(78,G.camera.fov+delta));}
 lastDist=d;
 },{passive:true});
-window.addEventListener(‘touchend’,e=>{if(e.touches.length<2)lastDist=0;},{passive:true});
+window.addEventListener(`touchend`,e=>{if(e.touches.length<2)lastDist=0;},{passive:true});
 })();
 
-// Action buttons
 (function(){
-const btnE=document.getElementById(‘btnE’),btnC=document.getElementById(‘btnContinue’);
+const btnE=document.getElementById(`btnE`),btnC=document.getElementById(`btnContinue`);
 function pe(e){e.preventDefault();if(G.nearbyInteractable&&!G.dialogueActive)G.nearbyInteractable.onInteract();}
 function pc(e){e.preventDefault();advanceDialogue();}
-btnE.addEventListener(‘touchstart’,pe,{passive:false});btnE.addEventListener(‘mousedown’,pe);
-btnC.addEventListener(‘touchstart’,pc,{passive:false});btnC.addEventListener(‘mousedown’,pc);
-function tick(){btnC.style.opacity=G.dialogueActive?‘1’:‘0.35’;btnE.style.opacity=(!G.dialogueActive&&G.nearbyInteractable)?‘1’:‘0.38’;requestAnimationFrame(tick);}tick();
+btnE.addEventListener(`touchstart`,pe,{passive:false});btnE.addEventListener(`mousedown`,pe);
+btnC.addEventListener(`touchstart`,pc,{passive:false});btnC.addEventListener(`mousedown`,pc);
+function tick(){btnC.style.opacity=G.dialogueActive?`1`:`0.35`;btnE.style.opacity=(!G.dialogueActive&&G.nearbyInteractable)?`1`:`0.38`;requestAnimationFrame(tick);}tick();
 })();
 
-// Audio
 const AUDIO=(function(){
 let ctx=null,wind=null,water=null,church=null,enabled=false;
 function ensure(){if(!ctx)ctx=new(window.AudioContext||window.webkitAudioContext)();}
 function makeNoise(freq){const buf=ctx.createBuffer(1,ctx.sampleRate*4,ctx.sampleRate),d=buf.getChannelData(0);
 for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
 const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;
-const lp=ctx.createBiquadFilter();lp.type=‘lowpass’;lp.frequency.value=freq;
+const lp=ctx.createBiquadFilter();lp.type=`lowpass`;lp.frequency.value=freq;
 const g=ctx.createGain();g.gain.value=0;src.connect(lp);lp.connect(g);g.connect(ctx.destination);src.start();return{gain:g};}
-function makeChurch(){const o1=ctx.createOscillator(),o2=ctx.createOscillator();o1.type=‘sine’;o2.type=‘sine’;
+function makeChurch(){const o1=ctx.createOscillator(),o2=ctx.createOscillator();o1.type=`sine`;o2.type=`sine`;
 o1.frequency.value=220;o2.frequency.value=277;const g=ctx.createGain();g.gain.value=0;
 o1.connect(g);o2.connect(g);g.connect(ctx.destination);o1.start();o2.start();return{gain:g};}
 function ramp(n,v,t=1.2){if(n&&enabled&&ctx)n.gain.gain.linearRampToValueAtTime(v,ctx.currentTime+t);}
 return{
-start(){ensure();enabled=true;wind=makeNoise(400);water=makeNoise(900);church=makeChurch();document.getElementById(‘soundHint’).textContent=‘♪ Sound: ON’;},
-stop(){enabled=false;[wind,water,church].forEach(n=>{if(n)n.gain.gain.value=0;});wind=null;water=null;church=null;document.getElementById(‘soundHint’).textContent=‘♪ Sound: OFF’;},
+start(){ensure();enabled=true;wind=makeNoise(400);water=makeNoise(900);church=makeChurch();document.getElementById(`soundHint`).textContent=`♪ Sound: ON`;},
+stop(){enabled=false;[wind,water,church].forEach(n=>{if(n)n.gain.gain.value=0;});wind=null;water=null;church=null;document.getElementById(`soundHint`).textContent=`♪ Sound: OFF`;},
 setWind(v){ramp(wind,v*0.055);},setWater(v){ramp(water,v*0.07);},setChurch(v){ramp(church,v*0.028);},isOn(){return enabled;}
 };
 })();
 function toggleAmbient(){if(AUDIO.isOn())AUDIO.stop();else{AUDIO.start();AUDIO.setWind(0.4);}}
 
-// Utilities
 function rand(a,b){return a+(b-a)*Math.random();}
 function addC(o){scene.add(o);G.chapterObjects.push(o);return o;}
-function notify(txt,dur=2600){const n=document.getElementById(‘notification’);n.textContent=txt;n.style.display=‘block’;setTimeout(()=>n.style.display=‘none’,dur);}
-function fadeOut(cb){document.getElementById(‘fade’).classList.add(‘in’);setTimeout(cb,1500);}
-function fadeIn(cb){setTimeout(()=>{document.getElementById(‘fade’).classList.remove(‘in’);if(cb)cb();},400);}
-function showChapter(title,date){const b=document.getElementById(‘chapterBanner’);
-document.getElementById(‘chapterTitle’).textContent=title;document.getElementById(‘chapterDate’).textContent=date;
-b.classList.add(‘show’);setTimeout(()=>b.classList.remove(‘show’),3500);}
-function showAge(txt){const a=document.getElementById(‘ageBadge’);a.textContent=txt;a.style.display=‘block’;}
-function hideEl(id){document.getElementById(id).style.display=‘none’;}
-function showEl(id){document.getElementById(id).style.display=‘block’;}
+function notify(txt,dur=2600){const n=document.getElementById(`notification`);n.textContent=txt;n.style.display=`block`;setTimeout(()=>n.style.display=`none`,dur);}
+function fadeOut(cb){document.getElementById(`fade`).classList.add(`in`);setTimeout(cb,1500);}
+function fadeIn(cb){setTimeout(()=>{document.getElementById(`fade`).classList.remove(`in`);if(cb)cb();},400);}
+function showChapter(title,date){const b=document.getElementById(`chapterBanner`);
+document.getElementById(`chapterTitle`).textContent=title;document.getElementById(`chapterDate`).textContent=date;
+b.classList.add(`show`);setTimeout(()=>b.classList.remove(`show`),3500);}
+function showAge(txt){const a=document.getElementById(`ageBadge`);a.textContent=txt;a.style.display=`block`;}
+function hideEl(id){document.getElementById(id).style.display=`none`;}
+function showEl(id){document.getElementById(id).style.display=`block`;}
 
-// Dialogue
 function speak(queue,cb){
 G.dialogueQueue=queue;G.dialogueIdx=0;G.dialogueCb=cb;G.dialogueActive=true;G.player.canMove=false;
-showEl(‘dialogue’);showEl(‘dialogueDimmer’);showLine(0);}
+showEl(`dialogue`);showEl(`dialogueDimmer`);showLine(0);}
 function showLine(i){if(i>=G.dialogueQueue.length){endDialogue();return;}
 const l=G.dialogueQueue[i];
-document.getElementById(‘dialogueSpeaker’).textContent=l.speaker||’’;
-document.getElementById(‘dialogueText’).textContent=l.text;}
+document.getElementById(`dialogueSpeaker`).textContent=l.speaker||``;
+document.getElementById(`dialogueText`).textContent=l.text;}
 function advanceDialogue(){if(!G.dialogueActive)return;G.dialogueIdx++;if(G.dialogueIdx>=G.dialogueQueue.length){endDialogue();return;}showLine(G.dialogueIdx);}
-function endDialogue(){G.dialogueActive=false;G.player.canMove=true;hideEl(‘dialogue’);hideEl(‘dialogueDimmer’);if(G.dialogueCb){const c=G.dialogueCb;G.dialogueCb=null;c();}}
+function endDialogue(){G.dialogueActive=false;G.player.canMove=true;hideEl(`dialogue`);hideEl(`dialogueDimmer`);if(G.dialogueCb){const c=G.dialogueCb;G.dialogueCb=null;c();}}
 
-// Tasks
-function initTasks(arr){G.tasks={};G.completedTasks={};arr.forEach(t=>{G.tasks[t.id]=t;});renderTasks();showEl(‘taskPanel’);}
-function completeTask(id){if(!G.completedTasks[id]){G.completedTasks[id]=true;renderTasks();notify(‘✓ ‘+G.tasks[id].label);checkTasks();}}
-function renderTasks(){const l=document.getElementById(‘taskList’);l.innerHTML=’’;Object.values(G.tasks).forEach(t=>{const d=document.createElement(‘div’);d.className=‘task-item’+(G.completedTasks[t.id]?’ done’:’’);d.textContent=t.label;l.appendChild(d);});}
+function initTasks(arr){G.tasks={};G.completedTasks={};arr.forEach(t=>{G.tasks[t.id]=t;});renderTasks();showEl(`taskPanel`);}
+function completeTask(id){if(!G.completedTasks[id]){G.completedTasks[id]=true;renderTasks();notify(`✓ `+G.tasks[id].label);checkTasks();}}
+function renderTasks(){const l=document.getElementById(`taskList`);l.innerHTML=``;Object.values(G.tasks).forEach(t=>{const d=document.createElement(`div`);d.className=`task-item`+(G.completedTasks[t.id]?` done`:``);d.textContent=t.label;l.appendChild(d);});}
 function checkTasks(){if(Object.keys(G.tasks).every(id=>G.completedTasks[id]))setTimeout(onAllTasksDone,900);}
 let onAllTasksDone=()=>{};
-function hideTasks(){hideEl(‘taskPanel’);}
+function hideTasks(){hideEl(`taskPanel`);}
 
-// Interactables
 function createInteractable(mesh,label,onInteract){
 const item={mesh,label,onInteract};
-// Glowing orb above the object
 const gg=new THREE.Mesh(new THREE.SphereGeometry(0.15,10,10),new THREE.MeshBasicMaterial({color:0xffee55,transparent:true,opacity:0.8}));
 gg.position.copy(mesh.position);gg.position.y+=1.85;
 item.glowMesh=gg;item.glowMat=gg.material;
-// Small cross on top of the orb (sacred marker)
 const crx=new THREE.Mesh(new THREE.BoxGeometry(0.04,0.22,0.04),new THREE.MeshBasicMaterial({color:0xffd700}));
 crx.position.copy(gg.position);crx.position.y+=0.22;
 const crxh=new THREE.Mesh(new THREE.BoxGeometry(0.14,0.04,0.04),new THREE.MeshBasicMaterial({color:0xffd700}));
@@ -560,28 +407,26 @@ addC(gg);addC(crx);addC(crxh);
 item._crx=crx;item._crxh=crxh;
 G.interactables.push(item);return item;}
 
-// Clear chapter
 function clearChapter(){
 G.chapterObjects.forEach(o=>scene.remove(o));G.chapterObjects=[];G.interactables=[];G.npcs=[];
 G.ourLady=null;G.springWater=null;G._nicheLight=null;G._fireLight=null;G._candleLight=null;
 G._springPts=null;G._springPtsPos=null;
 G._awaitingSpring=false;G._springTarget=null;G._onSpringArrived=null;
 G._awaitingWalk=false;G._walkTarget=null;G._onWalkArrived=null;
-[‘holyGlow’,‘springGlow’,‘springPrompt’,‘communionPrompt’,‘walkPrompt’].forEach(hideEl);
-[‘rosaryUI’,‘quizUI’,‘interrUI’,‘candleUI’].forEach(id=>{const el=document.getElementById(id);el.style.display=‘none’;el.classList.remove(‘show’);});
+[`holyGlow`,`springGlow`,`springPrompt`,`communionPrompt`,`walkPrompt`].forEach(hideEl);
+[`rosaryUI`,`quizUI`,`interrUI`,`candleUI`].forEach(id=>{const el=document.getElementById(id);el.style.display=`none`;el.classList.remove(`show`);});
 AUDIO.setWind(0);AUDIO.setWater(0);AUDIO.setChurch(0);hideTasks();onAllTasksDone=()=>{};G._walkRadius=2;G.groundFn=null;G._fireflies=null;G._stepT=null;
+G.tasks={};G.completedTasks={};
 if(G.player.mesh){G.player.mesh.rotation.x=0;G.player.mesh.rotation.z=0;}
-// Reset camera to default follow mode
-G.camera.mode=‘follow’;G.camera.fov=56;G.camera.focusMesh=null;G.camera.focusWeight=0;
+G.camera.mode=`follow`;G.camera.fov=56;G.camera.focusMesh=null;G.camera.focusWeight=0;
 G.camera.pos=null;G.camera.look=null;G.camera.orbitCenter=null;G.camera.orbitSpeed=0;
 camera.fov=56;camera.updateProjectionMatrix();}
 
-// Transition
 function transitionTo(idx){
-const oh=document.getElementById(‘orientHint’);if(oh)oh.style.display=‘none’;
+const oh=document.getElementById(`orientHint`);if(oh)oh.style.display=`none`;
 if(G.transitioning)return;G.transitioning=true;G.player.canMove=false;
 fadeOut(()=>{G.chapter=idx;const ch=CHAPTERS[idx];scene.clear();clearChapter();
-hideEl(‘dialogue’);hideEl(‘dialogueDimmer’);G.dialogueActive=false;
+hideEl(`dialogue`);hideEl(`dialogueDimmer`);G.dialogueActive=false;
 ch.init();fadeIn(()=>{G.transitioning=false;showChapter(ch.title,ch.date);});});}
 
 // ═══════════════════════════════════════════════
@@ -591,10 +436,10 @@ ch.init();fadeIn(()=>{G.transitioning=false;showChapter(ch.title,ch.date);});});
 function createBernadette(stage){
 stage=stage||0;
 const cfg=[
-{s:0.65,hR:0.36,hY:1.52,bH:0.68,lH:0.48,skinC:0xf5d4a8,clothC:0x7a6048,hairC:0x2a1a0a,veilC:0xcfba82,apronC:0xe2d0a8,lW:0.12,chubby:true,label:‘Age 9 · Bartres’},
-{s:0.80,hR:0.32,hY:1.68,bH:0.76,lH:0.60,skinC:0xf0c89a,clothC:0x6b5040,hairC:0x2a1a0a,veilC:0xc8b880,apronC:0xd8c8a0,lW:0.105,chubby:false,label:‘Age 14 · Lourdes 1858’},
-{s:0.90,hR:0.29,hY:1.74,bH:0.80,lH:0.66,skinC:0xeec090,clothC:0x5a4535,hairC:0x2a1a0a,veilC:0xc0b070,apronC:0xd0c098,lW:0.100,chubby:false,label:‘Age 18-22 · After Apparitions’},
-{s:0.90,hR:0.28,hY:1.74,bH:0.80,lH:0.66,skinC:0xe8c4a0,clothC:0xf0ece8,hairC:0x1a1010,veilC:0xf5f0ea,apronC:0xf5f0ea,lW:0.100,chubby:false,label:‘Sister Marie-Bernard · Nevers’,nun:true},
+{s:0.65,hR:0.36,hY:1.52,bH:0.68,lH:0.48,skinC:0xf5d4a8,clothC:0x7a6048,hairC:0x2a1a0a,veilC:0xcfba82,apronC:0xe2d0a8,lW:0.12,chubby:true,label:`Age 9 · Bartres`},
+{s:0.80,hR:0.32,hY:1.68,bH:0.76,lH:0.60,skinC:0xf0c89a,clothC:0x6b5040,hairC:0x2a1a0a,veilC:0xc8b880,apronC:0xd8c8a0,lW:0.105,chubby:false,label:`Age 14 · Lourdes 1858`},
+{s:0.90,hR:0.29,hY:1.74,bH:0.80,lH:0.66,skinC:0xeec090,clothC:0x5a4535,hairC:0x2a1a0a,veilC:0xc0b070,apronC:0xd0c098,lW:0.100,chubby:false,label:`Age 18-22 · After Apparitions`},
+{s:0.90,hR:0.28,hY:1.74,bH:0.80,lH:0.66,skinC:0xe8c4a0,clothC:0xf0ece8,hairC:0x1a1010,veilC:0xf5f0ea,apronC:0xf5f0ea,lW:0.100,chubby:false,label:`Sister Marie-Bernard · Nevers`,nun:true},
 ][stage];
 const g=new THREE.Group();
 const M=c=>new THREE.MeshPhongMaterial({color:c});
@@ -672,7 +517,7 @@ const pN=320,pGeo=new THREE.BufferGeometry(),pPos=new Float32Array(pN*3),pCol=ne
 for(let i=0;i<pN;i++){const a=Math.random()*Math.PI*2,r=0.5+Math.random()*2.6,h=Math.random()*3.2;
 pPos[i*3]=Math.cos(a)*r;pPos[i*3+1]=h;pPos[i*3+2]=Math.sin(a)*r;
 pCol[i*3]=0.9+Math.random()*0.1;pCol[i*3+1]=0.88+Math.random()*0.12;pCol[i*3+2]=0.65+Math.random()*0.35;}
-pGeo.setAttribute(‘position’,new THREE.BufferAttribute(pPos,3));pGeo.setAttribute(‘color’,new THREE.BufferAttribute(pCol,3));
+pGeo.setAttribute(`position`,new THREE.BufferAttribute(pPos,3));pGeo.setAttribute(`color`,new THREE.BufferAttribute(pCol,3));
 const pts=new THREE.Points(pGeo,new THREE.PointsMaterial({size:0.042,vertexColors:true,transparent:true,opacity:0.92,sizeAttenuation:true}));
 g.add(pts);g._pts=pts;g._pPos=pPos;g._pN=pN;
 g.traverse(m=>{if(m.isMesh)m.castShadow=true;});
@@ -755,7 +600,7 @@ p[i*3]=r*Math.sin(phi)*Math.cos(theta);p[i*3+1]=Math.abs(r*Math.cos(phi))+30;p[i
 const t=Math.random();
 c[i*3]=t<0.3?0.78:t<0.6?1:1;c[i*3+1]=t<0.3?0.84:t<0.6?0.97:0.92;c[i*3+2]=t<0.3?1:t<0.6?0.88:0.72;
 }
-g.setAttribute(‘position’,new THREE.BufferAttribute(p,3));g.setAttribute(‘color’,new THREE.BufferAttribute(c,3));
+g.setAttribute(`position`,new THREE.BufferAttribute(p,3));g.setAttribute(`color`,new THREE.BufferAttribute(c,3));
 return new THREE.Points(g,new THREE.PointsMaterial({size:0.28,vertexColors:true,transparent:true,opacity:0.88,sizeAttenuation:true}));
 }
 
@@ -769,8 +614,8 @@ const pos=geo.attributes.position;
 const col=new Float32Array(pos.count*3);
 
 // Season colours: spring=green, winter=muted
-const season=opts.season||‘spring’;
-const grassC=season===‘winter’?[0.42,0.46,0.35]:[0.26,0.50,0.18];
+const season=opts.season||`spring`;
+const grassC=season===`winter`?[0.42,0.46,0.35]:[0.26,0.50,0.18];
 const pathC=[0.56,0.48,0.36];
 const rockC=[0.48,0.44,0.40];
 const mudC=[0.40,0.30,0.22];
@@ -792,7 +637,7 @@ else if(steep){r=rockC[0];g2=rockC[1];b=rockC[2];}
 else{const t=Math.min(1,h*0.25+0.5);r=grassC[0]*t;g2=grassC[1]*t;b=grassC[2]*t;}
 col[i*3]=r;col[i*3+1]=g2;col[i*3+2]=b;
 }
-geo.setAttribute(‘color’,new THREE.BufferAttribute(col,3));
+geo.setAttribute(`color`,new THREE.BufferAttribute(col,3));
 geo.computeVertexNormals();
 const mat=new THREE.MeshPhongMaterial({vertexColors:true,shininess:3,specular:0x223311});
 const m=new THREE.Mesh(geo,mat);m.receiveShadow=true;
@@ -804,7 +649,7 @@ function mkMountains(){
 const g=new THREE.Group();
 // Pic du Jer, Pic de Pibeste and surrounding Pyrenean peaks visible from Lourdes
 const peaks=[
-{x:-55,z:-90,h:68,r:26,name:‘Pic du Jer’},{x:-28,z:-96,h:52,r:19},{x:18,z:-88,h:74,r:30},
+{x:-55,z:-90,h:68,r:26,name:`Pic du Jer`},{x:-28,z:-96,h:52,r:19},{x:18,z:-88,h:74,r:30},
 {x:55,z:-80,h:44,r:17},{x:38,z:-108,h:82,r:32},{x:-48,z:-112,h:72,r:27},
 {x:72,z:-102,h:36,r:14},{x:-72,z:-78,h:58,r:21},{x:8,z:-118,h:60,r:22},
 {x:-15,z:-78,h:38,r:15},{x:90,z:-110,h:50,r:20},{x:-88,z:-96,h:55,r:22},
@@ -1101,7 +946,7 @@ for(let i=0;i<n;i++){
 pos[i*3]=rand(-40,40);pos[i*3+1]=rand(18,35);pos[i*3+2]=rand(-50,-5);
 vel.push({x:rand(0.4,1.2)*(Math.random()<0.5?1:-1),y:rand(-0.2,0.2),z:rand(-0.2,0.2)});
 }
-bGeo.setAttribute(‘position’,new THREE.BufferAttribute(pos,3));
+bGeo.setAttribute(`position`,new THREE.BufferAttribute(pos,3));
 const bPts=new THREE.Points(bGeo,new THREE.PointsMaterial({color:0x1a1a18,size:0.25}));
 bPts._vel=vel;bPts._pos=pos;bPts._n=n;bPts._isBirds=true;
 addC(bPts);return bPts;
@@ -1124,7 +969,7 @@ b.geometry.attributes.position.needsUpdate=true;
 function addFireflies(count,area){
 const n=count||20,geo=new THREE.BufferGeometry(),pos=new Float32Array(n*3);
 for(let i=0;i<n;i++){pos[i*3]=rand(-area,area);pos[i*3+1]=rand(0.5,4);pos[i*3+2]=rand(-area,area);}
-geo.setAttribute(‘position’,new THREE.BufferAttribute(pos,3));
+geo.setAttribute(`position`,new THREE.BufferAttribute(pos,3));
 const mat=new THREE.PointsMaterial({color:0xaaffaa,size:0.12,transparent:true,opacity:0.7,sizeAttenuation:true});
 const pts=new THREE.Points(geo,mat);addC(pts);G._fireflies=pts;
 }
@@ -1170,887 +1015,616 @@ addC(new THREE.AmbientLight(0x2a1a10,0.72));
 //  GAME MECHANICS
 // ═══════════════════════════════════════════════
 const MYSTERIES=[
-{name:‘The Annunciation’,text:’“Hail, full of grace! The Lord is with thee. Blessed art thou among women.” — Luke 1:28’},
-{name:‘The Visitation’,text:’“Blessed art thou among women, and blessed is the fruit of thy womb!” — Luke 1:42’},
-{name:‘The Nativity’,text:’“She brought forth her firstborn son and wrapped him in swaddling clothes.” — Luke 2:7’},
-{name:‘The Presentation’,text:’“Mine eyes have seen thy salvation, which thou hast prepared before all peoples.” — Luke 2:30-31’},
-{name:‘Finding in the Temple’,text:’“Did you not know that I must be about my Father's business?” — Luke 2:49’},
+{name:`The Annunciation`,text:`“Hail, full of grace! The Lord is with thee. Blessed art thou among women.” — Luke 1:28`},
+{name:`The Visitation`,text:`“Blessed art thou among women, and blessed is the fruit of thy womb!” — Luke 1:42`},
+{name:`The Nativity`,text:`“She brought forth her firstborn son and wrapped him in swaddling clothes.” — Luke 2:7`},
+{name:`The Presentation`,text:`“Mine eyes have seen thy salvation, which thou hast prepared before all peoples.” — Luke 2:30-31`},
+{name:`Finding in the Temple`,text:`“Did you not know that I must be about my Father's business?” — Luke 2:49`},
 ];
 function showRosary(onDone){
-const ui=document.getElementById(‘rosaryUI’),beads=document.getElementById(‘rosaryBeads’);
-const myst=document.getElementById(‘rosaryMystery’),prog=document.getElementById(‘rosaryProgress’);
-let prayed=0;beads.innerHTML=’’;
-MYSTERIES.forEach((m,i)=>{const b=document.createElement(‘div’);b.className=‘rbead’;b.textContent=‘✝’;beads.appendChild(b);
-b.onclick=()=>{if(b.classList.contains(‘prayed’))return;b.classList.add(‘prayed’);prayed++;
-myst.textContent=’”’+m.name+’” — ‘+m.text;prog.textContent=prayed+’ / 5 Mysteries prayed’;
-if(prayed>=5){setTimeout(()=>{ui.classList.remove(‘show’);ui.style.display=‘none’;G.dialogueActive=false;G.player.canMove=true;if(onDone)onDone();},1800);}};});
-myst.textContent=‘Click each golden bead to pray a Mystery of the Holy Rosary.’;prog.textContent=‘0 / 5 Mysteries prayed’;
-ui.style.display=‘flex’;ui.classList.add(‘show’);G.dialogueActive=true;G.player.canMove=false;}
+const ui=document.getElementById(`rosaryUI`),beads=document.getElementById(`rosaryBeads`);
+const myst=document.getElementById(`rosaryMystery`),prog=document.getElementById(`rosaryProgress`);
+let prayed=0;beads.innerHTML=``;
+MYSTERIES.forEach((m,i)=>{const b=document.createElement(`div`);b.className=`rbead`;b.textContent=`✝`;beads.appendChild(b);
+b.onclick=()=>{if(b.classList.contains(`prayed`))return;b.classList.add(`prayed`);prayed++;
+myst.textContent=`”`+m.name+`” — `+m.text;prog.textContent=prayed+` / 5 Mysteries prayed`;
+if(prayed>=5){setTimeout(()=>{ui.classList.remove(`show`);ui.style.display=`none`;G.dialogueActive=false;G.player.canMove=true;if(onDone)onDone();},1800);}};});
+myst.textContent=`Click each golden bead to pray a Mystery of the Holy Rosary.`;prog.textContent=`0 / 5 Mysteries prayed`;
+ui.style.display=`flex`;ui.classList.add(`show`);G.dialogueActive=true;G.player.canMove=false;}
 
 const CATECHISM=[
-{q:‘Who made you?’,a:‘God made me.’,w:[‘The priest made me.’,‘My parents made me.’,‘No one made me.’]},
-{q:‘Why did God make you?’,a:‘To know, love and serve God in this world, and to be happy with Him in the next.’,w:[‘To work hard and obey the law.’,‘To be a good and kind person.’,‘To go to church on Sundays.’]},
-{q:‘What is the Blessed Trinity?’,a:‘One God in three Divine Persons — Father, Son, and Holy Spirit.’,w:[‘Three separate gods.’,‘God and two great angels.’,‘The Pope and two cardinals.’]},
-{q:‘What is the Immaculate Conception?’,a:‘The doctrine that Our Lady was conceived without original sin.’,w:[‘The Virgin Birth of Jesus.’,‘Mary was born in a miraculous way.’,‘That Jesus had no earthly father.’]},
-{q:‘What did the angel Gabriel say at the Annunciation?’,a:’“Hail, full of grace! The Lord is with thee. Blessed art thou among women.”’,w:[’“Fear not, for thou shalt conceive a son.”’,’“Blessed art thou and blessed is thy child.”’,’“The Lord God hath chosen thee above all women.”’]},
+{q:`Who made you?`,a:`God made me.`,w:[`The priest made me.`,`My parents made me.`,`No one made me.`]},
+{q:`Why did God make you?`,a:`To know, love and serve God in this world, and to be happy with Him in the next.`,w:[`To work hard and obey the law.`,`To be a good and kind person.`,`To go to church on Sundays.`]},
+{q:`What is the Blessed Trinity?`,a:`One God in three Divine Persons — Father, Son, and Holy Spirit.`,w:[`Three separate gods.`,`God and two great angels.`,`The Pope and two cardinals.`]},
+{q:`What is the Immaculate Conception?`,a:`The doctrine that Our Lady was conceived without original sin.`,w:[`The Virgin Birth of Jesus.`,`Mary was born in a miraculous way.`,`That Jesus had no earthly father.`]},
+{q:`What did the angel Gabriel say at the Annunciation?`,a:`“Hail, full of grace! The Lord is with thee. Blessed art thou among women.”`,w:[`“Fear not, for thou shalt conceive a son.”`,`“Blessed art thou and blessed is thy child.”`,`“The Lord God hath chosen thee above all women.”`]},
 ];
 function showCatechism(onDone){
-const ui=document.getElementById(‘quizUI’),qEl=document.getElementById(‘quizQ’);
-const ans=document.getElementById(‘quizAnswers’),prog=document.getElementById(‘quizProgress’);
+const ui=document.getElementById(`quizUI`),qEl=document.getElementById(`quizQ`);
+const ans=document.getElementById(`quizAnswers`),prog=document.getElementById(`quizProgress`);
 let idx=0;
-function next(){if(idx>=CATECHISM.length){ui.classList.remove(‘show’);ui.style.display=‘none’;G.dialogueActive=false;G.player.canMove=true;if(onDone)onDone();return;}
-const item=CATECHISM[idx];qEl.textContent=item.q;ans.innerHTML=’’;prog.textContent=’Question ‘+(idx+1)+’ of ’+CATECHISM.length;
-[item.a,…item.w].sort(()=>Math.random()-0.5).forEach(o=>{const b=document.createElement(‘div’);b.className=‘qAnswer’;b.textContent=o;ans.appendChild(b);
-b.onclick=()=>{if(o===item.a){b.classList.add(‘correct’);notify(‘✓ Correct!’);setTimeout(()=>{idx++;next();},900);}
-else{b.classList.add(‘wrong’);notify(‘✗ Remember your catechism!’);setTimeout(()=>b.classList.remove(‘wrong’),700);}};});}
-document.getElementById(‘quizTitle’).textContent=‘✝ Sister Marie-Therese Teaches You ✝’;
-ui.style.display=‘flex’;ui.classList.add(‘show’);G.dialogueActive=true;G.player.canMove=false;next();}
+function next(){if(idx>=CATECHISM.length){ui.classList.remove(`show`);ui.style.display=`none`;G.dialogueActive=false;G.player.canMove=true;if(onDone)onDone();return;}
+const item=CATECHISM[idx];qEl.textContent=item.q;ans.innerHTML=``;prog.textContent=`Question `+(idx+1)+` of `+CATECHISM.length;
+[item.a,...item.w].sort(()=>Math.random()-0.5).forEach(o=>{const b=document.createElement(`div`);b.className=`qAnswer`;b.textContent=o;ans.appendChild(b);
+b.onclick=()=>{if(o===item.a){b.classList.add(`correct`);notify(`✓ Correct!`);setTimeout(()=>{idx++;next();},900);}
+else{b.classList.add(`wrong`);notify(`✗ Remember your catechism!`);setTimeout(()=>b.classList.remove(`wrong`),700);}};});}
+document.getElementById(`quizTitle`).textContent=`✝ Sister Marie-Therese Teaches You ✝`;
+ui.style.display=`flex`;ui.classList.add(`show`);G.dialogueActive=true;G.player.canMove=false;next();}
 
 const INTERR=[
-{q:‘Commissioner Jacomet leans forward, his eyes like flint:’,
-txt:’“Tell me honestly, girl — did you not invent this whole story? Perhaps to get attention for your family? To profit from people's credulity?”’,
-good:’“No, Monsieur. I am not a liar. I saw what I saw. I cannot say otherwise.”’,
-bad:’“I… I am not sure. Perhaps I imagined part of it—”’,
-gr:‘Jacomet's eyes narrow. He writes something down. You held firm.’,
-br:‘Jacomet smiles. You catch yourself: “No — forgive me — I did see her. I am certain.”’},
-{q:‘He presses harder, his voice rising:’,
-txt:’“Describe this Lady again — exactly as before. I will catch any contradiction. Well? Speak!”’,
-good:’“White robe. Blue sash. White veil. Golden roses on her feet. A rosary with golden chain. She smiled at me. That is all.”’,
-bad:’“She wore blue… I think. Or was it white? And her veil—”’,
-gr:‘Your answer is word-for-word the same as before. Jacomet slaps his desk in frustration.’,
-br:‘He pounces on the inconsistency. You breathe deep and repeat what you truly saw.’},
-{q:‘He tries a final approach, his voice softening:’,
-txt:’“Be sensible, child. Retract this story now, and nothing more will be said. Your parents will not be troubled. This can all simply go away.”’,
-good:’“With respect, Monsieur, I cannot deny what is true. I am not afraid.”’,
-bad:’“If it would spare my family trouble…”’,
-gr:‘He stares at you for a long moment, then stands and dismisses you. You have not wavered by one word.’,
-br:‘Something recoils in you. “No,” you say quietly. “No. She appeared to me. It is true.”’},
+{q:`Commissioner Jacomet leans forward, his eyes like flint:`,
+txt:`“Tell me honestly, girl — did you not invent this whole story? Perhaps to get attention for your family? To profit from people's credulity?”`,
+good:`“No, Monsieur. I am not a liar. I saw what I saw. I cannot say otherwise.”`,
+bad:`“I… I am not sure. Perhaps I imagined part of it—”`,
+gr:`Jacomet's eyes narrow. He writes something down. You held firm.`,
+br:`Jacomet smiles. You catch yourself: “No — forgive me — I did see her. I am certain.”`},
+{q:`He presses harder, his voice rising:`,
+txt:`“Describe this Lady again — exactly as before. I will catch any contradiction. Well? Speak!”`,
+good:`“White robe. Blue sash. White veil. Golden roses on her feet. A rosary with golden chain. She smiled at me. That is all.”`,
+bad:`“She wore blue… I think. Or was it white? And her veil—”`,
+gr:`Your answer is word-for-word the same as before. Jacomet slaps his desk in frustration.`,
+br:`He pounces on the inconsistency. You breathe deep and repeat what you truly saw.`},
+{q:`He tries a final approach, his voice softening:`,
+txt:`“Be sensible, child. Retract this story now, and nothing more will be said. Your parents will not be troubled. This can all simply go away.”`,
+good:`“With respect, Monsieur, I cannot deny what is true. I am not afraid.”`,
+bad:`“If it would spare my family trouble…”`,
+gr:`He stares at you for a long moment, then stands and dismisses you. You have not wavered by one word.`,
+br:`Something recoils in you. “No,” you say quietly. “No. She appeared to me. It is true.”`},
 ];
 function showInterrogation(onDone){
-const ui=document.getElementById(‘interrUI’),txt=document.getElementById(‘interrText’),ch=document.getElementById(‘interrChoices’),qEl=document.getElementById(‘interrLabel’);
+const ui=document.getElementById(`interrUI`),txt=document.getElementById(`interrText`),ch=document.getElementById(`interrChoices`),qEl=document.getElementById(`interrLabel`);
 let idx=0;
-function next(){if(idx>=INTERR.length){ui.classList.remove(‘show’);ui.style.display=‘none’;G.dialogueActive=false;G.player.canMove=true;if(onDone)onDone();return;}
-const item=INTERR[idx];qEl.textContent=item.q;txt.textContent=item.txt;ch.innerHTML=’’;
+function next(){if(idx>=INTERR.length){ui.classList.remove(`show`);ui.style.display=`none`;G.dialogueActive=false;G.player.canMove=true;if(onDone)onDone();return;}
+const item=INTERR[idx];qEl.textContent=item.q;txt.textContent=item.txt;ch.innerHTML=``;
 [[item.good,item.gr,true],[item.bad,item.br,false]].sort(()=>Math.random()-0.5).forEach(([opt,result,good])=>{
-const b=document.createElement(‘div’);b.className=‘iChoice’;b.textContent=opt;ch.appendChild(b);
-b.onclick=()=>{ch.innerHTML=’<div style="font-family:IM Fell English,serif;font-style:italic;font-size:clamp(13px,2vw,17px);color:'+(good?'#90e090':'#e09090')+';text-align:center;line-height:1.65;padding:8px;">’+result+’</div>’;setTimeout(()=>{idx++;next();},2300);};});}
-ui.style.display=‘flex’;ui.classList.add(‘show’);G.dialogueActive=true;G.player.canMove=false;next();}
+const b=document.createElement(`div`);b.className=`iChoice`;b.textContent=opt;ch.appendChild(b);
+b.onclick=()=>{ch.innerHTML=`<div style="font-family:IM Fell English,serif;font-style:italic;font-size:clamp(13px,2vw,17px);color:'+(good?'#90e090':'#e09090')+';text-align:center;line-height:1.65;padding:8px;">`+result+`</div>`;setTimeout(()=>{idx++;next();},2300);};});}
+ui.style.display=`flex`;ui.classList.add(`show`);G.dialogueActive=true;G.player.canMove=false;next();}
 
 function showCandleTest(onDone){
-const ui=document.getElementById(‘candleUI’),fill=document.getElementById(‘candleFill’),btn=document.getElementById(‘candleBtn’);
-let progress=0,done=false;ui.style.display=‘flex’;ui.classList.add(‘show’);G.dialogueActive=true;G.player.canMove=false;
+const ui=document.getElementById(`candleUI`),fill=document.getElementById(`candleFill`),btn=document.getElementById(`candleBtn`);
+let progress=0,done=false;ui.style.display=`flex`;ui.classList.add(`show`);G.dialogueActive=true;G.player.canMove=false;
 let iv=null;
-function startHold(){if(done)return;btn.classList.add(‘held’);btn.textContent=‘Praying in ecstasy…’;iv=setInterval(()=>{if(done)return;progress=Math.min(100,progress+0.85);fill.style.width=progress+’%’;if(progress>=100&&!done){done=true;btn.textContent=‘✓ Ecstasy complete — Bernadette feels nothing’;setTimeout(()=>{ui.classList.remove(‘show’);ui.style.display=‘none’;G.dialogueActive=false;G.player.canMove=true;if(onDone)onDone();},1900);}},30);}
-function stopHold(){if(iv){clearInterval(iv);iv=null;}if(!done){btn.classList.remove(‘held’);btn.textContent=‘Hold to Pray in Ecstasy’;}}
-btn.addEventListener(‘mousedown’,startHold);btn.addEventListener(‘touchstart’,e=>{e.preventDefault();startHold();},{passive:false});
-window.addEventListener(‘mouseup’,stopHold);window.addEventListener(‘touchend’,stopHold);}
+function startHold(){if(done)return;btn.classList.add(`held`);btn.textContent=`Praying in ecstasy…`;iv=setInterval(()=>{if(done)return;progress=Math.min(100,progress+0.85);fill.style.width=progress+`%`;if(progress>=100&&!done){done=true;btn.textContent=`✓ Ecstasy complete — Bernadette feels nothing`;setTimeout(()=>{ui.classList.remove(`show`);ui.style.display=`none`;G.dialogueActive=false;G.player.canMove=true;if(onDone)onDone();},1900);}},30);}
+function stopHold(){if(iv){clearInterval(iv);iv=null;}if(!done){btn.classList.remove(`held`);btn.textContent=`Hold to Pray in Ecstasy`;}}
+btn.addEventListener(`mousedown`,startHold);btn.addEventListener(`touchstart`,e=>{e.preventDefault();startHold();},{passive:false});
+window.addEventListener(`mouseup`,stopHold);window.addEventListener(`touchend`,stopHold);}
 
 // ═══════════════════════════════════════════════
 //  CHAPTERS ARRAY
 // ═══════════════════════════════════════════════
-const CHAPTERS = [
-
-// ────────── CH 0: CHILDHOOD IN BARTRES (Age 9) ──────────
-{title:‘Chapter I — The Child of the Cachot’,date:‘Bartrès, France · 1853–1858’,init:function(){
-G.bernadetteStage=0;
-scene.background=new THREE.Color(0x87ceeb);scene.fog=new THREE.Fog(0xc8e8f8,30,120);
-addC(new THREE.AmbientLight(0xffeedd,0.8));
-const sun=new THREE.DirectionalLight(0xfff0c0,1.1);sun.position.set(20,40,10);sun.castShadow=true;addC(sun);
+// ── Shared chapter helpers ──
+function spawnPlayer(stage,x,z){
+G.bernadetteStage=stage;
+const m=createBernadette(stage);
+m.position.set(x,sampleGround(x,z),z);
+addC(m);G.player.mesh=m;G.player.canMove=true;
+return m;
+}
+function buildValley(opts){
+opts=opts||{};
+const sky=opts.sky||0x9fb8d8;
 G.groundFn=rawTerrain;
-addC(mkTerrain({season:‘spring’,res:70}));addC(mkMountains());
-// Village — all buildings snap to terrain
-// Buildings snap to terrain height at their XZ position
-function bldT(w,h,d,x,z,wc,rc){
-const gy=rawTerrain(x,z);
-const b=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshPhongMaterial({color:wc||0xd0c8a8}));
-b.position.set(x,gy+h/2,z);b.castShadow=true;b.receiveShadow=true;addC(b);
-const r=new THREE.Mesh(new THREE.ConeGeometry(Math.max(w,d)*0.75,h*0.5,4),new THREE.MeshPhongMaterial({color:rc||0xa07050}));
-r.position.set(x,gy+h+h*0.25,z);r.rotation.y=Math.PI/4;r.castShadow=true;addC(r);
+scene.background=new THREE.Color(sky);
+scene.fog=new THREE.Fog(sky,30,165);
+addC(new THREE.AmbientLight(0x8a9cb8,0.72));
+const sun=new THREE.DirectionalLight(0xfff2da,1.15);
+sun.position.set(22,46,18);sun.castShadow=true;
+sun.shadow.mapSize.width=1024;sun.shadow.mapSize.height=1024;
+sun.shadow.camera.near=0.5;sun.shadow.camera.far=140;
+sun.shadow.camera.left=-40;sun.shadow.camera.right=40;sun.shadow.camera.top=40;sun.shadow.camera.bottom=-40;
+addC(sun);
+addC(mkTerrain({season:opts.season||'spring',res:58}));
+addC(mkMountains());
+if(opts.stars)addC(mkStars());
+addBirds();
 }
-bldT(4,3,4,-12,-15);bldT(3,2.5,3,6,-20);bldT(5,3.5,5,-5,-30,0xc8c0a8,0x807060);bldT(2.5,2,2.5,12,-14);
-// Church with steeple — on terrain
-const chGY=rawTerrain(0,-28);
-const ch=new THREE.Mesh(new THREE.BoxGeometry(5,5,8),new THREE.MeshPhongMaterial({color:0xe8e0d0}));ch.position.set(0,chGY+2.5,-28);addC(ch);
-const ct=new THREE.Mesh(new THREE.BoxGeometry(2,7,2),new THREE.MeshPhongMaterial({color:0xe8e0d0}));ct.position.set(0,chGY+3.5,-28);addC(ct);
-const csp=new THREE.Mesh(new THREE.ConeGeometry(1.4,4,8),new THREE.MeshPhongMaterial({color:0x888a88}));csp.position.set(0,chGY+9.5,-28);addC(csp);
-const crx=new THREE.Mesh(new THREE.BoxGeometry(0.15,1.8,0.15),new THREE.MeshBasicMaterial({color:0xf0d060}));crx.position.set(0,chGY+12.5,-28);addC(crx);
-const crxh=new THREE.Mesh(new THREE.BoxGeometry(0.9,0.15,0.15),new THREE.MeshBasicMaterial({color:0xf0d060}));crxh.position.set(0,chGY+12.1,-28);addC(crxh);
-// Well on terrain
-const wellGY=rawTerrain(5,-10);
-const well=new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.6,1,12),new THREE.MeshPhongMaterial({color:0x8a7a6a}));well.position.set(5,wellGY+0.5,-10);addC(well);
-// Road follows terrain (rendered as flat strip at ground+0.02)
-const roadGY=rawTerrain(0,-15);
-const road=new THREE.Mesh(new THREE.PlaneGeometry(2.5,65),new THREE.MeshPhongMaterial({color:0x9a8870}));road.rotation.x=-Math.PI/2;road.position.set(0,roadGY+0.02,-15);addC(road);
-const ch0PathFn=(x,z)=>(Math.abs(x)<4&&z>-20&&z<20);
-mkTrees(20,18,{max:50,min:5},ch0PathFn);
-mkRocks(8,18,{max:50,min:10},ch0PathFn);
-G._birds=addBirds(); // Pyrenean birds over the village
-// Spring wildflowers in the Bartres meadow
-for(let fi=0;fi<60;fi++){
-const fx=rand(-16,16),fz=rand(-45,8);
-if(ch0PathFn(fx,fz))continue;
-const fgy=rawTerrain(fx,fz);
-const fc=[0xffddee,0xffee88,0xddeeff,0xeeffdd][Math.floor(Math.random()*4)];
-const fl=new THREE.Mesh(new THREE.SphereGeometry(rand(0.07,0.13),4,3),new THREE.MeshPhongMaterial({color:fc}));
-fl.position.set(fx,fgy+0.10,fz);fl.scale.y=0.5;addC(fl);
+function addNPC(npc,x,z,ry){
+npc.position.set(x,0,z);
+if(ry!==undefined)npc.rotation.y=ry;
+addC(npc);G.npcs.push(npc);snapNPC(npc);
+return npc;
 }
-// NPCs snap to terrain
-const mama=mkChar(0xd4a870,0x4a3828,0x2a1a0a,{veil:true,veilC:0x8a7a6a,apron:true,apronC:0xccc0a0});
-mama.position.set(-3,rawTerrain(-3,2),2);addC(mama);G.npcs.push(mama);
-const priest=mkChar(0xc8a060,0x0a0a15,0x1a1010,{cassock:true});priest.position.set(-8,rawTerrain(-8,-18),-18);addC(priest);G.npcs.push(priest);
-G.player.mesh=createBernadette(0);
-const ch1StartY=rawTerrain(0,4);G.player.mesh.position.set(0,ch1StartY,4);addC(G.player.mesh);
-// Pastoral wide — shows village, rolling hills, Pyrenees in distance
-setCam({mode:‘follow’,offset:new THREE.Vector3(0,10,16),fov:62});
-camera.position.set(0,ch1StartY+10,20);
-showAge(‘Bernadette Soubirous · Age 9–13 · Bartrès & Lourdes, France’);
+function simpleMarker(x,z,color,h){
+const m=new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.24,h||1.1,8),new THREE.MeshPhongMaterial({color:color||0x8a7a55}));
+m.position.set(x,sampleGround(x,z)+(h||1.1)/2,z);m.castShadow=true;addC(m);
+return m;
+}
+
+const CHAPTERS=[
+// ════════════════ CH0 — Chapter I ════════════════
+{title:'Chapter I — A Child of the Mill',date:'Lourdes · 1844–1856',init:function(){
+buildValley({season:'spring',sky:0xbcd0e8});
+spawnPlayer(0,0,4);
+showAge('Bernadette Soubirous · Age 9 · Boly Mill, Lourdes');
+AUDIO.setWind(0.3);
+const mama=addNPC(mkChar(0xf0c8a0,0x6a4a8a,0x3a2a1a,{apron:true,veil:true,veilC:0xd0c0a0,hr:0.30}),-5,-2,0.6);
+const well=simpleMarker(-5,-5,0x6a6a6a,1.0);
+const churchMk=simpleMarker(7,-7,0xcabb88,1.6);
+const priest=addNPC(mkChar(0xeac49a,0x121018,0x2a2018,{cassock:true,hr:0.29}),6,-2,-0.4);
+snapAllNPCs();
+initTasks([
+{id:'mama',label:'Help Mama draw water from the well'},
+{id:'pray',label:'Pray at the wayside cross'},
+{id:'priest',label:'Greet the parish priest'},
+]);
+createInteractable(well,'Draw water for Mama',()=>{speak([
+{speaker:'Louise Soubirous',text:'There you are, Bernadette. Even a small pair of hands lightens the work. Bless you, child.'},
+{speaker:'Bernadette',text:'It is no trouble, Mama. I am happy when I can help you.'},
+],()=>completeTask('mama'));});
+createInteractable(churchMk,'Pray at the cross',()=>{speak([
+{speaker:'Bernadette',text:'Hail Mary, full of grace... the Lord is with thee.'},
+{speaker:'Narrator',text:'She cannot read, and the long prayers escape her. But the Rosary she knows by heart, bead by bead.'},
+],()=>completeTask('pray'));});
+createInteractable(priest,'Greet the priest',()=>{speak([
+{speaker:'The Cure',text:'Good morning, little one. Still too poor in health and letters for your First Communion, they tell me.'},
+{speaker:'Bernadette',text:'I try, Father. The catechism is hard for me. But I will keep trying.'},
+],()=>completeTask('priest'));});
+onAllTasksDone=()=>{speak([
+{speaker:'Narrator',text:'Asthma, poverty, and hunger shadow her childhood. Yet the family clings together, and the girl keeps her gentle faith.'},
+],()=>transitionTo(1));};
+}},
+// ════════════════ CH1 — Chapter II ════════════════
+{title:'Chapter II — The Cachot',date:'Lourdes · Winter 1857',init:function(){
+buildCachot();
+spawnPlayer(1,0,3);
+showAge('Bernadette · Age 13 · The Cachot (a former jail)');
+AUDIO.setWind(0.05);
+const toinette=addNPC(mkChar(0xf0c8a0,0x7a5a3a,0x3a2a1a,{hr:0.27}),-2.4,0,1.2);
+const papa=addNPC(mkChar(0xe8bf94,0x4a3526,0x2a1d12,{hr:0.28}),3,0,-1.5);
+const potMk=simpleMarker(2.2,0.9,0x333333,0.5);potMk.position.y=0.9;
+const bucket=simpleMarker(-1,3.5,0x5a4a3a,0.5);bucket.position.y=0.4;
+initTasks([
+{id:'hair',label:"Comb Toinette's hair"},
+{id:'food',label:'Share what little bread there is'},
+{id:'water',label:'Fetch water from the courtyard'},
+{id:'papa',label:'Comfort Papa about his lost mill'},
+]);
+createInteractable(toinette,'Comb your sister\u2019s hair',()=>{speak([
+{speaker:'Toinette',text:'Will we always be this poor, Bernadette?'},
+{speaker:'Bernadette',text:'We have each other, and we have God. That is not poor. Sit still now.'},
+],()=>completeTask('hair'));});
+createInteractable(potMk,'Share the bread',()=>{speak([
+{speaker:'Narrator',text:'One dark room, once a jail, for the whole family. The pot is thin tonight. Bernadette gives her portion to the little ones.'},
+],()=>completeTask('food'));});
+createInteractable(bucket,'Fetch the water',()=>{speak([
+{speaker:'Bernadette',text:'I will go. The cold air helps my chest less than they think \u2014 but the work must be done.'},
+],()=>completeTask('water'));});
+createInteractable(papa,'Comfort Papa',()=>{speak([
+{speaker:'Francois Soubirous',text:'I was a miller once, with my own wheel. Now I carry sacks for other men. Forgive me, daughter.'},
+{speaker:'Bernadette',text:'There is nothing to forgive, Papa. You are good, and that is worth more than a mill.'},
+],()=>completeTask('papa'));});
+onAllTasksDone=()=>{speak([
+{speaker:'Narrator',text:'Thursday, the 11th of February, 1858. Wood is needed for the fire. Bernadette, her sister, and a friend set out toward the cold bank of the Gave.'},
+],()=>transitionTo(2));};
+}},
+// ════════════════ CH2 — Chapter III ════════════════
+{title:'Chapter III — Toward Massabielle',date:'11 February 1858',init:function(){
+buildValley({season:'winter',sky:0x9aa8bc});
+spawnPlayer(1,0,8);
+showAge('Gathering firewood by the Gave de Pau');
+AUDIO.setWind(0.45);AUDIO.setWater(0.4);
+mkTrees(14,40,{min:10,max:55},(x,z)=>Math.abs(x)<4);
+mkRocks(20,30,{min:5,max:40});
+const gave=mkWater(7,90,0x35506e);gave.position.set(11,0.05,0);addC(gave);G.springWater=gave;
+snapAllNPCs();
+speak([
+{speaker:'Narrator',text:'The grotto of Massabielle lies ahead \u2014 a rough cave by the mill-stream, where pigs are sometimes kept. Bernadette lingers, her bare feet afraid of the icy water.'},
+{speaker:'Bernadette',text:'I will cross last. Go on ahead \u2014 I am only stopping to take off my stockings.'},
+{speaker:'Narrator',text:'Then a sound like a gust of wind. She looks up toward the grotto... Walk to the grotto.'},
+],()=>{
+showEl('walkPrompt');
 G.player.canMove=true;
-initTasks([{id:‘mama’,label:‘Help Maman at the well’},{id:‘pray’,label:‘Pray at the church’},{id:‘priest’,label:‘Speak with the Abbé about Catechism’}]);
-createInteractable(well,‘Fetch water with Maman’,()=>{if(G.completedTasks[‘mama’])return;speak([{speaker:‘Young Bernadette’,text:’(heaving the bucket up, arms trembling) It is so heavy today… but Maman needs the water. I can do this.’},
-{speaker:‘Louise Soubirous — Maman’,text:‘You are stronger than you look, my Bernarde. Now come — there is bread if we are quick.’}],()=>completeTask(‘mama’));});
-const churchMk=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.1,0.1),new THREE.MeshBasicMaterial({visible:false}));churchMk.position.set(0,0,-22);addC(churchMk);
-createInteractable(churchMk,‘Enter the church to pray’,()=>{if(G.completedTasks[‘pray’])return;speak([
-{speaker:‘Young Bernadette’,text:’(kneeling, hands clasped, voice barely a breath) Dear God… I do not understand all the catechism. But I love You. And I love Your Mother. Please — let me make my First Communion one day.’},
-{speaker:‘Narrator’,text:‘She stays for a long time, perfectly still. This is the Bernadette few people see — the child who prays in secret, whose heart is always turned toward heaven.’}],()=>completeTask(‘pray’));});
-createInteractable(priest,‘Speak with the Abbé’,()=>{if(G.completedTasks[‘priest’])return;speak([
-{speaker:‘The Abbé Ader’,text:‘Ah, Bernadette. You have still not made your First Communion. You must learn the catechism — every word. Do you know the first question: Who made you?’},
-{speaker:‘Young Bernadette’,text:’(quietly) God made me, Father.’},
-{speaker:‘The Abbé Ader’,text:‘Good. And why? Why did God make you?’},
-{speaker:‘Young Bernadette’,text:’(long pause — her brow furrowed in concentration) To… to know Him, Father. And to love Him. And to serve Him. And to be happy with Him in Heaven.’},
-{speaker:‘The Abbé Ader’,text:’(softening, surprised) Yes. Exactly right. Word for word. You understand more than you think, child.’}],()=>completeTask(‘priest’));});
-onAllTasksDone=()=>{hideTasks();speak([
-{speaker:‘Narrator’,text:‘Years pass. The Soubirous family falls deeper into poverty. François loses the mill. They are forced into the cachot — a disused single-room prison cell, damp walls, a midden heap outside the window. Six people in one room.’},
-{speaker:‘Narrator’,text:‘It is February 1858. Bernadette is fourteen. She is small for her age, asthmatic since childhood, behind in her catechism. She has not yet made her First Communion. But her eyes — dark, clear, steady — hold something that cannot be explained.’}],()=>transitionTo(1));};
-setTimeout(()=>speak([
-{speaker:‘Narrator’,text:‘Bartrès and Lourdes, France. The 1850s. Bernadette Soubirous is the eldest child of a struggling miller's family. Poverty, illness, and humble faith are the walls of her world. She has spent time as a servant and shepherdess at Bartrès farm, lonely but always praying.’},
-{speaker:‘Young Bernadette’,text:’(watching the mountain) I wonder what is behind those great rocks at Massabielle by the river. One day I shall see.’},
-{speaker:‘Narrator’,text:‘Help with the morning duties before leaving for the day.’}],null),1000);}},
-
-// ────────── CH 1: THE CACHOT ──────────
-{title:‘Chapter II — The Cachot’,date:‘73 Rue des Petites Fosses, Lourdes · February 11, 1858’,init:function(){
-G.bernadetteStage=0;buildCachot();
-G.player.mesh=createBernadette(0);G.player.mesh.position.set(0,0,3);addC(G.player.mesh);
-// Intimate indoor close — sees all 4 family members clearly
-setCam({mode:‘follow’,offset:new THREE.Vector3(0,5.5,10),fov:50});
-camera.position.set(0,5.5,13);
-showAge(‘Bernadette Soubirous · Age 14 · The Cachot, Lourdes · February 11, 1858’);AUDIO.setWind(0.15);
-const mama=mkChar(0xd4a870,0x4a3828,0x2a1a0a,{veil:true,veilC:0x8a7a6a});mama.position.set(-1.5,0,-4.5);addC(mama);G.npcs.push(mama);
-const toinette=mkChar(0xf0c89a,0x7a5a40,0x3d2b1f,{apron:true,apronC:0xd8c8a0});toinette.position.set(2.5,0,-1);addC(toinette);G.npcs.push(toinette);
-const papa=mkChar(0xc49060,0x3a2820,0x2a1a0a,{});papa.position.set(3,0,-5);addC(papa);G.npcs.push(papa);
-const pot=new THREE.Mesh(new THREE.CylinderGeometry(0.30,0.24,0.42,10),new THREE.MeshPhongMaterial({color:0x333333}));pot.position.set(-3.5,1.25,-6.6);addC(pot);
-const bucket=new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.18,0.35,10),new THREE.MeshPhongMaterial({color:0x4a3020}));bucket.position.set(5.2,0.18,5);addC(bucket);
-initTasks([{id:‘hair’,label:“Comb Toinette’s hair”},{id:‘food’,label:‘Stir the morning porridge’},{id:‘water’,label:‘Carry the water bucket’},{id:‘papa’,label:‘Say good morning to Papa’}]);
-createInteractable(toinette,“Comb Toinette’s hair”,()=>{if(G.completedTasks[‘hair’])return;speak([
-{speaker:‘Bernadette’,text:‘Toinette! Hold still — your hair is like a bird's nest in a windstorm.’},
-{speaker:‘Toinette Soubirous’,text:‘Ow! You pull like a cart horse, Bernarde!’},
-{speaker:‘Bernadette’,text:’(laughing quietly) There — see? Now you look almost like a lady. Almost.’}],()=>completeTask(‘hair’));});
-createInteractable(pot,‘Stir the porridge’,()=>{if(G.completedTasks[‘food’])return;speak([
-{speaker:‘Narrator’,text:‘The pot holds only cornmeal and water — the usual breakfast. Bernadette stirs carefully so it will not scorch.’},
-{speaker:‘Bernadette’,text:’(barely above a whisper) Lord, bless this little food. Let it be enough for all of them. I do not mind going without.’}],()=>completeTask(‘food’));});
-createInteractable(bucket,‘Carry the water bucket’,()=>{if(G.completedTasks[‘water’])return;speak([
-{speaker:‘Narrator’,text:‘The bucket is heavy for her slight frame. She lifts it with both arms and walks slowly, not spilling a drop.’},
-{speaker:‘Louise Soubirous — Maman’,text:‘You are a treasure, my Bernarde.’},
-{speaker:‘Bernadette’,text:’(setting it down, rubbing her arms) It is nothing, Maman.’}],()=>completeTask(‘water’));});
-createInteractable(papa,‘Greet Papa’,()=>{if(G.completedTasks[‘papa’])return;speak([
-{speaker:‘François Soubirous — Papa’,text:’(quietly, his pride wounded) Another day without work, Bernarde. I am sorry for all this — (his hand sweeping the damp stone walls).’},
-{speaker:‘Bernadette’,text:’(firmly, taking his rough hand in both of hers) Papa. You are a good father. God knows your heart. He will not forget us.’},
-{speaker:‘François Soubirous — Papa’,text:’(blinking) Go on with you. You have your mother's faith.’}],()=>completeTask(‘papa’));});
-onAllTasksDone=()=>{hideTasks();speak([
-{speaker:‘Louise Soubirous — Maman’,text:‘Toinette and Jeanne Abadie are going to collect firewood along the Gave, toward Massabielle. You may go with them, Bernarde — but wrap your capulet. If your chest—’},
-{speaker:‘Bernadette’,text:’(already tying on the woollen hood) I will be careful, Maman. I promise.’},
-{speaker:‘Louise Soubirous — Maman’,text:‘Say your Hail Mary on the way. And be home before dark.’}],()=>transitionTo(2));};
-setTimeout(()=>speak([
-{speaker:‘Narrator’,text:‘The cachot. A former prison cell so damp the stone walls weep. Six people in one room. A midden heap outside the window. This is where the miracle begins — in the poorest house in Lourdes.’},
-{speaker:‘Bernadette’,text:’(rising, wrapping herself against the cold) Good morning, Maman. Good morning, Papa. Let me help.’}],null),900);}},
-
-// ────────── CH 2: PATH TO MASSABIELLE ──────────
-{title:‘Chapter III — The Path to Massabielle’,date:‘February 11, 1858 · Late Morning’,init:function(){
-G.bernadetteStage=0;
-scene.background=new THREE.Color(0x8ab8d8);scene.fog=new THREE.Fog(0xaacce0,28,110);
-addC(new THREE.AmbientLight(0x9ab5cc,0.6));
-const sun=new THREE.DirectionalLight(0xfff0d0,1.1);sun.position.set(28,50,18);sun.castShadow=true;addC(sun);
-G.groundFn=rawTerrain;
-addC(mkTerrain({season:‘spring’,res:80}));addC(mkMountains());
-const riverBedY=rawTerrain(9,0)+0.08; // sits right at valley floor
-const river=mkWater(5.5,90,0x2a6090);river.position.set(9,riverBedY,0);addC(river);G.springWater=river;
-// River bank stones — alluvial gravel of the Gave de Pau
-for(let i=0;i<50;i++){
-const bx=rand(5.5,13),bz=rand(-45,12),bs=rand(0.15,0.5);
-const peb=new THREE.Mesh(new THREE.SphereGeometry(bs,6,5),new THREE.MeshPhongMaterial({color:new THREE.Color(0.52+rand(0,0.1),0.48+rand(0,0.08),0.42+rand(0,0.07))}));
-peb.scale.set(1+rand(0,0.6),0.4+rand(0,0.25),1+rand(0,0.5));
-const bgy=rawTerrain(bx,bz);if(bgy>riverBedY+2)continue; // only near river
-peb.position.set(bx,bgy+bs*0.15,bz);addC(peb);
-}
-// Spring wildflowers along the path — anemones, primroses, violets (Pyrenean Feb-Mar)
-for(let i=0;i<80;i++){
-const fx=rand(-9,9),fz=rand(-50,10);
-if(Math.abs(fx)<3)continue; // not on path center
-const fgy=rawTerrain(fx,fz);
-const fc=Math.random()<0.5?0xffeeee:Math.random()<0.5?0xffdd88:0xccaaff;
-const fl=new THREE.Mesh(new THREE.SphereGeometry(rand(0.08,0.15),5,4),new THREE.MeshPhongMaterial({color:fc}));
-fl.position.set(fx,fgy+0.12,fz);fl.scale.y=0.5;addC(fl);
-}
-// Riverbank rocks
-for(let z=-35;z<30;z+=2.5+Math.random()*2){const r=new THREE.Mesh(new THREE.SphereGeometry(0.2+Math.random()*0.35,6,5),new THREE.MeshPhongMaterial({color:0x6a7a7a}));r.position.set(8+rand(-2,2),0.1,z);r.scale.y=0.5;addC(r);}
-// Trees avoid the central walking path and riverside path
-const ch2PathFn=(x,z)=>(Math.abs(x)<3.5||(x>5&&x<12&&z>-30&&z<10));
-mkTrees(35,18,{max:55,min:5},ch2PathFn);
-mkRocks(12,18,{max:55,min:8},ch2PathFn);
-G._birds=addBirds(); // Birds over Pyrenean path to Massabielle
-const path=new THREE.Mesh(new THREE.PlaneGeometry(2.5,90),new THREE.MeshPhongMaterial({color:0x9a8a70}));path.rotation.x=-Math.PI/2;path.position.y=0.02;addC(path);
-// Distant grotto rocks
-const gr1=new THREE.Mesh(new THREE.SphereGeometry(12,10,8),new THREE.MeshPhongMaterial({color:0x787878}));gr1.scale.y=0.68;gr1.position.set(-4,5,-42);addC(gr1);
-const gr2=new THREE.Mesh(new THREE.SphereGeometry(8,10,8),new THREE.MeshPhongMaterial({color:0x686868}));gr2.scale.y=0.58;gr2.position.set(6,3,-40);addC(gr2);
-const t2=mkChar(0xf0c89a,0x7a5a40,0x3d2b1f,{apron:true,apronC:0xd8c8a0});t2.position.set(-1.8,rawTerrain(-1.8,3.5),3.5);addC(t2);G.npcs.push(t2);
-const j2=mkChar(0xe8b870,0x5a6840,0x4a2a10,{apron:true,apronC:0xd0c0a0});j2.position.set(1.8,0,3.5);addC(j2);G.npcs.push(j2);
-G.player.mesh=createBernadette(0);G.player.mesh.position.set(0,rawTerrain(0,8),8);addC(G.player.mesh);G.player.canMove=true;
-// Traveling shot — sees rolling Pyrenean hills, carved river valley, Pyrenees ahead
-setCam({mode:‘follow’,offset:new THREE.Vector3(2,7,13),fov:60});
-camera.position.set(2,rawTerrain(0,8)+7,21);
-G._awaitingWalk=true;G._walkTarget=new THREE.Vector3(0,0,-18);G._walkRadius=3;
-G._onWalkArrived=()=>{G._awaitingWalk=false;hideEl(‘walkPrompt’);transitionTo(3);};
-showAge(‘February 11, 1858 — Late Morning’);AUDIO.setWind(0.85);AUDIO.setWater(0.35);
+G._awaitingWalk=true;G._walkTarget={x:0,z:-18};G._walkRadius=3;
+G._onWalkArrived=()=>{hideEl('walkPrompt');transitionTo(3);};
+});
+}},
+// ════════════════ CH3 — Chapter IV ════════════════
+{title:'Chapter IV — The First Apparition',date:'11 February 1858',init:function(){
+buildGrotto({day:true,nicheLight:true,mist:true});
+spawnPlayer(1,0,4);
+showAge('The Grotto of Massabielle');
+AUDIO.setWater(0.3);AUDIO.setWind(0.15);
 speak([
-{speaker:‘Narrator’,text:‘The three girls set out along the bank of the Gave, heading for the rock of Massabielle where driftwood collects. The February air is bitter cold. Bernadette has her woollen capulet pulled tight.’},
-{speaker:‘Toinette Soubirous’,text:‘Come on! We need to cross the mill stream. The firewood is on the other side!’},
-{speaker:‘Bernadette’,text:’(hesitating at the water's edge) It is so cold… my chest— I am afraid the water will bring on my asthma.’},
-{speaker:‘Jeanne Abadie’,text:‘Oh Bernarde, you are always afraid! Watch — I will throw stones for stepping. Race you to the other side!’},
-{speaker:‘Narrator’,text:‘Walk south along the path toward the great rock of Massabielle.’}],null);
-showEl(‘walkPrompt’);}},
-
-// ────────── CH 3: FIRST APPARITION ──────────
-{title:‘Chapter IV — The First Apparition’,date:‘February 11, 1858 · Midday’,init:function(){
-G.bernadetteStage=0;buildGrotto({sky:0x0d1520,nicheLight:true});
-addFireflies(18,9); // Gave grotto — fireflies in the dusk air
-G.player.mesh=createBernadette(0);G.player.mesh.position.set(0,rawTerrain(0,4),4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
-// Tight low angle — Bernadette small, grotto cliff towering above
-setCam({mode:‘follow’,offset:new THREE.Vector3(0,4.5,11),fov:52});
-camera.position.set(0,4.5,13);
-showAge(‘February 11, 1858 — First Apparition · Massabielle Grotto’);AUDIO.setChurch(0.8);AUDIO.setWind(0.15);
+{speaker:'Bernadette',text:'A light... in the hollow of the rock. And a Lady \u2014 young, beautiful, robed in white, with a blue sash and a rosary of gold.'},
+{speaker:'Narrator',text:'Instinctively, Bernadette reaches for her own rosary. Her fingers tremble. She cannot lift her hand to make the Sign of the Cross until the Lady makes it first.'},
+],()=>{
+const lady=createOurLady();lady.position.set(0,5.2,-12.6);lady.scale.setScalar(1.0);addC(lady);G.ourLady=lady;
+camFocus(lady,0.5,46);
 speak([
-{speaker:‘Narrator’,text:‘Bernadette stops at the bank of the canal to remove her stockings. Toinette and Jeanne have already splashed through, laughing. A sound — like a rushing wind, violent and enormous. But the trees do not move. The poplars are perfectly still.’},
-{speaker:‘Bernadette’,text:’(spinning around, frightened) What was that?’},
-{speaker:‘Narrator’,text:‘She looks toward the hollow in the cliff. The niche above the wild rosebush — it fills with a golden light.’}],()=>{
-let t=0;const grow=setInterval(()=>{t++;if(G._nicheLight)G._nicheLight.intensity=Math.min(t*0.065,5.5);if(t>=90){clearInterval(grow);showLady();}},20);});
-function showLady(){
-G.ourLady=createOurLady();G.ourLady.position.set(0,3.1,-12);G.ourLady.scale.setScalar(0.8);addC(G.ourLady);
-showEl(‘holyGlow’);G.camera.shake=0.35;setTimeout(()=>G.camera.shake=0,2200);
-// Fog retreats slightly to reveal the apparition — supernatural light pushes it back
-scene.fog=new THREE.Fog(0xc8e8d8,22,75);
-// Slowly push in toward the apparition — most dramatic moment in the story
-setCam({fov:42,offset:new THREE.Vector3(0,3.5,8.5),focusMesh:G.ourLady,focusWeight:0.50});
-speak([
-{speaker:‘Narrator’,text:‘In the niche — a Lady. Dressed in white with a blue sash. A white veil falls to her feet. On each foot, a golden rose the same colour as the chain of her rosary. She smiles — with a sweetness and love unlike anything Bernadette has ever seen or imagined.’},
-{speaker:‘Narrator’,text:‘Bernadette reaches for her rosary. She tries to make the Sign of the Cross — but her arm will not rise. The Lady makes it first. Then Bernadette's arm can move.’},
-{speaker:‘Bernadette’,text:’(tears spilling, voice barely a breath) I must pray. Please — pray with me.’},
-{speaker:‘Narrator’,text:‘✦ Pray the Holy Rosary with Bernadette — click each golden bead. ✦’}],()=>{
+{speaker:'The Lady',text:'(She smiles, and signs the Cross. Then she tells Bernadette to pray the Rosary with her.)'},
+{speaker:'Narrator',text:'Pray the Holy Rosary with the Lady. Tap each golden bead.'},
+],()=>{
 showRosary(()=>{speak([
-{speaker:‘Narrator’,text:‘The Lady passes her own beads through her fingers in silence. She does not speak the prayers — but at each Gloria she bows her head. When the last decade ends, she smiles once more — and withdraws into the light.’},
-{speaker:‘Bernadette’,text:’(reaching toward the empty niche, her face wet with tears) No… do not go… please—’},
-{speaker:‘Narrator’,text:‘She kneels motionless for several minutes. When Toinette shakes her, Bernadette is heavy and radiant, her eyes far away.’},
-{speaker:‘Toinette Soubirous’,text:‘Bernarde! You went white as death — I was terrified! What happened to you?’},
-{speaker:‘Bernadette’,text:’(slowly, coming back) You truly saw nothing? Nothing at all — there in the grotto?’},
-{speaker:‘Toinette Soubirous’,text:‘Nothing. Not a thing. Only the rock and the rosebush. Come home — it is growing dark!’}],()=>transitionTo(4));});});}
+{speaker:'Narrator',text:'When the last bead is told, the Lady inclines her head and vanishes into the rock. The light fades. Bernadette is alone \u2014 but changed forever.'},
+],()=>transitionTo(4));});
+});
+});
 }},
-
-// ────────── CH 4: PARENTS REACT ──────────
-{title:‘Chapter V — What Maman Said’,date:‘February 11, 1858 — Evening’,init:function(){
-G.bernadetteStage=0;buildCachot();
-G.player.mesh=createBernadette(0);G.player.mesh.position.set(0,0,3);addC(G.player.mesh);
-const mama=mkChar(0xd4a870,0x4a3828,0x2a1a0a,{veil:true});mama.position.set(-2,0,-3);addC(mama);
-const papa=mkChar(0xc49060,0x3a2820,0x2a1a0a,{});papa.position.set(2,0,-3.5);addC(papa);
-// Over-the-shoulder: sees both Bernadette and parents
-setCam({mode:‘follow’,offset:new THREE.Vector3(-1,4.5,9),fov:48,
-focusMesh:mama,focusWeight:0.3});
-camera.position.set(-1,4.5,11);
-showAge(‘February 11, 1858 — Evening’);
-G.player.canMove=true;
-initTasks([{id:‘mama5’,label:‘Speak privately with Maman’},{id:‘papa5’,label:‘Speak privately with Papa’},{id:‘pray5’,label:‘Pray before sleeping’}]);
-const ch5Pot=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.1,0.1),new THREE.MeshBasicMaterial({visible:false}));ch5Pot.position.set(3.5,0.5,-6.5);addC(ch5Pot);
-createInteractable(mama,‘Speak with Maman’,()=>{if(G.completedTasks[‘mama5’])return;
-camFocus(mama,0.5,44);
-speak([{speaker:‘Bernadette’,text:‘Maman — please believe me. I was not frightened of her. She looked at me as you look at me.’},
-{speaker:‘Louise Soubirous — Maman’,text:’(gripping her daughter's hands, voice breaking) I do not doubt that you believe it, Bernarde. I am afraid for you. That is all. My fear is not your fault.’},
-{speaker:‘Bernadette’,text:’(softly) Then pray for me tonight, Maman. Just that.’}],()=>{completeTask(‘mama5’);setCam({focusMesh:null,focusWeight:0});});});
-createInteractable(papa,‘Speak with Papa’,()=>{if(G.completedTasks[‘papa5’])return;
-camFocus(papa,0.5,44);
-speak([{speaker:‘Bernadette’,text:’(taking his hand) Papa. What if it was real?’},
-{speaker:‘François Soubirous — Papa’,text:’(long silence, eyes bright with something he cannot name) Then God has chosen the strangest house in Lourdes. (a rough laugh, then quiet) Go to sleep, my child. We will see what tomorrow brings.’}],
-()=>{completeTask(‘papa5’);setCam({focusMesh:null,focusWeight:0});});});
-createInteractable(ch5Pot,‘Kneel and pray before sleeping’,()=>{if(G.completedTasks[‘pray5’])return;
-speak([{speaker:‘Bernadette’,text:’(kneeling alone in the dark, rosary in hands) Holy Mary, Mother of God… was it truly You today? I do not dare to think it. But if it was — I am not afraid. Only tell me what You want, and I will do it.’},
-{speaker:‘Narrator’,text:‘She falls asleep still kneeling. Her mother finds her there in the early hours and carries her to her pallet.’}],()=>completeTask(‘pray5’));});
-onAllTasksDone=()=>{hideTasks();speak([{speaker:‘Narrator’,text:‘That night Bernadette did not sleep long. She lay in the dark seeing again that face, that smile. She could no more forget it than forget her own name.’}],()=>transitionTo(5));};}},
-
-// ────────── CH 5: SECOND APPARITION ──────────
-{title:‘Chapter VI — The Lady Speaks’,date:‘February 14, 1858 — Second Apparition’,init:function(){
-G.bernadetteStage=1;
-buildGrotto({sky:0x1a2535,pilgrims:true});
-addC(new THREE.AmbientLight(0x304050,0.55));addC(new THREE.DirectionalLight(0x809090,0.45)).position.set(10,22,6);
-for(let i=0;i<7;i++){const c=mkChar(0xf0c89a,new THREE.Color(rand(0.3,0.6),rand(0.1,0.4),0.06).getHex(),0x2a1a0a,{apron:true,apronC:0xd0c0a0});c.position.set(rand(-5,5),0,rand(2,7));addC(c);G.npcs.push(c);}
-addFireflies(18,9); // Gave grotto — fireflies in the dusk air
-G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,rawTerrain(0,4),4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
-// Side angle — grotto wall left, niche visible, crowd right
-setCam({mode:‘follow’,offset:new THREE.Vector3(-3,5,10),fov:50});
-camera.position.set(-3,5,13);
-showAge(‘February 14, 1858 — Second Apparition · Stage: Teen’);AUDIO.setChurch(0.72);
+// ════════════════ CH4 — Chapter V ════════════════
+{title:'Chapter V — She Tells Her Family',date:'February 1858',init:function(){
+buildCachot();
+spawnPlayer(1,0,3);
+showAge('Back in the Cachot');
+const mama=addNPC(mkChar(0xf0c8a0,0x6a4a8a,0x3a2a1a,{apron:true,veil:true,veilC:0xd0c0a0}),-2.5,0,0.5);
+const papa=addNPC(mkChar(0xe8bf94,0x4a3526,0x2a1d12),3,0,-1.2);
+const crossMk=simpleMarker(0,-5.5,0x3a2010,1.0);crossMk.position.y=2;
+initTasks([
+{id:'mama5',label:'Tell Mama what you saw'},
+{id:'papa5',label:'Ask Papa for leave to return'},
+{id:'pray5',label:'Pray before the crucifix'},
+]);
+createInteractable(mama,'Tell Mama',()=>{speak([
+{speaker:'Bernadette',text:'Mama, I saw a Lady at the grotto. I do not know who she is. She was kind to me.'},
+{speaker:'Louise',text:'Child, you must have seen a white stone, or dreamed it. Do not speak of this to anyone.'},
+],()=>completeTask('mama5'));});
+createInteractable(papa,'Ask Papa',()=>{speak([
+{speaker:'Bernadette',text:'Papa, may I go back to Massabielle? I must know if she will return.'},
+{speaker:'Francois',text:'...One time more. But take holy water, and if it is from the Devil, throw it at her.'},
+],()=>completeTask('papa5'));});
+createInteractable(crossMk,'Pray before the crucifix',()=>{speak([
+{speaker:'Bernadette',text:'If you come from God, stay. If you do not \u2014 then go.'},
+],()=>completeTask('pray5'));});
+onAllTasksDone=()=>{speak([
+{speaker:'Narrator',text:'Sunday, the 14th. Bernadette returns, holy water in hand. The Lady only smiles when the water is thrown \u2014 and grows more radiant.'},
+],()=>transitionTo(5));};
+}},
+// ════════════════ CH5 — Chapter VI ════════════════
+{title:'Chapter VI — The Fortnight',date:'18 February – March 1858',init:function(){
+buildGrotto({day:true,nicheLight:true,candles:true,pilgrims:true});
+spawnPlayer(2,0,5);
+showAge('Bernadette · Age 14 · The Quinze Jours');
+addFireflies(18,8);
+const lady=createOurLady();lady.position.set(0,5.2,-12.6);addC(lady);G.ourLady=lady;
+camFocus(lady,0.45,48);
 speak([
-{speaker:‘Narrator’,text:‘Three days later. Her mother's prohibition wrestles with an irresistible longing. Bernadette returns to the grotto with several schoolgirls and a bottle of holy water from the church.’},
-{speaker:‘Narrator’,text:‘The light reappears. Only Bernadette sees it. The schoolgirls, frightened, hurl the holy water toward the niche, shouting—’},
-{speaker:‘The Schoolgirls’,text:’“If you come from God, stay! If not — go away at once!”’},
-{speaker:‘Narrator’,text:‘The Lady smiles and moves closer, untroubled. Bernadette falls into ecstasy.’}],()=>{
-G.ourLady=createOurLady();G.ourLady.position.set(0,3.1,-12);G.ourLady.scale.setScalar(0.8);addC(G.ourLady);
-showEl(‘holyGlow’);const nl=new THREE.PointLight(0xaabbff,5,14);nl.position.set(0,5,-12);addC(nl);G._nicheLight=nl;
-// Camera pushes in toward Our Lady as she speaks
-setCam({fov:44,offset:new THREE.Vector3(-2,3.5,8),focusMesh:G.ourLady,focusWeight:0.48});
-speak([
-{speaker:‘The Lady — Our Lady’,text:’“Would you do me the favour of coming here for fifteen days?”’},
-{speaker:‘Bernadette’,text:’(barely breathing) Yes… yes, my Lady. I will come every day.’},
-{speaker:‘The Lady — Our Lady’,text:’“I do not promise to make you happy in this world — but in the next.”’},
-{speaker:‘Bernadette’,text:’(her eyes closing, tears silent on her cheeks) I accept that. I accept it with all my heart.’},
-{speaker:‘Narrator’,text:‘The Lady withdraws. Bernadette comes back to herself slowly, her face shining. Bernadette's mother is told. Lourdes has begun to talk.’}],()=>transitionTo(6));});}},
-
-// ────────── CH 6: JACOMET INTERROGATION ──────────
-{title:‘Chapter VII — Before the Commissioner’,date:‘February 18, 1858 · Office of Commissioner Jacomet’,init:function(){
-G.bernadetteStage=1;
-scene.background=new THREE.Color(0x1a1208);scene.fog=new THREE.Fog(0x1a1208,15,60);
-addC(new THREE.AmbientLight(0x201508,0.85));
-const fl=new THREE.PointLight(0xff8800,2,12);fl.position.set(0,3,0);addC(fl);G._fireLight=fl;
-const gnd=new THREE.Mesh(new THREE.PlaneGeometry(14,14),new THREE.MeshPhongMaterial({color:0x5a4028}));gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;addC(gnd);
-function wall(w,h,d,x,y,z){addC(pm(new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshPhongMaterial({color:0x7a6850})),x,y,z));}
-wall(14,4.5,0.3,0,2.25,-7);wall(0.3,4.5,14,-7,2.25,0);wall(0.3,4.5,14,7,2.25,0);
-const desk=new THREE.Mesh(new THREE.BoxGeometry(2.8,0.12,1.4),new THREE.MeshPhongMaterial({color:0x4a3020}));desk.position.set(0,0.92,0);addC(desk);
-[[0.7,0.5],[0.7,-0.5],[-0.7,0.5],[-0.7,-0.5]].forEach(([x,z])=>{const l=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.92,0.1),new THREE.MeshPhongMaterial({color:0x4a3020}));l.position.set(x,0.46,z);addC(l);});
-const paper=new THREE.Mesh(new THREE.BoxGeometry(0.6,0.02,0.4),new THREE.MeshPhongMaterial({color:0xf0ead8}));paper.position.set(0.4,0.98,0.1);addC(paper);
-const jac=mkChar(0xc09060,0x222840,0x1a1010,{});jac.position.set(-0.5,0,-3);jac.scale.setScalar(1.1);addC(jac);G.npcs.push(jac);
-G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,0,3);addC(G.player.mesh);
-// Low interrogation angle — desk in frame, Jacomet looms
-setCam({mode:‘follow’,offset:new THREE.Vector3(1,3.8,8),fov:46});
-camera.position.set(1,3.8,10);
+{speaker:'The Lady',text:'Would you have the grace to come here for fifteen days?'},
+{speaker:'Bernadette',text:'I will come, if my parents allow it.'},
+{speaker:'The Lady',text:'I do not promise to make you happy in this world, but in the next.'},
+{speaker:'Narrator',text:'Word spreads. Each day the crowd at the grotto swells \u2014 from a handful to thousands \u2014 though only Bernadette can see her.'},
+],()=>transitionTo(6));
+}},
+// ════════════════ CH6 — Chapter VII ════════════════
+{title:'Chapter VII — The Commissioner',date:'February 1858',init:function(){
+scene.background=new THREE.Color(0x14110c);scene.fog=new THREE.Fog(0x14110c,12,50);
+G.groundFn=null;
+addC(new THREE.AmbientLight(0x3a3026,0.8));
+const lamp=new THREE.PointLight(0xffcc66,2.2,14);lamp.position.set(0,3.2,0);addC(lamp);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(20,20),new THREE.MeshPhongMaterial({color:0x4a3a28}));
+floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;addC(floor);
+const desk=new THREE.Mesh(new THREE.BoxGeometry(2.4,0.18,1.1),new THREE.MeshPhongMaterial({color:0x3a2818}));
+desk.position.set(0,0.95,-2.2);addC(desk);
+spawnPlayer(2,0,2);
+const jac=addNPC(mkChar(0xd8b48c,0x1a1a22,0x33291c,{hr:0.29}),0,0,-3.4,Math.PI);
 G.camera.focusMesh=jac;G.camera.focusWeight=0.35; // set after jac declared
-showAge(‘February 18, 1858 · Commissioner's Office · Lourdes’);AUDIO.setWind(0.1);
+showAge('Commissioner Jacomet\u2019s Office');AUDIO.setChurch(0);AUDIO.setWind(0);
 speak([
-{speaker:‘Narrator’,text:‘Commissioner Dominique Jacomet, chief of police for Lourdes, has summoned Bernadette to his office. He is an intelligent, experienced interrogator. He intends to frighten her into retracting her story — or catch her in a contradiction.’},
-{speaker:‘Commissioner Jacomet’,text:’(pleasantly dangerous) Sit down, child. I merely want to understand what has been happening at my grotto.’},
-{speaker:‘Narrator’,text:‘He will try three times to break her testimony. Stay truthful and consistent. Stay calm.’}],()=>{
+{speaker:'Jacomet',text:'Sit. You will tell me everything, and you will tell me the truth. These visions \u2014 we shall see how well your story holds.'},
+{speaker:'Narrator',text:'Answer the Commissioner. Hold to what you saw.'},
+],()=>{
 showInterrogation(()=>{speak([
-{speaker:‘Narrator’,text:‘After an hour and a half, Jacomet has not found one contradiction. Every detail Bernadette gives is identical to what she said the first time, and the time before. He dismisses her with a warning.’},
-{speaker:‘Commissioner Jacomet’,text:’(calling after her) I warn you, girl — if this continues, there will be serious consequences for your family.’},
-{speaker:‘Bernadette’,text:’(turning at the door, without reproach) I am sorry, Monsieur. I cannot change what is true.’}],()=>transitionTo(7));});});
+{speaker:'Narrator',text:'Word for word, unshaken, the unlettered girl repeats her account. The Commissioner can find no contradiction, and no lie. He lets her go.'},
+],()=>transitionTo(7));});
+});
 }},
-
-// ────────── CH 7: THE CANDLE ECSTASY ──────────
-{title:‘Chapter VIII — The Candle Test’,date:‘February–March 1858 · Multiple Apparitions’,init:function(){
-G.bernadetteStage=1;
-buildGrotto({sky:0x0d1520,nicheLight:true});
-addFireflies(18,9); // Gave grotto — fireflies in the dusk air
-G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,rawTerrain(0,4),4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
-// Elevated crowd shot — sees Bernadette small among hundreds, grotto cliff above
-setCam({mode:‘follow’,offset:new THREE.Vector3(4,8,13),fov:58});
-camera.position.set(4,8,14);
-for(let i=0;i<22;i++){const c=mkChar(0xd4a870,new THREE.Color(rand(0.2,0.5),rand(0.1,0.3),0.05).getHex(),0x2a1a0a,{veil:(i%2===0),veilC:0xb0a080});c.position.set(rand(-9,9),0,rand(2,10));addC(c);G.npcs.push(c);}
-showAge(‘February–March 1858 — Multiple Apparitions · The Crowds Gather’);AUDIO.setChurch(0.9);AUDIO.setWind(0.1);
+// ════════════════ CH7 — Chapter VIII ════════════════
+{title:'Chapter VIII — Penance and Ecstasy',date:'February 1858',init:function(){
+buildGrotto({day:true,nicheLight:true,candles:true,pilgrims:true,mist:true});
+spawnPlayer(2,0,5);
+showAge('The Grotto · In the sight of thousands');
+addFireflies(20,9);
+const lady=createOurLady();lady.position.set(0,5.2,-12.6);addC(lady);G.ourLady=lady;
+camFocus(lady,0.4,50);
 speak([
-{speaker:‘Narrator’,text:‘The apparitions have continued. Today Doctor Pierre-Romain Dozous stands among the hundreds of witnesses. He is a trained physician and confirmed sceptic, candle in hand, his medical eye fixed on Bernadette.’},
-{speaker:‘Narrator’,text:‘The Lady appears. Bernadette falls into ecstasy. Doctor Dozous steps forward and carefully moves the burning candle flame against Bernadette's clasped hands.’},
-{speaker:‘Dr. Pierre Dozous’,text:’(whispering, stunned) Her hands are in the flame. She holds it bare-handed — for fifteen minutes — and does not move, does not react, does not burn.’},
-{speaker:‘Narrator’,text:‘✦ Hold the button to pray through the ecstasy with Bernadette. Feel what she felt — or rather, nothing at all. ✦’}],()=>{
-G.ourLady=createOurLady();G.ourLady.position.set(0,3.1,-12);G.ourLady.scale.setScalar(0.8);addC(G.ourLady);
-showEl(‘holyGlow’);if(G._nicheLight)G._nicheLight.intensity=5.5;
+{speaker:'The Lady',text:'Penance, penance, penance. Pray to God for sinners.'},
+{speaker:'Narrator',text:'Bernadette falls into ecstasy. A doctor passes a flame near her hand to test her \u2014 yet she feels nothing, and is not burned.'},
+{speaker:'Narrator',text:'Remain in prayer. Hold steady through the ecstasy.'},
+],()=>{
 showCandleTest(()=>{speak([
-{speaker:‘Dr. Pierre Dozous’,text:’(afterwards, his hands shaking as he examines her) Not a mark. Not a blister. Not a trace of heat on the skin. After fifteen minutes of direct flame contact. I am a physician. I have no explanation. None.’},
-{speaker:‘Narrator’,text:‘Doctor Dozous becomes one of the most powerful witnesses for Lourdes. His medical testimony — detailed, precise, professional — will help convince the Bishop's commission years later.’},
-{speaker:‘Bernadette’,text:’(coming out of ecstasy, blinking) Why is everyone staring at me so?’}],()=>transitionTo(8));});});}},
-
-// ────────── CH 8: FATHER PEYRAMALE ──────────
-{title:‘Chapter IX — The Priest and the Rosebush’,date:‘February–March 1858 · The Presbytery of Lourdes’,init:function(){
-G.bernadetteStage=1;
-scene.background=new THREE.Color(0x1a1008);scene.fog=new THREE.Fog(0x1a1008,18,70);
-addC(new THREE.AmbientLight(0x201510,0.9));
-const cl=new THREE.PointLight(0xffaa44,2.8,14);cl.position.set(0,4,0);addC(cl);G._candleLight=cl;
-const gnd=new THREE.Mesh(new THREE.PlaneGeometry(16,16),new THREE.MeshPhongMaterial({color:0x5a4030}));gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;addC(gnd);
-function wall(w,h,d,x,y,z){addC(pm(new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshPhongMaterial({color:0x8a7860})),x,y,z));}
-wall(16,5,0.3,0,2.5,-8);wall(0.3,5,16,-8,2.5,0);wall(0.3,5,16,8,2.5,0);
-const crx=new THREE.Mesh(new THREE.BoxGeometry(0.15,1.3,0.1),new THREE.MeshPhongMaterial({color:0x3a2010}));crx.position.set(0,3,-7.85);addC(crx);
-const crxh=new THREE.Mesh(new THREE.BoxGeometry(0.7,0.15,0.1),new THREE.MeshPhongMaterial({color:0x3a2010}));crxh.position.set(0,3.3,-7.85);addC(crxh);
-const bs=new THREE.Mesh(new THREE.BoxGeometry(2.2,3.2,0.55),new THREE.MeshPhongMaterial({color:0x4a3020}));bs.position.set(-6.5,1.6,-7.6);addC(bs);
-for(let i=0;i<8;i++){const bk=new THREE.Mesh(new THREE.BoxGeometry(rand(0.15,0.28),rand(0.7,1.1),0.45),new THREE.MeshPhongMaterial({color:new THREE.Color(rand(0.3,0.6),rand(0.1,0.3),rand(0,0.1))}));bk.position.set(-6.5+rand(-0.9,0.9),0.8+rand(0,2.2),-7.4);addC(bk);}
-const desk=new THREE.Mesh(new THREE.BoxGeometry(2.8,0.12,1.4),new THREE.MeshPhongMaterial({color:0x4a3020}));desk.position.set(3,0.92,0);addC(desk);
-[[3.7,0.5],[3.7,-0.5],[2.3,0.5],[2.3,-0.5]].forEach(([x,z])=>{const l=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.92,0.1),new THREE.MeshPhongMaterial({color:0x4a3020}));l.position.set(x,0.46,z);addC(l);});
-const pey=mkChar(0xd0a870,0x0a0a15,0x1a1010,{cassock:true});pey.scale.setScalar(1.12);pey.position.set(-1,0,-4);addC(pey);G.npcs.push(pey);
-G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,0,3);addC(G.player.mesh);
-// Looking up slightly at the large priest — Bernadette is small here
-setCam({mode:‘follow’,offset:new THREE.Vector3(-2,3.5,8),fov:46});
-camera.position.set(-2,3.5,10);
-G.camera.focusMesh=pey;G.camera.focusWeight=0.4; // set after pey declared
-showAge(‘February–March 1858 · Presbytery of Père Peyramale’);
+{speaker:'Narrator',text:'The flame leaves no mark. The witnesses are astonished. Bernadette knows nothing of it \u2014 she was lost in the Lady\u2019s gaze.'},
+],()=>transitionTo(8));});
+});
+}},
+// ════════════════ CH8 — Chapter IX ════════════════
+{title:'Chapter IX — Go, Tell the Priests',date:'2 March 1858',init:function(){
+buildValley({season:'spring',sky:0xb0c6e0});
+spawnPlayer(2,0,5);
+showAge('The road to the presbytery');
+AUDIO.setChurch(0.4);
+mkTrees(8,30,{min:12,max:45},(x,z)=>Math.abs(x)<4);
+const church=simpleMarker(0,-9,0xcabb88,3.2);church.position.y=1.6;
+const pey=addNPC(mkChar(0xe0bc92,0x101018,0x2a2018,{cassock:true,hr:0.29}),0,0,-5);
+snapAllNPCs();
 G.player.canMove=true;
-// Petition scroll Bernadette must hand to Peyramale
-const scrollMk=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.35,8),new THREE.MeshPhongMaterial({color:0xf0ead0}));
-scrollMk.rotation.z=Math.PI/2;scrollMk.position.set(2.5,1.05,-0.2);addC(scrollMk);
-createInteractable(scrollMk,‘Give the Lady's requests to Père Peyramale’,()=>{
-if(G.completedTasks&&G.completedTasks[‘pey’])return;
-camFocus(pey,0.55,44);
+initTasks([{id:'pey',label:"Deliver the Lady's request to Pere Peyramale"}]);
+const scroll=simpleMarker(2.5,0,0xe8dcb0,0.6);scroll.position.y=1.2;
+createInteractable(pey,'Speak to Pere Peyramale',()=>{speak([
+{speaker:'Bernadette',text:'Father, the Lady asks that a chapel be built here, and that people come in procession.'},
+{speaker:'Pere Peyramale',text:'A chapel? Then let this Lady give her name \u2014 and make the wild rosebush of the grotto bloom. Bring me that, and I will listen.'},
+{speaker:'Bernadette',text:'I will ask her, Father. I can only tell you what she tells me.'},
+],()=>completeTask('pey'));});
+createInteractable(scroll,'Review the Lady\u2019s request',()=>{speak([
+{speaker:'Narrator',text:'\u201cGo, tell the priests that a chapel is to be built, and that people are to come here in procession.\u201d'},
+],()=>{});});
+onAllTasksDone=()=>{speak([
+{speaker:'Narrator',text:'The priest demands a sign. Bernadette carries his challenge back to the grotto, trusting the Lady to answer in her own way.'},
+],()=>transitionTo(9));};
+}},
+// ════════════════ CH9 — Chapter X ════════════════
+{title:'Chapter X — The Spring',date:'25 February 1858',init:function(){
+buildGrotto({day:true,nicheLight:true,pilgrims:true,mist:true});
+spawnPlayer(2,0,4);
+showAge('The discovery of the spring');
+const lady=createOurLady();lady.position.set(0,5.2,-12.6);addC(lady);G.ourLady=lady;
+// Spring particle fountain near the dig site
+const sGeo=new THREE.BufferGeometry(),sN=60,sP=new Float32Array(sN*3);
+for(let i=0;i<sN;i++){sP[i*3]=-2+(Math.random()-0.5)*0.3;sP[i*3+1]=Math.random()*1.4;sP[i*3+2]=-6+(Math.random()-0.5)*0.3;}
+sGeo.setAttribute('position',new THREE.BufferAttribute(sP,3));
+const sPts=new THREE.Points(sGeo,new THREE.PointsMaterial({color:0xaad8ff,size:0.08,transparent:true,opacity:0.85}));
+addC(sPts);G._springPts=sPts;G._springPtsPos=sP;
 speak([
-{speaker:‘Narrator’,text:‘Bernadette steps forward. The priest towers over her.’},
-{speaker:‘Narrator’,text:‘Dominique Peyramale — curé of Lourdes. A large, blunt, formidable man with a lion's voice and (as it will prove) a lion's heart. Bernadette has been instructed to bring the Lady's request directly to the priest.’},
-{speaker:‘Fr. Dominique Peyramale’,text:’(turning sharply) So. You are the girl causing all this uproar. What do you want?’},
-{speaker:‘Bernadette’,text:‘Father — the Lady asks that a chapel be built at Massabielle, and that people come there in procession.’},
-{speaker:‘Fr. Dominique Peyramale’,text:’(slamming his hand on the desk) A CHAPEL! Does she indeed! And what is this Lady's name?’},
-{speaker:‘Bernadette’,text:‘She has not told me her name, Father.’},
-{speaker:‘Fr. Dominique Peyramale’,text:‘She has NOT TOLD YOU! You come demanding a chapel and procession — in the name of a Lady with no name!’},
-{speaker:‘Bernadette’,text:’(calmly) Yes, Father. That is correct.’},
-{speaker:‘Fr. Dominique Peyramale’,text:‘Then go back and ask this Lady her name. And tell her: if she wants a chapel, let her make the wild rosebush bloom — HERE, in FEBRUARY!’},
-{speaker:‘Bernadette’,text:’(rising without reproach) I will tell her, Father.’},
-{speaker:‘Fr. Dominique Peyramale’,text:’(watching her leave, to himself) There is something about this child. She did not flinch. She seeks nothing for herself. Nothing at all.’}],
-()=>{completeTask(‘pey’);hideTasks();setCam({focusMesh:null,focusWeight:0});
-setTimeout(()=>transitionTo(9),1200);});});}},
-
-// ────────── CH 9: THE MIRACULOUS SPRING ──────────
-{title:‘Chapter X — Go and Drink at the Spring’,date:‘February 25, 1858 — Ninth Apparition’,init:function(){
-G.bernadetteStage=1;
-buildGrotto({sky:0x0a1420,nicheLight:false,candles:true,pilgrims:true});
-addC(new THREE.AmbientLight(0x102030,0.62));addC(new THREE.DirectionalLight(0x7090b0,0.4)).position.set(-10,20,5);
-for(let i=0;i<14;i++){const c=mkChar(0xd4a870,new THREE.Color(rand(0.2,0.5),rand(0.1,0.3),0.05).getHex(),0x2a1a0a,{});c.position.set(rand(-9,9),0,rand(3,10));addC(c);G.npcs.push(c);}
-const springHole=new THREE.Mesh(new THREE.CircleGeometry(0.45,14),new THREE.MeshPhongMaterial({color:0x1a2a50}));springHole.rotation.x=-Math.PI/2;springHole.position.set(-2,0.02,-6);addC(springHole);
-addFireflies(18,9); // Gave grotto — fireflies in the dusk air
-G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,rawTerrain(0,4),4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
-// Low handheld feel — follows her toward the cliff, crowd watching
-setCam({mode:‘follow’,offset:new THREE.Vector3(3,4,10),fov:50});
-camera.position.set(3,4,13);
-showAge(‘February 25, 1858 — Ninth Apparition · The Spring’);AUDIO.setChurch(0.85);AUDIO.setWind(0.12);
-speak([{speaker:‘Narrator’,text:‘February 25th. The ninth apparition. Three hundred people press around the grotto. Only Bernadette sees the Lady. Today the Lady will say something that bewilders and horrifies everyone watching.’}],()=>{
-G.ourLady=createOurLady();G.ourLady.position.set(0,3.1,-12);G.ourLady.scale.setScalar(0.8);addC(G.ourLady);showEl(‘holyGlow’);
-const nl=new THREE.PointLight(0xaabbff,4.5,13);nl.position.set(0,5,-12);addC(nl);G._nicheLight=nl;
-speak([
-{speaker:‘The Lady — Our Lady’,text:’“Go and drink at the spring and wash yourself there.”’},
-{speaker:‘Bernadette’,text:’(confused, looking around) A spring? My Lady — I see no spring. There is only mud at the base of the rock—’},
-{speaker:‘The Lady — Our Lady’,text:’“Go and drink there. Go and wash yourself.”’},
-{speaker:‘Narrator’,text:‘✦ Walk to the muddy spot at the base of the cliff — where the Lady is pointing. ✦’}],()=>{
-G._awaitingSpring=true;G._springTarget=new THREE.Vector3(-2,0,-6);G.player.canMove=true;showEl(‘springPrompt’);
-// Nudge camera lower as she approaches the muddy ground
-setCam({mode:‘follow’,offset:new THREE.Vector3(0,3,7),fov:42});
+{speaker:'The Lady',text:'Go, drink at the spring and wash yourself there.'},
+{speaker:'Bernadette',text:'But... there is no spring here. Only the mud of the bank.'},
+{speaker:'Narrator',text:'She scratches at the dry earth and lifts the muddy water to her lips. The crowd jeers \u2014 they think her mad. Walk to the spring.'},
+],()=>{
+showEl('springPrompt');
+G.player.canMove=true;
+G._awaitingSpring=true;G._springTarget={x:-2,z:-6};
 G._onSpringArrived=()=>{
-hideEl(‘springPrompt’);G._awaitingSpring=false;G.player.canMove=false;
+hideEl('springPrompt');
+notify('A clear spring wells up from the mud \u2014 it flows still today');
+const louis=addNPC(mkChar(0xd8b48c,0x4a4038,0x2a2018),-4,-3,0);
+const contSign=simpleMarker(3,-5,0xcaa860,1.4);
+createInteractable(louis,'The healed quarryman',()=>{speak([
+{speaker:'Louis Bouriette',text:'My eye \u2014 blind these twenty years \u2014 I washed it in this water, and I can SEE! It is a miracle!'},
+],()=>{});});
+createInteractable(contSign,'Continue the journey',()=>{transitionTo(10);});
 speak([
-{speaker:‘Narrator’,text:‘Bernadette crawls to the spot and begins to scratch at the wet earth with her bare hands. The crowd watches in horror. Some jeer. She scoops muddy water to her lips — once, twice, three times — spilling most of it before it reaches her mouth.’},
-{speaker:‘Narrator’,text:‘She washes her face with the mud. Some in the crowd turn away in disgust. “The girl has gone mad,” they say. “This proves it all a deception.” Then the water clears. And clears again — until it runs cold and pure and crystalline from the living rock.’},
-{speaker:‘Narrator’,text:‘A spring. Where no spring has ever been. Flowing at what hydrologists will later measure as 32,000 gallons per day.’}],()=>{
-showEl(‘springGlow’);AUDIO.setWater(1);AUDIO.setChurch(0.35);
-const sw=mkWater(1.6,1.6,0x44aaff);sw.position.set(-2,0.05,-6);addC(sw);
-sw._isSpring=true; G.springWater=sw; // gentle spring waves
-const sL=new THREE.PointLight(0x44aaff,3.2,9);sL.position.set(-2,0.6,-6);addC(sL);
-// Pull back to show crowd witnessing the miracle
-setTimeout(()=>setCam({mode:‘follow’,offset:new THREE.Vector3(-4,6,11),fov:56}),2000);
-// Spring particles
-const spN=72,spGeo=new THREE.BufferGeometry(),spPos=new Float32Array(spN*3);
-spGeo.setAttribute(‘position’,new THREE.BufferAttribute(spPos,3));
-const spPts=new THREE.Points(spGeo,new THREE.PointsMaterial({color:0x88ccff,size:0.065,transparent:true,opacity:0.9}));
-addC(spPts);G._springPts=spPts;G._springPtsPos=spPos;
-// Louis Bouriette witness NPC
-const louis=mkChar(0xc49060,0x4a3020,0x2a1a0a,{});louis.position.set(2,0,-5);addC(louis);G.npcs.push(louis);
-createInteractable(louis,‘Speak with Louis Bouriette’,()=>{speak([
-{speaker:‘Louis Bouriette — Stone Quarryman’,text:‘Twenty years — twenty years blind in this eye from a stone blast. The doctors said: nothing to be done, ever. This morning I bathed my eye in the water of this spring. I opened it. I can see you. I can see the mountain. I can see!’},
-{speaker:‘Bernadette’,text:’(pressing his hands gently) Do not thank me, Monsieur. I am nothing. Give thanks to God and to the Lady. She made the spring — I only dug in the mud.’}],()=>{G.player.canMove=true;});});
-const contSign=new THREE.Mesh(new THREE.BoxGeometry(0.15,1.2,0.1),new THREE.MeshPhongMaterial({color:0x3a2010}));contSign.position.set(-5.5,0.6,-4);addC(contSign);
-createInteractable(contSign,‘Continue the Journey →’,()=>transitionTo(10));
-speak([
-{speaker:‘Narrator’,text:‘The spring will flow from this hour forward, unceasingly, for more than 165 years. Louis Bouriette, blind for twenty years, sees. Catherine Latapie, her hand paralysed since a fall, plunges it in and moves her fingers.’},
-{speaker:‘Narrator’,text:‘Speak with Louis Bouriette, then continue when you are ready.’}],()=>{G.player.canMove=true;});});};});});
+{speaker:'Narrator',text:'By morning the spring runs clear and steady. The first cures begin. What was mockery becomes wonder. (Speak with Louis, then continue the journey.)'},
+],()=>{G.player.canMove=true;});
+};
+});
 }},
-
-// ────────── CH 10: PENANCE ──────────
-{title:‘Chapter XI — Penance! Penance! Penance!’,date:‘March 1858 — The Call to Repentance’,init:function(){
-G.bernadetteStage=1;
-buildGrotto({sky:0x0a1420,nicheLight:false,pilgrims:true,mist:true});
-addC(new THREE.AmbientLight(0x102030,0.55));addC(new THREE.DirectionalLight(0x8090a0,0.42)).position.set(-10,20,5);
-for(let i=0;i<20;i++){const c=mkChar(0xd4a870,new THREE.Color(rand(0.2,0.5),rand(0.1,0.3),0.05).getHex(),0x2a1a0a,{veil:(i%2===0),veilC:0xb0a080});c.position.set(rand(-10,10),0,rand(3,11));addC(c);G.npcs.push(c);}
-addFireflies(18,9); // Gave grotto — fireflies in the dusk air
-G.player.mesh=createBernadette(1);G.player.mesh.position.set(0,rawTerrain(0,4),4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
-// Wide reverent angle — crowd fills frame, cliff looms, Bernadette tiny
-setCam({mode:‘follow’,offset:new THREE.Vector3(-5,7,14),fov:58});
-camera.position.set(-5,7,15);
-showAge(‘March 1858 — Penance and the Chapel Request’);AUDIO.setChurch(0.92);AUDIO.setWind(0.15);
-speak([{speaker:‘Narrator’,text:‘During the apparitions the Lady's face on certain days becomes suffused with grief — profound, maternal sorrow. On these days she speaks of sinners and the world's need for repentance.’}],()=>{
-G.ourLady=createOurLady();G.ourLady.position.set(0,3.1,-12);G.ourLady.scale.setScalar(0.8);addC(G.ourLady);showEl(‘holyGlow’);
-const nl=new THREE.PointLight(0xaabbff,4.5,13);nl.position.set(0,5,-12);addC(nl);G._nicheLight=nl;
+// ════════════════ CH10 — Chapter XI ════════════════
+{title:'Chapter XI — Acts of Penance',date:'Spring 1858',init:function(){
+buildGrotto({day:true,nicheLight:true,pilgrims:true});
+spawnPlayer(2,0,5);
+showAge('Penance for sinners');
+addFireflies(14,8);
+initTasks([
+{id:'p0',label:'Drink of the spring in penance'},
+{id:'p1',label:'Kiss the cold ground for sinners'},
+{id:'p2',label:'Pray a decade for the conversion of hearts'},
+]);
+const stoneA=simpleMarker(-3,-5,0x6a6258,0.5);stoneA.position.y=0.3;
+const stoneB=simpleMarker(0,-6,0x6a6258,0.5);stoneB.position.y=0.3;
+const stoneC=simpleMarker(3,-5,0x6a6258,0.5);stoneC.position.y=0.3;
+createInteractable(stoneA,'Drink of the spring',()=>{speak([
+{speaker:'Bernadette',text:'(She drinks, though the water is still clouded.) For sinners. For those who never pray.'},
+],()=>completeTask('p0'));});
+createInteractable(stoneB,'Kiss the ground',()=>{speak([
+{speaker:'Narrator',text:'She kneels and presses her lips to the cold stone \u2014 a penance the Lady asked, for the hardness of the world.'},
+],()=>completeTask('p1'));});
+createInteractable(stoneC,'Pray a decade',()=>{speak([
+{speaker:'Bernadette',text:'Hail Mary, full of grace... pray for us sinners, now and at the hour of our death.'},
+],()=>completeTask('p2'));});
+onAllTasksDone=()=>{speak([
+{speaker:'Narrator',text:'Penance, penance, penance. The girl obeys without understanding \u2014 and the crowds, watching her, begin to pray as well.'},
+],()=>transitionTo(11));};
+}},
+// ════════════════ CH11 — Chapter XII ════════════════
+{title:'Chapter XII — The Immaculate Conception',date:'25 March 1858 · Feast of the Annunciation',init:function(){
+buildGrotto({day:true,nicheLight:true,candles:true,pilgrims:true,mist:true});
+spawnPlayer(2,0,4);
+showAge('Bernadette asks the Lady her name');
+addFireflies(22,9);
 speak([
-{speaker:‘The Lady — Our Lady’,text:’“Penance! Penance! Penance! Pray to God for sinners. Kiss the earth as a penance for sinners.”’},
-{speaker:‘Narrator’,text:‘Bernadette prostrates herself on the cold stone. She crawls on her knees. She eats the bitter wild herbs at the grotto mouth. The crowd watches — faces shifting from confusion to awe.’},
-{speaker:‘The Lady — Our Lady’,text:’“Go and tell the priests that people should come here in procession and that a chapel should be built on this spot.”’},
-{speaker:‘Bernadette’,text:’(still kneeling, quietly) Yes, my Lady. I will go.’},
-{speaker:‘Narrator’,text:‘✦ As penance for sinners — kneel at each of the three sacred stones before returning to Father Peyramale. ✦’}],()=>{
+{speaker:'Narrator',text:'For the sixteenth time, Bernadette comes at dawn. The priest\u2019s question burns in her: the Lady must give her name.'},
+{speaker:'Bernadette',text:'Madame, would you be so kind as to tell me who you are?'},
+{speaker:'Narrator',text:'Three times she asks. The Lady only smiles. The fourth time, the Lady joins her hands, raises her eyes to heaven, and speaks...'},
+],()=>{
+const lady=createOurLady();lady.position.set(0,5.4,-12.6);lady.scale.setScalar(1.05);addC(lady);G.ourLady=lady;
+showEl('holyGlow');
+camFocus(lady,0.6,42);
+setCam({focusMesh:lady,focusWeight:0.6});
+const l1=new THREE.PointLight(0xffffff,4,30);l1.position.set(0,6,-10);addC(l1);
+const l2=new THREE.PointLight(0xaaccff,3,24);l2.position.set(0,5,-12);addC(l2);
+speak([
+{speaker:'The Lady',text:'Que soy era Immaculada Councepciou.'},
+{speaker:'The Lady',text:'(In her own dialect:) I am the Immaculate Conception.'},
+{speaker:'Bernadette',text:'I do not know what it means. I only repeat the words, over and over, the whole way to the priest, so I will not forget them.'},
+],()=>{
+setTimeout(()=>{
+hideEl('holyGlow');
+speak([
+{speaker:'Narrator',text:'Four years earlier, in 1854, the Pope had defined this very dogma \u2014 a phrase no unlettered peasant girl could have known. Pere Peyramale weeps when he hears it.'},
+],()=>transitionTo(12));
+},1200);
+});
+});
+}},
+// ════════════════ CH12 — Chapter XIII ════════════════
+{title:'Chapter XIII — First Communion',date:'3 June 1858',init:function(){
+scene.background=new THREE.Color(0x20242e);scene.fog=new THREE.Fog(0x20242e,14,60);
+G.groundFn=null;
+addC(new THREE.AmbientLight(0x9098b0,0.85));
+const glow=new THREE.PointLight(0xffe6aa,2.4,22);glow.position.set(0,5,-6);addC(glow);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(24,24),new THREE.MeshPhongMaterial({color:0x5a5048}));
+floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;addC(floor);
+for(let i=-1;i<=1;i+=2){const col=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,8,12),new THREE.MeshPhongMaterial({color:0xb0a890}));col.position.set(i*4,4,-7);addC(col);}
+const altarGlow=new THREE.PointLight(0xffd070,2,16);altarGlow.position.set(0,2,-8);addC(altarGlow);
+spawnPlayer(2,0,5);
+showAge('First Holy Communion · Hospice Chapel');
+AUDIO.setChurch(0.6);
+const commMk=simpleMarker(0,-7,0xffe0a0,1.6);commMk.position.y=0.8;
+speak([
+{speaker:'Narrator',text:'After years held back for her poverty and her health, Bernadette at last receives her First Communion. Approach the altar.'},
+],()=>{
+showEl('walkPrompt');
 G.player.canMove=true;
-initTasks([{id:‘p0’,label:‘Stone of Repentance — kneel’},{id:‘p1’,label:‘Stone of Prayer — kneel’},{id:‘p2’,label:‘Stone of Charity — kneel’}]);
-let visited=0;
-[{pos:new THREE.Vector3(-3,0,-2),name:‘Stone of Repentance’,id:‘p0’},
-{pos:new THREE.Vector3(0,0,-4.5),name:‘Stone of Prayer’,id:‘p1’},
-{pos:new THREE.Vector3(3,0,-2),name:‘Stone of Charity’,id:‘p2’}].forEach(s=>{
-const stone=new THREE.Mesh(new THREE.SphereGeometry(0.28,8,7),new THREE.MeshPhongMaterial({color:0x888070,emissive:0x443322,emissiveIntensity:0.35}));
-stone.position.copy(s.pos);stone.scale.y=0.38;addC(stone);
-const cx=new THREE.Mesh(new THREE.BoxGeometry(0.05,0.35,0.05),new THREE.MeshBasicMaterial({color:0xf0d060}));cx.position.set(s.pos.x,0.45,s.pos.z);addC(cx);
-const cxh=new THREE.Mesh(new THREE.BoxGeometry(0.18,0.05,0.05),new THREE.MeshBasicMaterial({color:0xf0d060}));cxh.position.set(s.pos.x,0.38,s.pos.z);addC(cxh);
-createInteractable(stone,s.name,()=>{if(!G.completedTasks[s.id]){completeTask(s.id);visited++;
-if(visited>=3){setTimeout(()=>{hideTasks();speak([
-{speaker:‘Narrator’,text:‘Bernadette returns to Father Peyramale once more — the same quiet composure, the same unblinking testimony. Something shifts in his face.’},
-{speaker:‘Fr. Dominique Peyramale’,text:’(alone in his study after she leaves) She has come to me five times. Five times the same story, not one word changed. She is either the truth itself, or the most perfect liar in the history of the Church — and this child is no liar.’},
-{speaker:‘Narrator’,text:‘He writes, secretly, to the Bishop of Tarbes.’}],()=>transitionTo(11));},800);}}});
-});});});}},
-
-// ────────── CH 11: I AM THE IMMACULATE CONCEPTION ──────────
-{title:‘Chapter XII — “I Am the Immaculate Conception”’,date:‘March 25, 1858 — Feast of the Annunciation’,init:function(){
-G.bernadetteStage=2;
-buildGrotto({sky:0x050210,nicheLight:true,pilgrims:true,candles:true});
-addC(new THREE.AmbientLight(0x0a0820,0.42));addC(mkStars());
-// White rose petals fall — the “heavenly snow” witnessed on this night
-(function(){
-const n=100,geo=new THREE.BufferGeometry(),pos=new Float32Array(n*3),col=new Float32Array(n*3),vel=[];
-for(let i=0;i<n;i++){pos[i*3]=rand(-11,11);pos[i*3+1]=rand(3,15);pos[i*3+2]=rand(-14,7);
-col[i*3]=1;col[i*3+1]=0.95+Math.random()*0.05;col[i*3+2]=0.90+Math.random()*0.10;
-vel.push({vx:rand(-0.015,0.015),vz:rand(-0.010,0.010),vy:rand(-0.035,-0.015),phase:Math.random()*6.28});}
-geo.setAttribute(‘position’,new THREE.BufferAttribute(pos,3));
-geo.setAttribute(‘color’,new THREE.BufferAttribute(col,3));
-const pts=new THREE.Points(geo,new THREE.PointsMaterial({size:0.20,vertexColors:true,transparent:true,opacity:0.9,sizeAttenuation:true}));
-addC(pts);
-const chapterAtStart=G.chapter;
-function animP(){if(G.chapter!==chapterAtStart)return;requestAnimationFrame(animP);
-const p=pts.geometry.attributes.position.array;
-for(let i=0;i<n;i++){p[i*3]+=vel[i].vx+Math.sin(G.time*0.9+vel[i].phase)*0.007;
-p[i*3+1]+=vel[i].vy;p[i*3+2]+=vel[i].vz;
-if(p[i*3+1]<-1){p[i*3+1]=14+rand(0,5);p[i*3]=rand(-11,11);p[i*3+2]=rand(-14,7);}}
-pts.geometry.attributes.position.needsUpdate=true;}
-animP();
-})();
-addFireflies(18,9); // Gave grotto — fireflies in the dusk air
-G.player.mesh=createBernadette(2);G.player.mesh.position.set(0,rawTerrain(0,4),4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
-// Begin wide, will zoom in during the sacred declaration
-setCam({mode:‘follow’,offset:new THREE.Vector3(0,4.5,9),fov:54});
-camera.position.set(0,4.5,11);
-showAge(‘Bernadette Soubirous · Age 14 · March 25, 1858 — Feast of the Annunciation’);AUDIO.setChurch(1);AUDIO.setWind(0);
-speak([
-{speaker:‘Narrator’,text:‘March 25th. The Feast of the Annunciation. Bernadette has asked the Lady her name three times over the preceding weeks. Each time the Lady smiled with great tenderness — and said nothing.’},
-{speaker:‘Narrator’,text:‘Today the light in the niche is brighter than it has ever been. The Lady appears — radiant, joyful, lit from within.’},
-{speaker:‘Bernadette’,text:’(her voice small against the silence) My Lady… I beg of you… will you not tell me who you are? The priest requires it of me. Who are you, my Lady?’}],()=>{
-G.ourLady=createOurLady();G.ourLady.position.set(0,3.1,-12);G.ourLady.scale.setScalar(0.8);addC(G.ourLady);showEl(‘holyGlow’);
-// Scene brightens as the declaration approaches
-scene.fog=new THREE.Fog(0xeef8f0,20,80);
-const sacredLight=new THREE.PointLight(0xffffff,4.5,25);sacredLight.position.set(0,4,-12);addC(sacredLight);
-// Maximum intimacy — push in as the name is finally revealed
-setCam({fov:38,offset:new THREE.Vector3(0,3.2,7),focusMesh:G.ourLady,focusWeight:0.55});
-const l1=new THREE.PointLight(0xffffff,7,18);l1.position.set(0,5.5,-12);addC(l1);G._nicheLight=l1;
-const l2=new THREE.PointLight(0xaabbff,4.5,22);l2.position.set(0,3,0);addC(l2);
-speak([{speaker:‘Narrator’,text:‘The Lady's face takes on a look of great solemnity and tenderness together. She joins her hands and raises her eyes to heaven. Then her arms fall open — the gesture of the Miraculous Medal, rays of golden light streaming from her palms. She smiles. And she speaks.’}],()=>{
-setTimeout(()=>{G.camera.shake=1.2;AUDIO.setChurch(1);
-const fl=addC(new THREE.PointLight(0xffffff,22,55));fl.position.set(0,5,-5);setTimeout(()=>{G.camera.shake=0;},900);
-speak([
-{speaker:‘✦ The Most Holy Virgin Mary — Our Lady of Lourdes ✦’,text:’“Que soy era Immaculata Conceptiou.”’},
-{speaker:‘English — from the Gascon dialect of Lourdes’,text:’“I am the Immaculate Conception.”’},
-{speaker:‘Narrator’,text:‘These words are spoken in Bernadette's own village dialect — the language of the poor, the uneducated, the forgotten. Bernadette has never heard the phrase “Immaculate Conception.” She does not know what it means.’},
-{speaker:‘Narrator’,text:‘She begins to run — through the streets of Lourdes, repeating the words under her breath over and over, terrified she will forget them before reaching the priest.’},
-{speaker:‘Bernadette’,text:’(breathless, bursting through Peyramale's door) Father! She told me! She said — Que soy era Immaculata Conceptiou — “I am the Immaculate Conception!”’},
-{speaker:‘Fr. Dominique Peyramale’,text:’(frozen in his chair, voice dropping to a whisper) What did you say?’},
-{speaker:‘Bernadette’,text:’“I am the Immaculate Conception,” Father. She said it three times so I would not forget.’},
-{speaker:‘Fr. Dominique Peyramale’,text:’(standing, hand pressed to his face) Do you know what those words mean, child?’},
-{speaker:‘Bernadette’,text:‘No, Father. I do not. But I did not forget them.’},
-{speaker:‘Fr. Dominique Peyramale’,text:’(alone, hours later, pacing) Pope Pius IX defined the Immaculate Conception only four years ago — 1854. This girl cannot read. She has never heard this theology. She CANNOT have invented these words. She has given Her name. The Virgin Mary has named Herself.’}],()=>transitionTo(12));},1200);});
-})
+G._awaitingWalk=true;G._walkTarget={x:0,z:-7};G._walkRadius=2.2;
+G._onWalkArrived=()=>{hideEl('walkPrompt');speak([
+{speaker:'Bernadette',text:'(When asked which made her happier \u2014 the apparitions or her Communion \u2014 she cannot choose.) The two go together. They cannot be compared.'},
+],()=>transitionTo(13));};
+});
 }},
-
-// ────────── CH 12: FIRST COMMUNION ──────────
-{title:‘Chapter XIII — First Communion’,date:‘June 3, 1858 — The Feast of Corpus Christi’,init:function(){
-G.bernadetteStage=2;
-scene.background=new THREE.Color(0x1a1008);scene.fog=new THREE.Fog(0x1a1008,20,80);
-addC(new THREE.AmbientLight(0x302418,0.85));
-// Church interior
-const gnd=new THREE.Mesh(new THREE.PlaneGeometry(20,24),new THREE.MeshPhongMaterial({color:0x5a4a38}));gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;addC(gnd);
-function wall(w,h,d,x,y,z){addC(pm(new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshPhongMaterial({color:0xe0d8c8})),x,y,z));}
-wall(20,8,0.3,0,4,-12);wall(0.3,8,24,-10,4,0);wall(0.3,8,24,10,4,0);wall(20,0.3,24,0,8,0);
-// Pews
-for(let row=0;row<5;row++){[-4,4].forEach(sx=>{const pew=new THREE.Mesh(new THREE.BoxGeometry(3.5,0.6,0.85),new THREE.MeshPhongMaterial({color:0x5a3820}));pew.position.set(sx,0.4,-row*2.2+4);addC(pew);const back=new THREE.Mesh(new THREE.BoxGeometry(3.5,1.1,0.15),new THREE.MeshPhongMaterial({color:0x5a3820}));back.position.set(sx,0.95,-row*2.2+4.5);addC(back);});}
-// Altar
-const altar=new THREE.Mesh(new THREE.BoxGeometry(6,1,2),new THREE.MeshPhongMaterial({color:0xf0ece0}));altar.position.set(0,0.5,-11);addC(altar);
-const alC=new THREE.PointLight(0xffee88,3.5,16);alC.position.set(0,3,-10);addC(alC);G._candleLight=alC;
-// Altar cross
-addC(pm(new THREE.Mesh(new THREE.BoxGeometry(0.2,2,0.15),new THREE.MeshBasicMaterial({color:0xf0d060})),0,2.5,-11.4));
-addC(pm(new THREE.Mesh(new THREE.BoxGeometry(1.1,0.2,0.15),new THREE.MeshBasicMaterial({color:0xf0d060})),0,2.8,-11.4));
-// Candles on altar
-[-2.5,2.5,-1.5,1.5,-0.8,0.8].forEach(x=>{const cv=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.55,8),new THREE.MeshPhongMaterial({color:0xf0e8d0}));cv.position.set(x,1.28,-11);addC(cv);const fl=new THREE.PointLight(0xffaa44,0.6,3);fl.position.set(x,1.7,-11);addC(fl);});
-// Stained glass suggestion (coloured panels)
-[[0xdd4444,-9.85,5,-6],[0x4488cc,-9.85,5,-3],[0xddaa22,-9.85,5,0],[0x44cc44,-9.85,5,3],[0xcc44aa,9.85,5,-6],[0x44ccdd,9.85,5,-3],[0xddcc44,9.85,5,0],[0x8844cc,9.85,5,3]].forEach(([c,x,y,z])=>{
-const sg=new THREE.Mesh(new THREE.BoxGeometry(0.12,2.5,1.8),new THREE.MeshPhongMaterial({color:c,emissive:c,emissiveIntensity:0.35,transparent:true,opacity:0.72}));sg.position.set(x,y,z);addC(sg);});
-// Priest at altar
-const pey=mkChar(0xd0a870,0x0a0a15,0x1a1010,{cassock:true});pey.position.set(0,0,-10.5);addC(pey);G.npcs.push(pey);
-// Children for communion
-for(let i=0;i<8;i++){const child=mkChar(0xf0c89a,0xf5f2ec,0x2a1a0a,{veil:true,veilC:0xffffff});child.scale.setScalar(0.72);child.position.set(rand(-4,4),0,-8+Math.floor(i/4)*2);addC(child);}
-// Communion altar mark for player to walk to
-const commMk=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.1,0.1),new THREE.MeshBasicMaterial({visible:false}));commMk.position.set(0,0,-9.5);addC(commMk);
-G.player.mesh=createBernadette(2);G.player.mesh.position.set(2,0,4);addC(G.player.mesh);G.player.canMove=false;
-// Looking down nave toward the altar, pews framing, sacred gold light
-setCam({mode:‘follow’,offset:new THREE.Vector3(0,4,10),fov:48});
-camera.position.set(0,4,14);
-showAge(‘Bernadette Soubirous · Age 14 · First Holy Communion · June 3, 1858’);AUDIO.setChurch(1);AUDIO.setWind(0);
+// ════════════════ CH13 — Chapter XIV ════════════════
+{title:'Chapter XIV — The Hospice School',date:'Lourdes · 1860–1866',init:function(){
+scene.background=new THREE.Color(0x2a2e26);scene.fog=new THREE.Fog(0x2a2e26,14,55);
+G.groundFn=null;
+addC(new THREE.AmbientLight(0x8a8f80,0.9));
+const win=new THREE.PointLight(0xfff0d0,1.8,20);win.position.set(-4,4,-4);addC(win);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(20,20),new THREE.MeshPhongMaterial({color:0x6a5a44}));
+floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;addC(floor);
+const board=new THREE.Mesh(new THREE.BoxGeometry(3,1.6,0.1),new THREE.MeshPhongMaterial({color:0x1a2a1a}));board.position.set(0,2,-5);addC(board);
+spawnPlayer(2,1.5,4);
+const sister=addNPC(mkChar(0xe8c0a0,0xf2efe9,0x1a1010,{veil:true,veilC:0xf5f0ea,hr:0.30}),-1.5,0,-2);
+G.camera.focusMesh=sister;G.camera.focusWeight=0.3; // set after sister declared
+showAge('Bernadette Soubirous \u00b7 Age 14\u201316 \u00b7 Hospice School, Lourdes');AUDIO.setChurch(0.5);AUDIO.setWind(0);
 speak([
-{speaker:‘Narrator’,text:‘June 3, 1858. The Feast of Corpus Christi. The day that Bernadette has longed for since childhood — the day she makes her First Holy Communion. She is fourteen years old, two years later than most children her age.’},
-{speaker:‘Narrator’,text:‘She will later say: “I have always thought that the greatest sorrow of my life was not seeing the apparitions again — only the happiness of my First Communion could be compared to the ecstasy of seeing the Lady.”’},
-{speaker:‘Bernadette’,text:’(whispering to herself, her hands clasped, eyes shining) She promised me happiness not in this world but the next. And today — today I touch the next world for a moment.’},
-{speaker:‘Narrator’,text:‘✦ Walk forward to receive Holy Communion at the altar. ✦’}],()=>{
-G.player.canMove=true;showEl(‘communionPrompt’);
-G._awaitingWalk=true;G._walkTarget=commMk.position.clone();G._walkRadius=2;
-G._onWalkArrived=()=>{
-G._awaitingWalk=false;hideEl(‘communionPrompt’);G.player.canMove=false;
-G.camera.shake=0.18;
-speak([
-{speaker:‘Narrator’,text:‘She receives the Host. In the years and decades to come she will describe it like this: “All I can say is that in the moment of receiving Him — for one instant — I had what I saw in the grotto, and infinitely more.”’},
-{speaker:‘Narrator’,text:‘The apparitions are now complete. Eighteen apparitions in all, from February 11 to July 16, 1858. The commission of the Bishop of Tarbes begins its investigation. Bernadette will be questioned hundreds of times.’},
-{speaker:‘Narrator’,text:‘She never falters. Not once, not by one word, in the next twenty years.’}],()=>transitionTo(13));};});}},
-
-// ────────── CH 13: CATECHISM & FIRST COMMUNION STUDIES ──────────
-{title:‘Chapter XIV — To Learn and to Pray’,date:‘1858–1860 · The Hospice School, Lourdes’,init:function(){
-G.bernadetteStage=2;
-scene.background=new THREE.Color(0x2a1e10);scene.fog=new THREE.Fog(0x2a1e10,18,75);
-addC(new THREE.AmbientLight(0x302418,0.9));
-const cl=new THREE.PointLight(0xffaa44,2.2,13);cl.position.set(0,3.5,0);addC(cl);G._candleLight=cl;
-const gnd=new THREE.Mesh(new THREE.PlaneGeometry(16,16),new THREE.MeshPhongMaterial({color:0x5a4030}));gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;addC(gnd);
-function wall(w,h,d,x,y,z){addC(pm(new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshPhongMaterial({color:0xc8bca8})),x,y,z));}
-wall(16,5,0.3,0,2.5,-8);wall(0.3,5,16,-8,2.5,0);wall(0.3,5,16,8,2.5,0);
-// Blackboard
-const bb=new THREE.Mesh(new THREE.BoxGeometry(4,2.8,0.15),new THREE.MeshPhongMaterial({color:0x1a2018}));bb.position.set(0,2.5,-7.85);addC(bb);
-// Desks
-for(let row=0;row<3;row++){for(let col=-2;col<=2;col+=2){const d=new THREE.Mesh(new THREE.BoxGeometry(1.4,0.1,0.9),new THREE.MeshPhongMaterial({color:0x5a3820}));d.position.set(col,0.7,-row*2.5+3.5);addC(d);}}
-// Sister teacher NPC
-const sister=mkChar(0xd0a870,0x0a0a18,0x1a1010,{cassock:true});sister.position.set(0,0,-6.5);addC(sister);G.npcs.push(sister);
-// Students
-for(let i=0;i<6;i++){const s=mkChar(0xf0c89a,0x7a6040,0x2a1a0a,{apron:true});s.scale.setScalar(0.72);s.position.set((i%3-1)*2.2,0,-Math.floor(i/3)*2.5+4);addC(s);}
-G.player.mesh=createBernadette(2);G.player.mesh.position.set(0,0,4);addC(G.player.mesh);
-// Classroom angle — sees blackboard, Sister teacher, Bernadette at desk
-setCam({mode:‘follow’,offset:new THREE.Vector3(-1,3.5,9),fov:46});
-camera.position.set(-1,3.5,12);
-G.camera.focusMesh=sister;G.camera.focusWeight=0.3; // set after sister declared showAge(‘Bernadette Soubirous · Age 14–16 · Hospice School, Lourdes’);AUDIO.setChurch(0.5);AUDIO.setWind(0);
-speak([
-{speaker:‘Narrator’,text:‘The Sisters of Nevers who run the Hospice school take Bernadette in as a charity pupil. She is older than the other children, slower to read — but her memory for prayers is extraordinary. She can repeat perfectly what she hears once.’},
-{speaker:‘Sister Marie-Therese’,text:‘Bernadette. Today we revise the catechism before your examination. Come — you must know every answer without hesitation. The Bishop's commission will want to see that your faith has solid roots.’},
-{speaker:‘Bernadette’,text:’(sitting down, folding her hands on the desk) Yes, Sister. I am ready.’},
-{speaker:‘Narrator’,text:‘✦ Answer the catechism questions correctly to continue. ✦’}],()=>{
-G.player.canMove=true;createInteractable(sister,‘Begin catechism lesson with Sister Marie-Therese’,()=>{
+{speaker:'Narrator',text:'The Sisters of Charity of Nevers take Bernadette into their hospice. At last she learns to read, to write \u2014 and her catechism.'},
+{speaker:'Sister Marie-Therese',text:'Now, Bernadette \u2014 let us see if your lessons have taken root. Answer my questions.'},
+],()=>{
+createInteractable(sister,'Recite your catechism',()=>{
 showCatechism(()=>{speak([
-{speaker:‘Sister Marie-Therese’,text:’(quietly amazed) Bernadette. Every answer — perfect. You may not be able to read, but you understand your faith better than girls twice your age.’},
-{speaker:‘Bernadette’,text:’(simply) The Lady taught me, Sister. When I was with her — I understood everything, even what I cannot explain in words. All I can do is try to remember.’},
-{speaker:‘Narrator’,text:‘The Bishop's commission completes its four-year investigation. On January 18, 1862 — three and a half years after the apparitions — Bishop Bertrand-Sévère Laurence issues his decree.’}],()=>transitionTo(14));});});
-})
+{speaker:'Sister Marie-Therese',text:'Well done. You are no longer the child who could not learn. The grotto has taught you more than any book.'},
+],()=>transitionTo(14));});
+});
+});
 }},
-
-// ────────── CH 14: BISHOP’S DECLARATION ──────────
-{title:“Chapter XV — The Bishop’s Decree”,date:‘January 18, 1862 — The Church Speaks’,init:function(){
-G.bernadetteStage=2;
-buildGrotto({sky:0x0a1525,nicheLight:true,pilgrims:true,candles:true});
-addC(new THREE.AmbientLight(0x203040,0.62));
-const sun=new THREE.DirectionalLight(0x9ab5cc,0.55);sun.position.set(14,28,8);addC(sun);
-for(let i=0;i<35;i++){const c=mkChar(0xd4a870,new THREE.Color(rand(0.2,0.5),rand(0.1,0.3),0.05).getHex(),0x2a1a0a,{veil:(i%3!==0)});c.position.set(rand(-12,12),0,rand(2,12));addC(c);}
-// Early construction of basilica visible in distance
-const bwl=new THREE.Mesh(new THREE.BoxGeometry(8,5,6),new THREE.MeshPhongMaterial({color:0xe8e0d0}));bwl.position.set(0,2.5,-35);addC(bwl);
-const bsp=new THREE.Mesh(new THREE.ConeGeometry(2.5,6,8),new THREE.MeshPhongMaterial({color:0x8a9898}));bsp.position.set(0,8,-35);addC(bsp);
-if(G._nicheLight)G._nicheLight.intensity=3.5;
-G.player.mesh=createBernadette(2);G.player.mesh.position.set(0,0,4);G.player.mesh.rotation.y=Math.PI;addC(G.player.mesh);
-setCam({mode:“follow”,offset:new THREE.Vector3(0,7,12),fov:54});
-camera.position.set(0,rawTerrain(0,13)+7,13);G.player.canMove=false;
-showAge(‘Bernadette Soubirous · Age 17-18 · 1862’);AUDIO.setChurch(0.95);AUDIO.setWind(0.2);
+// ════════════════ CH14 — Chapter XV ════════════════
+{title:'Chapter XV — The Bishop\u2019s Decree',date:'18 January 1862',init:function(){
+buildValley({season:'spring',sky:0xc4d4e8});
+spawnPlayer(2,0,5);
+showAge('The Church judges the apparitions');
+AUDIO.setChurch(0.5);
+const basilicaMk=simpleMarker(0,-12,0xd8cba0,4);basilicaMk.position.y=2;
 speak([
-{speaker:‘Narrator’,text:‘January 18, 1862. After more than three years and hundreds of witness interviews, medical examinations, and theological consultations, the Bishop of Tarbes issues his pastoral letter.’},
-{speaker:‘Bishop Bertrand-Sévère Laurence’,text:’(reading publicly) “We declare that the Immaculate Mary, Mother of God, truly appeared to Bernadette Soubirous on the eleventh of February, 1858, and on subsequent days — in all, eighteen times — in the grotto of Massabielle.”’},
-{speaker:‘Narrator’,text:‘The crowds gathered at the grotto fall to their knees. The sound of weeping mingles with the sound of the spring.’},
-{speaker:‘Bernadette’,text:’(standing very still, her eyes looking toward the niche) Thank you, my Lady. Thank you for choosing someone so small.’},
-{speaker:‘Narrator’,text:‘Work has already begun on the construction of a chapel — then a basilica — above the grotto. Father Peyramale, who challenged the Lady to make the rosebush bloom, becomes one of the most tireless advocates for the shrine.’},
-{speaker:‘Narrator’,text:‘But the Bishop's words about Bernadette are telling: “We have carefully examined this child. We find her to be sincere, modest, pious, and exact in all her statements. She shows no pride, no desire for celebrity, no eagerness for any reward whatsoever.”’},
-{speaker:‘Bernadette’,text:’(turning away from the crowd, to herself) I am the instrument — nothing more. The spring is for others. The shrine is for others. My work here is done.’}],()=>transitionTo(15));}},
-
-// ────────── CH 15: ENTERING THE CONVENT ──────────
-{title:‘Chapter XV — Sister Marie-Bernard’,date:‘July 7, 1866 — The Convent of Saint-Gildard, Nevers’,init:function(){
-G.bernadetteStage=3;
-scene.background=new THREE.Color(0x1a1a2a);scene.fog=new THREE.Fog(0x1a1a2a,20,85);
-addC(new THREE.AmbientLight(0x202030,0.82));
-const cl=new THREE.PointLight(0xeeddbb,2.5,18);cl.position.set(0,4,0);addC(cl);G._candleLight=cl;
-// Convent courtyard / chapel approach
-const gnd=new THREE.Mesh(new THREE.PlaneGeometry(22,22),new THREE.MeshPhongMaterial({color:0x6a6055}));gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;addC(gnd);
-function wall(w,h,d,x,y,z){addC(pm(new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshPhongMaterial({color:0xd8d0c0})),x,y,z));}
-wall(22,7,0.3,0,3.5,-11);wall(0.3,7,22,-11,3.5,0);wall(0.3,7,22,11,3.5,0);
-// Chapel arch
-const arch=new THREE.Mesh(new THREE.BoxGeometry(4,6,0.5),new THREE.MeshPhongMaterial({color:0xd0c8b8}));arch.position.set(0,3,-10.6);addC(arch);
-const archHole=new THREE.Mesh(new THREE.CylinderGeometry(1.4,1.4,0.6,12),new THREE.MeshPhongMaterial({color:0x0a0812}));archHole.rotation.x=Math.PI/2;archHole.position.set(0,3.5,-10.5);addC(archHole);
-const capCross=new THREE.Mesh(new THREE.BoxGeometry(0.18,1.8,0.18),new THREE.MeshBasicMaterial({color:0xf0d060}));capCross.position.set(0,7.2,-10.5);addC(capCross);
-const capCrossH=new THREE.Mesh(new THREE.BoxGeometry(0.88,0.18,0.18),new THREE.MeshBasicMaterial({color:0xf0d060}));capCrossH.position.set(0,6.8,-10.5);addC(capCrossH);
-// Fountain in courtyard
-const fount=new THREE.Mesh(new THREE.CylinderGeometry(1.2,1.4,0.55,16),new THREE.MeshPhongMaterial({color:0x9a9090}));fount.position.set(0,0.28,0);addC(fount);
-const fw=mkWater(1.5,1.5,0x4488aa);fw.position.set(0,0.56,0);addC(fw);G.springWater=fw;
-// Superior and sisters
-const sup=mkChar(0xe0d0b8,0x0a0a18,0x1a1010,{cassock:true});sup.position.set(-1.5,0,-6);addC(sup);G.npcs.push(sup);
-for(let i=0;i<5;i++){const s=mkChar(0xe0cca0,0x0a0a18,0x1a1010,{cassock:true});s.position.set(-5+i*2.5,0,-4+rand(-1,1));addC(s);G.npcs.push(s);}
-// Lourdes visitor — mama
-const mama=mkChar(0xd4a870,0x4a3828,0x2a1a0a,{veil:true});mama.position.set(4,0,3);addC(mama);G.npcs.push(mama);
-G.player.mesh=createBernadette(3);G.player.mesh.position.set(0,0,5);addC(G.player.mesh);
-// Courtyard angle: fountain foreground, arch behind, sisters arrayed
-setCam({mode:‘follow’,offset:new THREE.Vector3(0,6,12),fov:54});
-camera.position.set(0,6,15);
-showAge(‘Sister Marie-Bernard Soubirous · Age 22 · Convent of Saint-Gildard, Nevers · July 7, 1866’);AUDIO.setChurch(0.85);AUDIO.setWind(0.05);
-initTasks([{id:‘sup’,label:‘Speak with Mother Superior’},{id:‘mama’,label:‘Say farewell to Maman’},{id:‘vow’,label:‘Walk to the chapel to take your vows’}]);
-createInteractable(sup,‘Speak with Mother Superior Josephine Imbert’,()=>{if(G.completedTasks[‘sup’])return;speak([
-{speaker:‘Mother Superior Imbert’,text:‘Sister Marie-Bernard. That is your name now — not Bernadette, not the seer, not the child of Lourdes. Here you are a novice like any other. No special privileges, no exhibitions for curious visitors.’},
-{speaker:‘Sister Bernadette / Marie-Bernard’,text:‘I am glad of that, Reverend Mother. Truly. I have been put on display long enough. I want to be ordinary.’},
-{speaker:‘Mother Superior Imbert’,text:’(studying her) And what is your gift — what can you offer this community?’},
-{speaker:‘Sister Bernadette / Marie-Bernard’,text:’(a slight smile) I know how to be ill, Reverend Mother. That I can do very well.’},
-{speaker:‘Narrator’,text:‘Bernadette has suffered from severe asthma and tuberculosis of the bone since childhood. She will spend much of her life at Nevers in the infirmary — offering her suffering as prayer.’}],()=>completeTask(‘sup’));});
-createInteractable(mama,‘Say farewell to Maman’,()=>{if(G.completedTasks[‘mama’])return;speak([
-{speaker:‘Louise Soubirous — Maman’,text:’(embracing her) My Bernarde. My little one. You go so far away. I shall not see you again.’},
-{speaker:‘Sister Bernadette / Marie-Bernard’,text:’(holding her close, her voice steady though her eyes shine) Maman. You gave me my rosary, and my faith, and the courage to tell the truth no matter who asked. That is everything. I carry you in every prayer.’},
-{speaker:‘Louise Soubirous — Maman’,text:’(breaking) You were always God's child more than mine. I knew it even before Massabielle.’},
-{speaker:‘Sister Bernadette / Marie-Bernard’,text:‘We will meet again, Maman. I promise. Beyond all this.’}],()=>completeTask(‘mama’));});
-const chapMk=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.1,0.1),new THREE.MeshBasicMaterial({visible:false}));chapMk.position.set(0,0,-9);addC(chapMk);
-createInteractable(chapMk,‘Enter the chapel to profess your vows’,()=>{if(G.tasks[‘vow’]&&!G.completedTasks[‘vow’]){if(!G.completedTasks[‘sup’]||!G.completedTasks[‘mama’]){notify(‘Speak with Mother Superior and say farewell to Maman first.’);return;}completeTask(‘vow’);}});
-onAllTasksDone=()=>{hideTasks();speak([
-{speaker:‘Narrator’,text:‘Sister Marie-Bernard Soubirous professes her final vows on September 22, 1878. For twelve years at Nevers she works in the infirmary, caring for the sick. She is never permitted to visit Lourdes again.’},
-{speaker:‘Sister Bernadette / Marie-Bernard’,text:’(in the chapel, alone) My Lady said not in this world. I understand now. The suffering IS the gift. Every day that I offer it up — that is my pilgrimage to Massabielle.’}],()=>transitionTo(16));}
+{speaker:'Narrator',text:'After four years of careful inquiry, Bishop Laurence of Tarbes issues his judgement.'},
+{speaker:'Bishop Laurence',text:'We judge that the Immaculate Mary, Mother of God, truly appeared to Bernadette Soubirous. The faithful are justified in believing it.'},
+{speaker:'Narrator',text:'The chapel the Lady asked for rises above the grotto. Pilgrims come in their thousands. But Bernadette wants only to disappear.'},
+{speaker:'Bernadette',text:'I am like a broom the Blessed Virgin used. When the work is done, the broom is put behind the door.'},
+],()=>transitionTo(15));
 }},
-
-// ────────── CH 16: SUFFERING AT NEVERS ──────────
-{title:‘Chapter XVI — The Long Martyrdom’,date:‘1867–1879 · The Infirmary, Saint-Gildard’,init:function(){
-G.bernadetteStage=3;
-scene.background=new THREE.Color(0x0d0c18);scene.fog=new THREE.Fog(0x0d0c18,14,60);
-addC(new THREE.AmbientLight(0x202028,0.78));
-const cl=new THREE.PointLight(0xffdd99,2,11);cl.position.set(0,3.5,-3);addC(cl);G._candleLight=cl;
-// Infirmary room
-const gnd=new THREE.Mesh(new THREE.PlaneGeometry(14,16),new THREE.MeshPhongMaterial({color:0x6a5848}));gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;addC(gnd);
-function wall(w,h,d,x,y,z){addC(pm(new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshPhongMaterial({color:0xd4cfc4})),x,y,z));}
-wall(14,5,0.3,0,2.5,-8);wall(0.3,5,16,-7,2.5,0);wall(0.3,5,16,7,2.5,0);wall(14,0.3,16,0,5,0);
-// Bed
-const bed=new THREE.Mesh(new THREE.BoxGeometry(2.4,0.55,5),new THREE.MeshPhongMaterial({color:0xf0ece4}));bed.position.set(3,0.28,-5);addC(bed);
-const pillow=new THREE.Mesh(new THREE.BoxGeometry(2,0.3,1),new THREE.MeshPhongMaterial({color:0xffffff}));pillow.position.set(3,0.58,-7);addC(pillow);
-// Crucifix on wall
-addC(pm(new THREE.Mesh(new THREE.BoxGeometry(0.12,1.1,0.08),new THREE.MeshPhongMaterial({color:0x3a2010})),3,3.8,-7.85));
-addC(pm(new THREE.Mesh(new THREE.BoxGeometry(0.6,0.12,0.08),new THREE.MeshPhongMaterial({color:0x3a2010})),3,4.08,-7.85));
-// Statue of Our Lady on shelf
-const statBase=new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.30,0.88,10),new THREE.MeshPhongMaterial({color:0xffffff,emissive:0x8888ff,emissiveIntensity:0.3}));statBase.position.set(-4.5,1.18,-6);addC(statBase);
-const statHead=new THREE.Mesh(new THREE.SphereGeometry(0.18,10,8),new THREE.MeshPhongMaterial({color:0xfff5f0,emissive:0xaaaaff,emissiveIntensity:0.28}));statHead.position.set(-4.5,1.9,-6);addC(statHead);
-const sL=new THREE.PointLight(0xaabbff,1.8,4);sL.position.set(-4.5,2.5,-5.5);addC(sL);
-// Visiting sisters
-const s1=mkChar(0xe0d0b8,0x0a0a18,0x1a1010,{cassock:true});s1.position.set(-2,0,-4);addC(s1);G.npcs.push(s1);
-const s2=mkChar(0xd8c8a0,0x0a0a18,0x1a1010,{cassock:true});s2.position.set(-3.5,0,-2);addC(s2);G.npcs.push(s2);
-G.player.mesh=createBernadette(3);G.player.mesh.position.set(0,0,4);addC(G.player.mesh);
-// Low bedside angle — the bed dominates, Our Lady statue glows in corner
-setCam({mode:‘follow’,offset:new THREE.Vector3(-2,3.2,8),fov:44});
-camera.position.set(-2,3.2,10);
-showAge(‘Sister Marie-Bernard · Age 23–35 · The Infirmary at Nevers · 1867–1879’);AUDIO.setChurch(0.45);
-initTasks([{id:‘statue’,label:‘Pray before the statue of Our Lady’},{id:‘sister’,label:‘Speak with Sister Marie-Bernard de Chamberland’},{id:‘letter’,label:‘Visit the writing desk — write to Lourdes’}]);
-createInteractable(statBase,‘Pray before the statue of Our Lady’,()=>{if(G.completedTasks[‘statue’])return;speak([
-{speaker:‘Sister Bernadette / Marie-Bernard’,text:’(kneeling painfully, her knee bones eaten by tuberculosis) My Lady. You promised me this. Not happiness in this world, but in the next. I trust you. I trust you completely.’},
-{speaker:‘Narrator’,text:‘She kneels for an hour, motionless, before rising with great effort. A visiting sister tries to help her. She refuses gently.’},
-{speaker:‘Sister Bernadette / Marie-Bernard’,text:‘Leave me to my white chapel. (She calls her infirmary bed “my white chapel.”) This is my Massabielle now.’}],()=>completeTask(‘statue’));});
-createInteractable(s1,‘Speak with Sister Marie-Bernard de Chamberland’,()=>{if(G.completedTasks[‘sister’])return;speak([
-{speaker:‘Sister de Chamberland’,text:‘Sister Marie-Bernard — the pilgrims at Lourdes are asking for you constantly. They want to see you, to be blessed by you. Cannot you send them a word?’},
-{speaker:‘Sister Bernadette / Marie-Bernard’,text:’(with gentle firmness) Sister, I am not a saint. I am not a miracle. I am a poor, ill woman who was given the privilege of delivering a message. The message has been delivered. It is the spring they should seek — not me.’},
-{speaker:‘Sister de Chamberland’,text:‘But you are famous throughout all of France. Throughout Europe. The Emperor himself—’},
-{speaker:‘Sister Bernadette / Marie-Bernard’,text:‘The Emperor may do as he likes. I have my white chapel. I have my rosary. I have everything I need.’}],()=>completeTask(‘sister’));});
-const desk=new THREE.Mesh(new THREE.BoxGeometry(1.5,0.1,0.8),new THREE.MeshPhongMaterial({color:0x5a3820}));desk.position.set(-2,0.72,2);addC(desk);
-createInteractable(desk,‘Write a letter to Lourdes’,()=>{if(G.completedTasks[‘letter’])return;speak([
-{speaker:‘Sister Bernadette / Marie-Bernard’,text:’(writing slowly, her hand painful) “My dear friends at Lourdes — I pray for you every day. The Lady does not need my presence near her spring. She is there whether I am or not. She is everywhere God is loved. Go to her spring, drink, bathe, pray for sinners. I will join you from my white chapel.”’},
-{speaker:‘Narrator’,text:‘She signs it not “Bernadette, the seer of Lourdes” but simply: “Sister Marie-Bernard, a poor sick creature who prays for you.”’},
-{speaker:‘Narrator’,text:‘Over her years at Nevers she writes hundreds of such letters. She never mentions her own sufferings.’}],()=>completeTask(‘letter’));});
-onAllTasksDone=()=>{hideTasks();speak([
-{speaker:‘Narrator’,text:‘1879. Bernadette is thirty-five years old. She has lived at Nevers for thirteen years. Her body is destroyed — tuberculosis of the lungs, tuberculosis of the bone, an enormous tumour on her knee that has left her nearly immobile.’},
-{speaker:‘Sister Bernadette / Marie-Bernard’,text:’(to a sister at her bedside) I am ground like a grain of wheat. Our Lady told me this would come. I am glad of it. Pray for me.’},
-{speaker:‘Narrator’,text:‘She holds her crucifix. She holds her rosary. She looks up.’}],()=>transitionTo(17));}
+// ════════════════ CH15 — Chapter XVI ════════════════
+{title:'Chapter XVI — Sister Marie-Bernard',date:'Convent of Nevers · 1866',init:function(){
+scene.background=new THREE.Color(0x262a30);scene.fog=new THREE.Fog(0x262a30,14,58);
+G.groundFn=null;
+addC(new THREE.AmbientLight(0x888ea0,0.9));
+const win=new THREE.PointLight(0xeae0ff,1.6,22);win.position.set(3,5,-5);addC(win);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(22,22),new THREE.MeshPhongMaterial({color:0x4a4640}));
+floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;addC(floor);
+const altar=new THREE.Mesh(new THREE.BoxGeometry(3,1,1.2),new THREE.MeshPhongMaterial({color:0x8a7a5a}));altar.position.set(0,0.5,-6);addC(altar);
+spawnPlayer(3,0,4);
+showAge('Sister Marie-Bernard \u00b7 Sisters of Charity, Nevers');
+AUDIO.setChurch(0.55);
+const sup=addNPC(mkChar(0xe6c0a0,0x101010,0x1a1010,{veil:true,veilC:0x1a1010,hr:0.30}),-2,0,-2);
+const mamaMem=simpleMarker(3,-2,0xb0a080,0.8);mamaMem.position.y=0.6;
+const vowMk=simpleMarker(0,-5,0xd8c070,1.0);vowMk.position.y=0.7;
+snapAllNPCs();
+initTasks([
+{id:'sup',label:'Receive your habit from the Superior'},
+{id:'mama',label:'Remember the family left behind'},
+{id:'vow',label:'Pronounce your religious vows'},
+]);
+createInteractable(sup,'The Mother Superior',()=>{speak([
+{speaker:'Mother Superior',text:'Here you will be treated as the least, Sister Marie-Bernard. Your visions earn you no privilege \u2014 perhaps the opposite.'},
+{speaker:'Bernadette',text:'That is well, Mother. It is what I came for.'},
+],()=>completeTask('sup'));});
+createInteractable(mamaMem,'Remember your family',()=>{speak([
+{speaker:'Narrator',text:'She has left Lourdes forever \u2014 her mother now dead, her father far away. She will never see the grotto again.'},
+],()=>completeTask('mama'));});
+createInteractable(vowMk,'Pronounce your vows',()=>{speak([
+{speaker:'Bernadette',text:'Poverty, chastity, obedience. I give what little I have \u2014 all of it \u2014 to God.'},
+],()=>completeTask('vow'));});
+onAllTasksDone=()=>{speak([
+{speaker:'Narrator',text:'Hidden in the convent, she serves as infirmarian and sacristan \u2014 quietly, faithfully, far from the crowds who flock to Lourdes.'},
+],()=>transitionTo(16));};
 }},
-
-// ────────── CH 17: DEATH AND GLORY ──────────
-{title:‘Chapter XVII — The White Chapel’,date:‘April 16, 1879 — Easter Wednesday · Nevers’,init:function(){
-G.bernadetteStage=3;
-scene.background=new THREE.Color(0x050510);scene.fog=new THREE.Fog(0x050510,10,55);
-addC(new THREE.AmbientLight(0x151520,0.65));
-const cl=new THREE.PointLight(0xffddaa,1.8,9);cl.position.set(0,3,-3);addC(cl);G._candleLight=cl;
-const gnd=new THREE.Mesh(new THREE.PlaneGeometry(12,14),new THREE.MeshPhongMaterial({color:0x6a5848}));gnd.rotation.x=-Math.PI/2;gnd.receiveShadow=true;addC(gnd);
-function wall(w,h,d,x,y,z){addC(pm(new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshPhongMaterial({color:0xd4cfc4})),x,y,z));}
-wall(12,5,0.3,0,2.5,-7);wall(0.3,5,14,-6,2.5,0);wall(0.3,5,14,6,2.5,0);
-// Deathbed
-const bed=new THREE.Mesh(new THREE.BoxGeometry(2.4,0.55,5.5),new THREE.MeshPhongMaterial({color:0xffffff}));bed.position.set(0,0.28,-4);addC(bed);
-const pillow=new THREE.Mesh(new THREE.BoxGeometry(2,0.3,1),new THREE.MeshPhongMaterial({color:0xffffff}));pillow.position.set(0,0.58,-6);addC(pillow);
-// Candles around bed
-[-2.2,2.2].forEach(x=>{const cv=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.65,8),new THREE.MeshPhongMaterial({color:0xf0e8d0}));cv.position.set(x,0.6,-3.5);addC(cv);const fl=new THREE.PointLight(0xffaa44,1.2,4);fl.position.set(x,1.1,-3.5);addC(fl);});
-// Crucifix
-addC(pm(new THREE.Mesh(new THREE.BoxGeometry(0.12,1.1,0.08),new THREE.MeshPhongMaterial({color:0x3a2010})),0,3.8,-6.85));
-addC(pm(new THREE.Mesh(new THREE.BoxGeometry(0.6,0.12,0.08),new THREE.MeshPhongMaterial({color:0x3a2010})),0,4.08,-6.85));
-// Gathering sisters (silhouettes)
-for(let i=0;i<8;i++){const s=mkChar(0xe0d0b8,0x0a0a18,0x1a1010,{cassock:true});s.position.set(rand(-3.5,3.5),0,rand(0.5,3.5));addC(s);}
-// Our Lady appears faintly in the corner
-G.ourLady=createOurLady();G.ourLady.position.set(-4,1.5,-5);G.ourLady.scale.setScalar(0.55);
-G.ourLady._iL.intensity=0.8;G.ourLady._oL.intensity=0.6;addC(G.ourLady);
-G.player.mesh=createBernadette(3);G.player.mesh.position.set(0,0,3);addC(G.player.mesh);G.player.canMove=false;
-// Deathbed close — candlelight, Sisters, Our Lady faintly visible
-setCam({mode:‘follow’,offset:new THREE.Vector3(2,3.5,8),fov:44,
-focusMesh:G.ourLady,focusWeight:0.2});
-camera.position.set(2,3.5,10);
-showAge(‘Sister Marie-Bernard Soubirous · Age 35 · April 16, 1879’);AUDIO.setChurch(0.8);AUDIO.setWind(0);
+// ════════════════ CH16 — Chapter XVII ════════════════
+{title:'Chapter XVII — The Long Martyrdom',date:'Nevers · 1875–1878',init:function(){
+scene.background=new THREE.Color(0x1c1e24);scene.fog=new THREE.Fog(0x1c1e24,12,50);
+G.groundFn=null;
+addC(new THREE.AmbientLight(0x70788a,0.85));
+const lamp=new THREE.PointLight(0xffd9a0,1.6,18);lamp.position.set(0,4,-3);addC(lamp);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(20,20),new THREE.MeshPhongMaterial({color:0x44403a}));
+floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;addC(floor);
+const bed=new THREE.Mesh(new THREE.BoxGeometry(2.4,0.5,1.2),new THREE.MeshPhongMaterial({color:0x5a4a3a}));bed.position.set(0,0.4,-4);addC(bed);
+spawnPlayer(3,0,4);
+showAge('Sister Marie-Bernard \u00b7 The infirmary');
+AUDIO.setChurch(0.4);
+const statue=simpleMarker(-3,-2,0xeaf0ff,1.4);statue.position.y=0.9;
+const sister2=addNPC(mkChar(0xe6c0a0,0x101010,0x1a1010,{veil:true,veilC:0x1a1010}),3,0,-1.5);
+const desk=simpleMarker(2,1,0x6a4a2a,0.7);desk.position.y=0.7;
+snapAllNPCs();
+initTasks([
+{id:'statue',label:'Pray before the statue of Our Lady'},
+{id:'sister',label:'Offer comfort, though you suffer most'},
+{id:'letter',label:'Write of your "treasure" of sickness'},
+]);
+createInteractable(statue,'Pray before Our Lady',()=>{speak([
+{speaker:'Bernadette',text:'My tumor of the knee, my asthma, the wasting in my bones \u2014 I offer it all. This is my work now: to be ill well.'},
+],()=>completeTask('statue'));});
+createInteractable(sister2,'Comfort a fellow sister',()=>{speak([
+{speaker:'A young Sister',text:'How can you smile, Sister, in such pain?'},
+{speaker:'Bernadette',text:'The Lady did not promise me happiness in this world. Only in the next. I hold her to that promise.'},
+],()=>completeTask('sister'));});
+createInteractable(desk,'Write at the desk',()=>{speak([
+{speaker:'Bernadette',text:'(She writes:) Suffering passes; to have suffered does not. My treasure is this sickness, which I would not exchange.'},
+],()=>completeTask('letter'));});
+onAllTasksDone=()=>{speak([
+{speaker:'Narrator',text:'She calls her illness her \u201cemployment.\u201d Nailed to her bed, she lives the penance the Lady asked \u2014 for sinners, for the whole world.'},
+],()=>transitionTo(17));};
+}},
+// ════════════════ CH17 — Chapter XVIII ════════════════
+{title:'Chapter XVIII — The White Chapel',date:'16 April 1879 · Wednesday in Easter Week',init:function(){
+scene.background=new THREE.Color(0x141620);scene.fog=new THREE.Fog(0x141620,12,46);
+G.groundFn=null;
+addC(new THREE.AmbientLight(0x6a72a0,0.8));
+const soft=new THREE.PointLight(0xbfc8ff,2,20);soft.position.set(0,5,-4);addC(soft);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(20,20),new THREE.MeshPhongMaterial({color:0x3a3a44}));
+floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;addC(floor);
+const bed=new THREE.Mesh(new THREE.BoxGeometry(2.6,0.5,1.3),new THREE.MeshPhongMaterial({color:0x504a44}));bed.position.set(0,0.4,-4);addC(bed);
+spawnPlayer(3,0,3.5);
+showAge('Bernadette \u00b7 Age 35 \u00b7 Her last hour');
+AUDIO.setChurch(0.5);
+const lady=createOurLady();lady.position.set(0,4.2,-9);lady.scale.setScalar(0.9);addC(lady);G.ourLady=lady;
+camFocus(lady,0.4,50);
 speak([
-{speaker:‘Narrator’,text:‘April 16, 1879. Easter Wednesday. Sister Marie-Bernard has been on her deathbed for weeks, her body devastated by tuberculosis of the lung, the knee, and by an enormous tumour. She has refused painkillers. She has asked only for her crucifix and her rosary.’},
-{speaker:‘Sister Bernadette / Marie-Bernard’,text:’(to the sisters gathered around her, in great pain but calm) My God, I love You. (long pause) Holy Mary, Mother of God, pray for me, a poor sinner.’},
-{speaker:‘Narrator’,text:‘She holds up her crucifix. She looks toward the corner of the room. Her face changes.’},
-{speaker:‘Sister de Chamberland’,text:’(whispering to another sister) She is looking at something. She is looking at something that we cannot see.’},
-{speaker:‘Sister Bernadette / Marie-Bernard’,text:’(her last words, barely audible, her face transformed) My Jesus — Oh my Jesus—’},
-{speaker:‘Narrator’,text:‘She dies at three-fifteen in the afternoon, the hour of Christ's death on Good Friday. She is thirty-five years old.’},
-{speaker:‘Narrator’,text:‘When her body is exhumed thirty years later for the beatification process — and again in 1925 — it is found to be perfectly incorrupt. Her face, her hands, her body: unchanged. The doctor who examines her writes: “I cannot explain this.”’},
-{speaker:‘Narrator’,text:‘The Church declares her Blessed on June 14, 1925. She is canonised — raised to sainthood — on December 8, 1933. The Feast of the Immaculate Conception.’},
-{speaker:‘Narrator’,text:‘The Lourdes spring still flows. It has never frozen, never gone dry. More than 200 million pilgrims have visited the shrine. Seventy miraculous healings have been medically verified. The water cures no one automatically — it offers itself, freely, to all who come.’}],()=>transitionTo(18));}},
+{speaker:'Narrator',text:'She is thirty-five. Her body is broken, but her eyes turn once more toward a light only she can see.'},
+{speaker:'Bernadette',text:'Holy Mary, Mother of God, pray for me \u2014 a poor sinner, a poor sinner...'},
+{speaker:'Bernadette',text:'(She kisses her crucifix.) My God, I love you... with all my heart.'},
+{speaker:'Narrator',text:'And so she dies. Her body, exhumed years later, is found incorrupt \u2014 it rests today in a crystal shrine at Nevers, as though only sleeping.'},
+],()=>transitionTo(18));
+}},
+// ════════════════ CH18 — Epilogue ════════════════
+{title:'Epilogue — A Spring That Never Stops',date:'Lourdes · To this day',init:function(){
+buildGrotto({day:true,nicheLight:true,candles:true,pilgrims:true,mist:true});
+spawnPlayer(3,0,6);
+G.player.canMove=false;
+showAge('Saint Bernadette \u00b7 Canonised 1933');
+addFireflies(26,10);
+const lady=createOurLady();lady.position.set(0,5.2,-12.6);addC(lady);G.ourLady=lady;
+// Orbit the grotto cinematically
+setCam({mode:'orbit',orbitCenter:new THREE.Vector3(0,3,-12),orbitR:14,orbitY:5,orbitSpeed:0.18});
+speak([
+{speaker:'Narrator',text:'The chapel became a basilica. The basilica became a city of prayer. The muddy trickle became a spring that has never once stopped flowing.'},
+{speaker:'Narrator',text:'Millions come each year \u2014 the sick, the doubting, the hopeful \u2014 to the rock of Massabielle, where Heaven once leaned close to a poor girl who could not read.'},
+{speaker:'Narrator',text:'\u201cI am the Immaculate Conception.\u201d Four words, given to Bernadette Soubirous \u2014 and through her, to the world.'},
+],()=>{setTimeout(showFinal,2600);});
+}},
+];
 
-// ────────── CH 18: EPILOGUE ──────────
-{title:‘Epilogue — Our Lady of Lourdes’,date:‘Lourdes, France — Then and Now’,init:function(){
-G.bernadetteStage=2;
-scene.background=new THREE.Color(0x050210);scene.fog=new THREE.Fog(0x080418,25,120);
-addC(new THREE.AmbientLight(0x101028,0.45));addC(mkStars());G.groundFn=rawTerrain;addC(mkTerrain({season:‘spring’,res:60}));addC(mkMountains());
-// Basilica
-// Basilica snaps to hill top — historically it’s built on the rock above grotto
-const basilGY=rawTerrain(0,-50);
-const bwl=new THREE.Mesh(new THREE.BoxGeometry(16,10,12),new THREE.MeshPhongMaterial({color:0xeae4d8,emissive:0x221810,emissiveIntensity:0.18}));bwl.position.set(0,basilGY+5,-50);addC(bwl);
-const bsp=new THREE.Mesh(new THREE.ConeGeometry(4,12,8),new THREE.MeshPhongMaterial({color:0x8a9898}));bsp.position.set(0,basilGY+17,-50);addC(bsp);
-const bcrx=new THREE.Mesh(new THREE.BoxGeometry(0.4,4,0.4),new THREE.MeshBasicMaterial({color:0xf0d060}));bcrx.position.set(0,basilGY+25,-50);addC(bcrx);
-const bcrxh=new THREE.Mesh(new THREE.BoxGeometry(2.2,0.4,0.4),new THREE.MeshBasicMaterial({color:0xf0d060}));bcrxh.position.set(0,basilGY+24.2,-50);addC(bcrxh);
-// Moonlight
-const moon=new THREE.DirectionalLight(0x6070a0,0.42);moon.position.set(-20,30,10);addC(moon);
-// River
-const epiRiverY=rawTerrain(9,0)+0.06;
-const river=mkWater(6,80,0x1a3a6a);river.position.set(9,epiRiverY,0);addC(river);G.springWater=river;
-// Candlelight procession (scattered point lights)
-for(let i=0;i<18;i++){const cl=new THREE.PointLight(0xffaa44,0.8+Math.random(),5+Math.random()*5);cl.position.set(rand(-14,14),0.5+Math.random(),rand(-35,-2));addC(cl);}
-// Pilgrims (crowd of NPCs)
-for(let i=0;i<28;i++){const c=mkChar(0xd4a870,new THREE.Color(rand(0.15,0.55),rand(0.08,0.4),rand(0,0.18)).getHex(),0x2a1a0a,{veil:(i%3!==0)});c.position.set(rand(-14,14),0,rand(-45,-5));addC(c);}
-// Our Lady in the niche
-// Our Lady hovers above the hilltop near the basilica
-const ladyGY=rawTerrain(0,-15);
-G.ourLady=createOurLady();G.ourLady.position.set(0,ladyGY+5,-15);G.ourLady.scale.setScalar(1.8);addC(G.ourLady);
-const epiStartY=rawTerrain(0,6);
-G.player.mesh=createBernadette(2);G.player.mesh.position.set(0,epiStartY,6);addC(G.player.mesh);
-// Grand panoramic — basilica behind, Gave valley, Pyrenees, Our Lady glowing
-setCam({mode:‘follow’,offset:new THREE.Vector3(0,10,18),fov:65,
-focusMesh:G.ourLady,focusWeight:0.28});
-camera.position.set(0,epiStartY+10,22);
-showAge(‘Our Lady of Lourdes · The Shrine · Then and Now’);AUDIO.setChurch(1);AUDIO.setWater(0.5);AUDIO.setWind(0.2);
-showEl(‘holyGlow’);
-setTimeout(()=>{speak([
-{speaker:‘Narrator’,text:‘The Lourdes spring has flowed continuously since February 25, 1858. Today 18 thermal baths fed by the spring welcome more than 80,000 bathers each year. Over 200 million pilgrims have visited the shrine.’},
-{speaker:‘Narrator’,text:‘The Cures Bureau at Lourdes — staffed by doctors, including sceptics and non-believers — has examined thousands of reported miraculous cures. Seventy have been officially declared miraculous after decades of medical scrutiny.’},
-{speaker:‘Narrator’,text:‘Bernadette Soubirous was canonised on December 8, 1933 — the Feast of the Immaculate Conception. The date She had named. Her incorrupt body lies in a glass reliquary at the Chapel of Saint-Gildard in Nevers. Her face is serene. She looks like she is sleeping.’},
-{speaker:‘Saint Bernadette Soubirous’,text:’“She looked at me as a mother looks at a child. And that was all. That was everything.”’},
-{speaker:‘Narrator’,text:‘Every night at Lourdes, thousands carry candles through the dark in the torch-lit procession — the same procession Our Lady requested. The same mountain air. The same spring.’},
-{speaker:‘Narrator’,text:‘She is still there.’},
-{speaker:‘Our Lady of Lourdes’,text:’“I am the Immaculate Conception.”’},
-],()=>{setCam({mode:‘orbit’,orbitCenter:G.ourLady?G.ourLady.position.clone():new THREE.Vector3(-4,1.5,-5),orbitR:7,orbitY:4,orbitSpeed:0.15,fov:38});setTimeout(showFinal,800);});},1500);}},
-]; // end CHAPTERS
 
 function showFinal(){
-fadeOut(()=>{scene.clear();clearChapter();const t=document.getElementById(‘titleScreen’);
-t.innerHTML=’<div class="cross" style="font-size:72px;color:#f0d080;text-shadow:0 0 40px #ffd700;">✝</div>’+
-‘<h1 style="font-size:clamp(18px,3.5vw,44px);">Saint Bernadette Soubirous</h1>’+
-‘<h2 style="letter-spacing:0.25em;">1844 – 1879 · Canonised 1933</h2>’+
-‘<div class="sub" style="margin-bottom:30px;font-size:clamp(11px,1.8vw,18px);max-width:600px;line-height:1.8;color:#c4a882;">“She did not come for the clever or the strong. She came for a poor asthmatic girl who could not read — and gave the world a spring.”</div>’+
-‘<div class="sub" style="color:rgba(180,150,80,0.6);font-size:clamp(9px,1.3vw,13px);max-width:480px;line-height:1.7;">The Lourdes spring flows at 32,000 gallons per day · Unceasingly since February 25, 1858<br>200 million+ pilgrims · 70 verified miraculous cures · The shrine never closes</div>’+
-‘<button id="startBtn" style="margin-top:38px;min-height:52px;padding:16px 48px;" onclick="transitionTo(0)">Begin Again ✝</button>’;
-t.style.opacity=‘0’;t.style.display=‘flex’;setTimeout(()=>{t.style.opacity=‘1’;},100);fadeIn();});}
+fadeOut(()=>{scene.clear();clearChapter();const t=document.getElementById(`titleScreen`);
+t.innerHTML=`<div class="cross" style="font-size:72px;color:#f0d080;text-shadow:0 0 40px #ffd700;">✝</div>`+
+`<h1 style="font-size:clamp(18px,3.5vw,44px);">Saint Bernadette Soubirous</h1>`+
+`<h2 style="letter-spacing:0.25em;">1844 – 1879 · Canonised 1933</h2>`+
+`<div class="sub" style="margin-bottom:30px;font-size:clamp(11px,1.8vw,18px);max-width:600px;line-height:1.8;color:#c4a882;">“She did not come for the clever or the strong. She came for a poor asthmatic girl who could not read — and gave the world a spring.”</div>`+
+`<div class="sub" style="color:rgba(180,150,80,0.6);font-size:clamp(9px,1.3vw,13px);max-width:480px;line-height:1.7;">The Lourdes spring flows at 32,000 gallons per day · Unceasingly since February 25, 1858<br>200 million+ pilgrims · 70 verified miraculous cures · The shrine never closes</div>`+
+`<button id="startBtn" style="margin-top:38px;min-height:52px;padding:16px 48px;" onclick="transitionTo(0)">Begin Again ✝</button>`;
+t.style.opacity=`0`;t.style.display=`flex`;setTimeout(()=>{t.style.opacity=`1`;},100);fadeIn();});}
 
 // ═══════════════════════════════════════════════
 //  PLAYER UPDATE
@@ -2062,10 +1636,10 @@ function updatePlayer(delta){
 if(!G.player.mesh)return;
 let mx=0,mz=0;
 if(G.player.canMove&&!G.dialogueActive){
-if(G.keys[‘KeyW’]||G.keys[‘ArrowUp’])mz=-1;
-if(G.keys[‘KeyS’]||G.keys[‘ArrowDown’])mz=1;
-if(G.keys[‘KeyA’]||G.keys[‘ArrowLeft’])mx=-1;
-if(G.keys[‘KeyD’]||G.keys[‘ArrowRight’])mx=1;
+if(G.keys[`KeyW`]||G.keys[`ArrowUp`])mz=-1;
+if(G.keys[`KeyS`]||G.keys[`ArrowDown`])mz=1;
+if(G.keys[`KeyA`]||G.keys[`ArrowLeft`])mx=-1;
+if(G.keys[`KeyD`]||G.keys[`ArrowRight`])mx=1;
 if(G.joy.x||G.joy.y){mx=G.joy.x;mz=G.joy.y;}
 if(mx&&mz){const l=Math.sqrt(mx*mx+mz*mz);mx/=l;mz/=l;}
 }
@@ -2122,8 +1696,8 @@ if(d<2.2&&G._onSpringArrived){const cb=G._onSpringArrived;G._onSpringArrived=nul
 }
 
 // Interact
-if(G.keys[‘KeyE’]&&!G._eHeld){G._eHeld=true;if(G.nearbyInteractable&&!G.dialogueActive)G.nearbyInteractable.onInteract();}
-if(!G.keys[‘KeyE’])G._eHeld=false;
+if(G.keys[`KeyE`]&&!G._eHeld){G._eHeld=true;if(G.nearbyInteractable&&!G.dialogueActive)G.nearbyInteractable.onInteract();}
+if(!G.keys[`KeyE`])G._eHeld=false;
 }
 
 // ═══════════════════════════════════════════════
@@ -2174,7 +1748,7 @@ const fp=c.focusMesh.position.clone();fp.y+=1.0;
 baseLook.lerp(fp,c.focusWeight);
 }
 
-if(c.mode===‘orbit’&&c.orbitCenter){
+if(c.mode===`orbit`&&c.orbitCenter){
 // Orbit around a fixed point (grotto, Our Lady)
 c._orbitAngle=(c._orbitAngle||0)+c.orbitSpeed*delta;
 const tx=c.orbitCenter.x+Math.sin(c._orbitAngle)*c.orbitR;
@@ -2183,7 +1757,7 @@ const ty=c.orbitCenter.y+c.orbitY;
 camera.position.lerp(new THREE.Vector3(tx,ty,tz),delta*1.5);
 camera.lookAt(c.orbitCenter.clone().add(new THREE.Vector3(0,1.5,0)));
 
-}else if(c.mode===‘fixed’&&c.pos){
+}else if(c.mode===`fixed`&&c.pos){
 // Fixed cinematic position
 camera.position.lerp(c.pos,delta*2.5);
 const lookAt=c.look||baseLook;
@@ -2198,7 +1772,7 @@ const camTargetZ=pp.z+offZ;
 const groundAtCam=sampleGround(camTargetX,camTargetZ);
 const minY=Math.max(pp.y+offY, groundAtCam+3.5);
 const targetPos=new THREE.Vector3(camTargetX,minY,camTargetZ);
-const lerpSpd=c.mode===‘dialogue’?delta*2.2:delta*4.0;
+const lerpSpd=c.mode===`dialogue`?delta*2.2:delta*4.0;
 camera.position.lerp(targetPos,lerpSpd);
 camera.lookAt(baseLook);
 }
@@ -2231,10 +1805,10 @@ if(item._crxh){item._crxh.position.y=baseY+bob+0.27;item._crxh.rotation.y=G.time
 }
 });
 G.nearbyInteractable=closestItem;
-const prompt=document.getElementById(‘interactPrompt’);
-if(closestItem&&!G.dialogueActive){prompt.style.display=‘block’;const isMobile=‘ontouchstart’ in window;
-prompt.textContent=(isMobile?’✋  ‘:’[ E ]  ’)+closestItem.label;}
-else prompt.style.display=‘none’;
+const prompt=document.getElementById(`interactPrompt`);
+if(closestItem&&!G.dialogueActive){prompt.style.display=`block`;const isMobile=`ontouchstart` in window;
+prompt.textContent=(isMobile?`✋  `:`[ E ]  `)+closestItem.label;}
+else prompt.style.display=`none`;
 }
 
 // ═══════════════════════════════════════════════
@@ -2331,10 +1905,10 @@ renderer.render(scene,camera);
 // ═══════════════════════════════════════════════
 function startGame(){
 // Auto-hide zoom hint
-setTimeout(()=>{const h=document.getElementById(‘zoomHint’);if(h)h.style.opacity=‘0’;},5000);
+setTimeout(()=>{const h=document.getElementById(`zoomHint`);if(h)h.style.opacity=`0`;},5000);
 onResize();
-const title=document.getElementById(‘titleScreen’);title.style.opacity=‘0’;
-setTimeout(()=>title.style.display=‘none’,1800);
+const title=document.getElementById(`titleScreen`);title.style.opacity=`0`;
+setTimeout(()=>title.style.display=`none`,1800);
 setTimeout(()=>transitionTo(0),900);
 }
 
@@ -2352,7 +1926,7 @@ addC(mkStars());
 
 // Terrain — rolling Pyrenean foothills surrounding Lourdes valley
 G.groundFn=rawTerrain;
-addC(mkTerrain({season:‘spring’,res:60}));
+addC(mkTerrain({season:`spring`,res:60}));
 addC(mkMountains());
 
 // Sky dome — purple twilight above Lourdes
@@ -2397,8 +1971,8 @@ const t=i/cn,curve=Math.sin(t*Math.PI)*3;
 cp[i*3]=rand(-10,10);cp[i*3+1]=0.8+rand(0,0.3);cp[i*3+2]=rand(-40,2);
 cc[i*3]=1;cc[i*3+1]=0.82+rand(0,0.15);cc[i*3+2]=rand(0,0.3);
 }
-candleGeo.setAttribute(‘position’,new THREE.BufferAttribute(cp,3));
-candleGeo.setAttribute(‘color’,new THREE.BufferAttribute(cc,3));
+candleGeo.setAttribute(`position`,new THREE.BufferAttribute(cp,3));
+candleGeo.setAttribute(`color`,new THREE.BufferAttribute(cc,3));
 const candlePts=new THREE.Points(candleGeo,new THREE.PointsMaterial({size:0.18,vertexColors:true,transparent:true,opacity:0.9,sizeAttenuation:true}));
 addC(candlePts);
 
@@ -2424,6 +1998,5 @@ camera.lookAt(0,3,0);
 
 animate();
 </script>
-
 </body>
 </html>
