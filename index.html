@@ -416,7 +416,7 @@ G._awaitingWalk=false;G._walkTarget=null;G._onWalkArrived=null;
 [`holyGlow`,`springGlow`,`springPrompt`,`communionPrompt`,`walkPrompt`].forEach(hideEl);
 [`rosaryUI`,`quizUI`,`interrUI`,`candleUI`].forEach(id=>{const el=document.getElementById(id);el.style.display=`none`;el.classList.remove(`show`);});
 AUDIO.setWind(0);AUDIO.setWater(0);AUDIO.setChurch(0);hideTasks();onAllTasksDone=()=>{};G._walkRadius=2;G.groundFn=null;G._fireflies=null;G._stepT=null;
-G.tasks={};G.completedTasks={};
+G.tasks={};G.completedTasks={};G._noSpawn=[];
 if(G.player.mesh){G.player.mesh.rotation.x=0;G.player.mesh.rotation.z=0;}
 G.camera.mode=`follow`;G.camera.fov=56;G.camera.focusMesh=null;G.camera.focusWeight=0;
 G.camera.pos=null;G.camera.look=null;G.camera.orbitCenter=null;G.camera.orbitSpeed=0;
@@ -427,7 +427,7 @@ const oh=document.getElementById(`orientHint`);if(oh)oh.style.display=`none`;
 if(G.transitioning)return;G.transitioning=true;G.player.canMove=false;
 fadeOut(()=>{G.chapter=idx;const ch=CHAPTERS[idx];scene.clear();clearChapter();
 hideEl(`dialogue`);hideEl(`dialogueDimmer`);G.dialogueActive=false;
-ch.init();fadeIn(()=>{G.transitioning=false;showChapter(ch.title,ch.date);});});}
+ch.init();clearObstructions();fadeIn(()=>{G.transitioning=false;showChapter(ch.title,ch.date);});});}
 
 // ═══════════════════════════════════════════════
 //  BERNADETTE — 4 VISUAL STAGES
@@ -720,36 +720,66 @@ w.material.opacity=Math.min(0.95,(w.material.opacity||0.8)*0.96+0.04)*pulse;
 }
 
 // Trees that follow terrain height, with path avoidance
+// ── Foliage / obstacle clearance system ──
+// Keeps trees, shrubs and rocks away from the player, NPCs and task markers so
+// nothing blocks movement or hides the glowing interact prompts.
+G._noSpawn=G._noSpawn||[];
+function reserve(x,z,r){G._noSpawn.push({x:x,z:z,r:r||2.6});}
+function inReserved(x,z,extra){extra=extra||0;
+for(const p of G._noSpawn){const dx=x-p.x,dz=z-p.z,rr=p.r+extra;if(dx*dx+dz*dz<rr*rr)return true;}
+return false;}
+function addObs(mesh,r){mesh._obstacle=true;mesh._obstacleR=r||0.9;return addC(mesh);}
+// Remove any tagged obstacle that ended up too close to the player, an NPC, an
+// interactable or a reserved zone. Safe to call after any chapter init.
+function clearObstructions(){
+const pts=[];
+if(G.player.mesh)pts.push({x:G.player.mesh.position.x,z:G.player.mesh.position.z,r:2.2});
+G.npcs.forEach(n=>pts.push({x:n.position.x,z:n.position.z,r:2.2}));
+G.interactables.forEach(it=>pts.push({x:it.mesh.position.x,z:it.mesh.position.z,r:2.6}));
+G._noSpawn.forEach(p=>pts.push({x:p.x,z:p.z,r:p.r}));
+if(!pts.length)return;
+const keep=[];
+G.chapterObjects.forEach(o=>{
+let drop=false;
+if(o&&o._obstacle){const or=o._obstacleR||0.8;
+for(const p of pts){const dx=o.position.x-p.x,dz=o.position.z-p.z,rr=p.r+or;if(dx*dx+dz*dz<rr*rr){drop=true;break;}}}
+if(drop){scene.remove(o);return;}
+keep.push(o);
+});
+G.chapterObjects=keep;
+}
+
 function mkTrees(count,xRange,zRange,pathFn){
 for(let i=0;i<count;i++){
 let x,z,tries=0;
 do{x=rand(-xRange,xRange);z=rand(-zRange.max,-(zRange.min||0));tries++;}
-while(tries<12&&pathFn&&pathFn(x,z));
+while(tries<16&&((pathFn&&pathFn(x,z))||inReserved(x,z,1.5)));
+if((pathFn&&pathFn(x,z))||inReserved(x,z,1.5))continue; // give up; keep the area clear
 const gy=G.groundFn?G.groundFn(x,z):0;
 const h=rand(3.0,6.5),species=Math.random();
 if(species<0.55){
 // Oak/chestnut — common in Pyrenean foothills
 const trunkH=h*0.55,trunkR=rand(0.13,0.20);
 const tr=new THREE.Mesh(new THREE.CylinderGeometry(trunkR*0.7,trunkR,trunkH,8),new THREE.MeshPhongMaterial({color:new THREE.Color(0.28+Math.random()*0.06,0.20+Math.random()*0.04,0.12)}));
-tr.position.set(x,gy+trunkH/2,z);tr.castShadow=true;addC(tr);
+tr.position.set(x,gy+trunkH/2,z);tr.castShadow=true;addObs(tr,1.7);
 // Layered canopy
 for(let c=0;c<3;c++){
 const cy=gy+trunkH+c*rand(0.6,1.0),cr=rand(1.2,2.2)-c*0.35;
 const fo=new THREE.Mesh(new THREE.SphereGeometry(cr,8,7),new THREE.MeshPhongMaterial({color:new THREE.Color(0.10+Math.random()*0.10,0.34+Math.random()*0.18,0.06+Math.random()*0.04)}));
-fo.position.set(x+rand(-0.3,0.3),cy,z+rand(-0.3,0.3));fo.castShadow=true;addC(fo);
+fo.position.set(x+rand(-0.3,0.3),cy,z+rand(-0.3,0.3));fo.castShadow=true;addObs(fo,1.7);
 }
 }else if(species<0.80){
 // Pine — Pyrenean conifer
 const tr=new THREE.Mesh(new THREE.CylinderGeometry(0.10,0.16,h*0.6,7),new THREE.MeshPhongMaterial({color:0x4a2e1a}));
-tr.position.set(x,gy+h*0.3,z);tr.castShadow=true;addC(tr);
+tr.position.set(x,gy+h*0.3,z);tr.castShadow=true;addObs(tr,1.4);
 for(let t=0;t<3;t++){const ty=gy+h*0.3+t*h*0.24,tr2=rand(0.9,1.9)-t*0.4;
-const fo=new THREE.Mesh(new THREE.ConeGeometry(tr2,h*0.38-t*0.1,8),new THREE.MeshPhongMaterial({color:new THREE.Color(0.06,0.28+Math.random()*0.08,0.08)}));fo.position.set(x,ty,z);fo.castShadow=true;addC(fo);}
+const fo=new THREE.Mesh(new THREE.ConeGeometry(tr2,h*0.38-t*0.1,8),new THREE.MeshPhongMaterial({color:new THREE.Color(0.06,0.28+Math.random()*0.08,0.08)}));fo.position.set(x,ty,z);fo.castShadow=true;addObs(fo,1.4);}
 }else{
 // Willow/ash near water — slender
 const tr=new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.12,h*0.70,7),new THREE.MeshPhongMaterial({color:0x5a3e28}));
-tr.position.set(x,gy+h*0.35,z);addC(tr);
+tr.position.set(x,gy+h*0.35,z);addObs(tr,1.4);
 const fo=new THREE.Mesh(new THREE.SphereGeometry(rand(1.0,1.6),8,6),new THREE.MeshPhongMaterial({color:new THREE.Color(0.18+Math.random()*0.08,0.42+Math.random()*0.14,0.10)}));
-fo.scale.y=1.4;fo.position.set(x,gy+h*0.75,z);addC(fo);
+fo.scale.y=1.4;fo.position.set(x,gy+h*0.75,z);addObs(fo,1.4);
 }
 }
 }
@@ -759,12 +789,13 @@ function mkRocks(count,xRange,zRange,pathFn){
 for(let i=0;i<count;i++){
 let x,z,tries=0;
 do{x=rand(-xRange,xRange);z=rand(-zRange.max,-(zRange.min||0));tries++;}
-while(tries<8&&pathFn&&pathFn(x,z));
+while(tries<12&&((pathFn&&pathFn(x,z))||inReserved(x,z,1.0)));
+if((pathFn&&pathFn(x,z))||inReserved(x,z,1.0))continue;
 const gy=G.groundFn?G.groundFn(x,z):0;
 const s=rand(0.2,0.8);
 const r=new THREE.Mesh(new THREE.SphereGeometry(s,7,6),new THREE.MeshPhongMaterial({color:new THREE.Color(0.44+rand(0,0.08),0.40+rand(0,0.06),0.36+rand(0,0.05))}));
 r.scale.set(1+rand(-0.3,0.3),0.55+rand(0,0.3),1+rand(-0.3,0.3));
-r.position.set(x,gy+s*0.2,z);r.castShadow=true;r.receiveShadow=true;addC(r);
+r.position.set(x,gy+s*0.2,z);r.castShadow=true;r.receiveShadow=true;addObs(r,s+0.4);
 }
 }
 
@@ -843,11 +874,11 @@ function addRoseBush(cx,cz,baseY){
 for(let i=0;i<22;i++){
 const a=rand(0,Math.PI*2),r=rand(0.25,1.6),y=baseY+rand(0,0.9);
 const stem=new THREE.Mesh(new THREE.CylinderGeometry(0.016,0.022,rand(0.4,1.1),4),new THREE.MeshPhongMaterial({color:0x2a4a1a}));
-stem.position.set(cx+Math.cos(a)*r,y,-12.0+Math.sin(a)*0.35);stem.rotation.z=rand(-0.5,0.5);addC(stem);
+stem.position.set(cx+Math.cos(a)*r,y,-12.0+Math.sin(a)*0.35);stem.rotation.z=rand(-0.5,0.5);addObs(stem,0.5);
 // Leaves — small olive-green clusters
 for(let j=0;j<3;j++){
 const lf=new THREE.Mesh(new THREE.SphereGeometry(0.10+rand(0,0.06),5,5),new THREE.MeshPhongMaterial({color:new THREE.Color(0.15+rand(0,0.08),0.38+rand(0,0.12),0.10)}));
-lf.position.set(cx+Math.cos(a)*r+rand(-0.15,0.15),y+rand(0.1,0.4),-12.0+Math.sin(a)*0.35);lf.scale.set(1.4,0.7,1);addC(lf);
+lf.position.set(cx+Math.cos(a)*r+rand(-0.15,0.15),y+rand(0.1,0.4),-12.0+Math.sin(a)*0.35);lf.scale.set(1.4,0.7,1);addObs(lf,0.5);
 }
 // Pink roses — Rosa canina has pale pink blossoms in summer, hips in autumn
 if(Math.random()<0.3){
@@ -890,10 +921,10 @@ const ln=new THREE.PointLight(0xff8833,rand(0.8,1.6),rand(3,6));ln.position.set(
 [[-8.5,-4],[8.5,-4],[-11,-8],[11,-7],[-14,-12],[13,-11]].forEach(([px,pz])=>{
 const h=rand(7,12);
 const tr=new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.20,h,7),new THREE.MeshPhongMaterial({color:0x3a2418}));
-tr.position.set(px,h/2,pz);tr.castShadow=true;addC(tr);
+tr.position.set(px,h/2,pz);tr.castShadow=true;addObs(tr,1.2);
 // Poplar canopy — narrow and tall (distinctive shape)
 const cr=new THREE.Mesh(new THREE.CylinderGeometry(0.5,1.2,h*0.65,8),new THREE.MeshPhongMaterial({color:new THREE.Color(0.10,0.30+rand(0,0.10),0.08)}));
-cr.position.set(px,h*0.72,pz);cr.castShadow=true;addC(cr);
+cr.position.set(px,h*0.72,pz);cr.castShadow=true;addObs(cr,1.2);
 });
 
 // ── NICHE LIGHT ──
@@ -1204,6 +1235,7 @@ buildValley({season:'winter',sky:0x9aa8bc});
 spawnPlayer(1,0,8);
 showAge('Gathering firewood by the Gave de Pau');
 AUDIO.setWind(0.45);AUDIO.setWater(0.4);
+reserve(0,8,3);reserve(0,2,3.5);reserve(0,-6,3.5);reserve(0,-18,4.5); // keep the path to the grotto clear
 mkTrees(14,40,{min:10,max:55},(x,z)=>Math.abs(x)<4);
 mkRocks(20,30,{min:5,max:40});
 const gave=mkWater(7,90,0x35506e);gave.position.set(11,0.05,0);addC(gave);G.springWater=gave;
@@ -1331,6 +1363,7 @@ buildValley({season:'spring',sky:0xb0c6e0});
 spawnPlayer(2,0,5);
 showAge('The road to the presbytery');
 AUDIO.setChurch(0.4);
+reserve(0,5,3);reserve(0,-5,3);reserve(0,-9,4);reserve(2.5,0,3); // priest, church and scroll stay clear
 mkTrees(8,30,{min:12,max:45},(x,z)=>Math.abs(x)<4);
 const church=simpleMarker(0,-9,0xcabb88,3.2);church.position.y=1.6;
 const pey=addNPC(mkChar(0xe0bc92,0x101018,0x2a2018,{cassock:true,hr:0.29}),0,0,-5);
