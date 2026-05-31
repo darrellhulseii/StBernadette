@@ -628,6 +628,7 @@ if(walking){c._bounceY=(c._bounceY||0);c._bounceY=Math.abs(sw)*0.015;}
 
 // Generic NPC builder
 function mkChar(skin,cloth,hair,opts){
+opts=opts||{};
 const g=new THREE.Group(),M=c=>new THREE.MeshPhongMaterial({color:c});
 const lh=opts.lh||0.62,bh=opts.bh||0.78,hr=opts.hr||0.30;
 [-0.13,0.13].forEach(x=>{const leg=new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,lh,8),M(cloth));leg.position.set(x,lh/2,0);leg.castShadow=true;g.add(leg);const foot=new THREE.Mesh(new THREE.BoxGeometry(0.13,0.09,0.19),M(0x3d2b1f));foot.position.set(x,0.045,0.055);g.add(foot);});
