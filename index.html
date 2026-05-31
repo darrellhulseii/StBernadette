@@ -497,30 +497,107 @@ return g;
 // ═══════════════════════════════════════════════
 function createOurLady(){
 const g=new THREE.Group();
-const M=(c,em,ei,t,o)=>new THREE.MeshPhongMaterial({color:c,emissive:em||0,emissiveIntensity:ei||0,transparent:!!t,opacity:o||1});
-g.add(pm(new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.58,1.85,16),M(0xffffff,0x8888ff,0.42,true,0.96)),0,1.12,0));
-const sash=new THREE.Mesh(new THREE.TorusGeometry(0.29,0.048,8,26),M(0x4488dd,0x2244aa,0.55));sash.position.y=1.38;sash.rotation.x=Math.PI/2;g.add(sash);
-g.add(pm(new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.26,0.76,12),M(0xffffff,0x9999ff,0.52)),0,1.72,0));
-const head=new THREE.Mesh(new THREE.SphereGeometry(0.30,16,14),M(0xfff5f0,0xaaaaff,0.42));head.scale.y=1.12;head.position.y=2.22;g.add(head);
-const veil=new THREE.Mesh(new THREE.ConeGeometry(0.40,0.26,16,1,true),M(0xffffff,0x9999ff,0.42,true,0.92));veil.position.y=2.48;g.add(veil);
-const veilB=new THREE.Mesh(new THREE.PlaneGeometry(0.72,1.05,3,8),M(0xffffff,0x8888ff,0.32,true,0.90));veilB.position.set(0,2.02,0.28);veilB.rotation.x=-0.18;g.add(veilB);
-[{x:-0.08},{x:0.08}].forEach(({x})=>{const h=new THREE.Mesh(new THREE.SphereGeometry(0.09,8,8),M(0xfff5f0,0xaaaaff,0.32));h.position.set(x,1.87,0.30);g.add(h);});
-const rosM=new THREE.MeshPhongMaterial({color:0xf0d060,emissive:0xffaa00,emissiveIntensity:0.65});
-for(let i=0;i<13;i++){const a=i/13*Math.PI*1.3-0.65,r=0.23;const b=new THREE.Mesh(new THREE.SphereGeometry(0.027,6,6),rosM);b.position.set(Math.sin(a)*r+0.08,1.66+Math.cos(a)*r*0.52,0.27);g.add(b);}
-const roseM=new THREE.MeshPhongMaterial({color:0xffdd00,emissive:0xffaa00,emissiveIntensity:0.85});
-[-0.19,0.19].forEach(x=>{for(let i=0;i<5;i++){const a=i/5*Math.PI*2;const p=new THREE.Mesh(new THREE.SphereGeometry(0.045,6,6),roseM);p.position.set(x+Math.cos(a)*0.06,0.08,0.12+Math.sin(a)*0.04);g.add(p);}});
-const eM=new THREE.MeshBasicMaterial({color:0x1a1040});[-0.10,0.10].forEach(x=>{const e=new THREE.Mesh(new THREE.SphereGeometry(0.034,8,8),eM);e.position.set(x,2.24,0.28);g.add(e);});
-const il=new THREE.PointLight(0xaabbff,3,9);il.position.set(0,2,0);g.add(il);g._iL=il;
-const ol=new THREE.PointLight(0xffffff,2,16);ol.position.set(0,1.5,0);g.add(ol);g._oL=ol;
-const halo=new THREE.Mesh(new THREE.TorusGeometry(0.52,0.024,8,42),new THREE.MeshBasicMaterial({color:0xffffaa}));halo.position.y=2.64;halo.rotation.x=Math.PI/2;g.add(halo);g._halo=halo;
-const pN=320,pGeo=new THREE.BufferGeometry(),pPos=new Float32Array(pN*3),pCol=new Float32Array(pN*3);
-for(let i=0;i<pN;i++){const a=Math.random()*Math.PI*2,r=0.5+Math.random()*2.6,h=Math.random()*3.2;
+const M=(c,em,ei,t,o,sh)=>new THREE.MeshPhongMaterial({color:c,emissive:em||0,emissiveIntensity:ei||0,transparent:!!t,opacity:o==null?1:o,shininess:sh==null?20:sh,specular:0x555a6a});
+const glowParts=[];
+
+// ── Flowing white gown (lathe profile, feet → shoulders) ──
+const gownPts=[
+new THREE.Vector2(0.03,0.00),new THREE.Vector2(0.42,0.00),new THREE.Vector2(0.60,0.03),
+new THREE.Vector2(0.63,0.11),new THREE.Vector2(0.56,0.27),new THREE.Vector2(0.49,0.54),
+new THREE.Vector2(0.43,0.85),new THREE.Vector2(0.37,1.16),new THREE.Vector2(0.325,1.44),
+new THREE.Vector2(0.345,1.66),new THREE.Vector2(0.315,1.90),new THREE.Vector2(0.23,2.04),
+new THREE.Vector2(0.13,2.14)];
+const gownGeo=new THREE.LatheGeometry(gownPts,56);
+const gown=new THREE.Mesh(gownGeo,M(0xfdfcff,0x2b3560,0.22,false,1,26));
+gown.castShadow=true;gown.receiveShadow=true;g.add(gown);
+// luminous outer 'glory' shell
+const glory=new THREE.Mesh(gownGeo,new THREE.MeshPhongMaterial({color:0xffffff,emissive:0xaac2ff,emissiveIntensity:0.6,transparent:true,opacity:0.15,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,depthWrite:false}));
+glory.scale.set(1.07,1.02,1.07);g.add(glory);glowParts.push(glory);
+
+// ── Veil: open-front lathe falling toward the feet + crown cap ──
+const veilPts=[
+new THREE.Vector2(0.17,2.45),new THREE.Vector2(0.31,2.28),new THREE.Vector2(0.39,2.02),
+new THREE.Vector2(0.43,1.72),new THREE.Vector2(0.44,1.36),new THREE.Vector2(0.43,1.00),
+new THREE.Vector2(0.41,0.62),new THREE.Vector2(0.39,0.30)];
+const veilMat=new THREE.MeshPhongMaterial({color:0xfdfdff,emissive:0x9fb4e6,emissiveIntensity:0.2,side:THREE.DoubleSide,shininess:16,transparent:true,opacity:0.98});
+const veil=new THREE.Mesh(new THREE.LatheGeometry(veilPts,48,Math.PI*0.8,Math.PI*1.4),veilMat);
+veil.castShadow=true;g.add(veil);
+const cap=new THREE.Mesh(new THREE.SphereGeometry(0.305,28,20,0,Math.PI*2,0,Math.PI*0.52),veilMat);
+cap.position.set(0,2.30,0);g.add(cap);
+
+// ── Head & serene face ──
+const skin=0xf2d8bf;
+const neck=new THREE.Mesh(new THREE.CylinderGeometry(0.085,0.10,0.20,16),M(skin,0x40240f,0.05,false,1,8));neck.position.set(0,2.05,0);g.add(neck);
+const head=new THREE.Mesh(new THREE.SphereGeometry(0.255,32,26),M(skin,0x66421f,0.08,false,1,10));
+head.scale.set(0.96,1.08,0.98);head.position.set(0,2.30,0.01);head.castShadow=true;g.add(head);
+const eyeM=new THREE.MeshBasicMaterial({color:0x4a3a55});
+[-0.085,0.085].forEach(x=>{const e=new THREE.Mesh(new THREE.SphereGeometry(0.021,10,10),eyeM);e.position.set(x,2.30,0.225);g.add(e);});
+const mouth=new THREE.Mesh(new THREE.SphereGeometry(0.03,10,8),new THREE.MeshBasicMaterial({color:0xca8d88}));
+mouth.scale.set(1.3,0.5,0.5);mouth.position.set(0,2.20,0.235);g.add(mouth);
+
+// ── Sleeves + joined praying hands ──
+const sleeveM=M(0xf8f6fc,0x2b3560,0.18,false,1,18);
+[-1,1].forEach(s=>{const arm=new THREE.Mesh(new THREE.CylinderGeometry(0.085,0.105,0.64,14),sleeveM);
+arm.position.set(s*0.17,1.74,0.10);arm.rotation.z=s*0.55;arm.rotation.x=-0.5;arm.castShadow=true;g.add(arm);});
+const handM=M(skin,0x66421f,0.06,false,1,12);
+[[-1,0.16],[1,-0.16]].forEach(([s,rz])=>{const hand=new THREE.Mesh(new THREE.BoxGeometry(0.07,0.30,0.11),handM);
+hand.position.set(s*0.03,1.62,0.30);hand.rotation.z=rz;hand.rotation.x=-0.30;hand.castShadow=true;g.add(hand);});
+
+// ── Marian-blue sash with hanging ends ──
+const blue=0x2f5fc8,blueEm=0x153070;
+const sash=new THREE.Mesh(new THREE.TorusGeometry(0.335,0.05,14,44),M(blue,blueEm,0.45,false,1,60));
+sash.position.set(0,1.48,0);sash.rotation.x=Math.PI/2;sash.scale.set(1,0.78,1);g.add(sash);
+[[-0.05,0.07],[0.05,-0.07]].forEach(([x,rz])=>{
+const end=new THREE.Mesh(new THREE.BoxGeometry(0.11,0.92,0.04),M(blue,blueEm,0.4,false,1,50));
+end.position.set(x,1.02,0.305);end.rotation.z=rz;end.castShadow=true;g.add(end);
+const tip=new THREE.Mesh(new THREE.ConeGeometry(0.062,0.13,8),M(blue,blueEm,0.4,false,1,50));
+tip.position.set(x*1.7,0.55,0.305);tip.rotation.x=Math.PI;g.add(tip);});
+
+// ── Golden rose on each bare foot (at the hem) ──
+function goldRose(px,pz){
+const ctr=new THREE.Mesh(new THREE.SphereGeometry(0.05,12,10),new THREE.MeshPhongMaterial({color:0xffcf3a,emissive:0xffa200,emissiveIntensity:0.9,shininess:80}));
+ctr.position.set(px,0.06,pz);g.add(ctr);
+for(let i=0;i<6;i++){const a=i/6*Math.PI*2;const petal=new THREE.Mesh(new THREE.SphereGeometry(0.045,10,8),new THREE.MeshPhongMaterial({color:0xffe25a,emissive:0xffb300,emissiveIntensity:0.8,shininess:70}));
+petal.scale.set(1,0.5,1.45);petal.position.set(px+Math.cos(a)*0.06,0.06,pz+Math.sin(a)*0.06);g.add(petal);}}
+goldRose(-0.14,0.30);goldRose(0.14,0.30);
+
+// ── Rosary draped from the hands, ending in a crucifix ──
+const rosaryCurve=new THREE.CatmullRomCurve3([
+new THREE.Vector3(0.05,1.55,0.33),new THREE.Vector3(0.17,1.34,0.31),
+new THREE.Vector3(0.245,1.06,0.27),new THREE.Vector3(0.245,0.80,0.25),
+new THREE.Vector3(0.16,0.60,0.27),new THREE.Vector3(0.06,0.52,0.30)]);
+const pearlM=new THREE.MeshPhongMaterial({color:0xf3f0ff,emissive:0x8a8ab0,emissiveIntensity:0.25,shininess:90});
+const goldM=new THREE.MeshPhongMaterial({color:0xf0d060,emissive:0xffaa00,emissiveIntensity:0.7,shininess:80});
+const NB=30;
+for(let i=0;i<=NB;i++){const p=rosaryCurve.getPoint(i/NB),big=(i%10===0);
+const b=new THREE.Mesh(new THREE.SphereGeometry(big?0.026:0.018,8,8),big?goldM:pearlM);b.position.copy(p);g.add(b);}
+const cp=rosaryCurve.getPoint(1);
+const cvv=new THREE.Mesh(new THREE.BoxGeometry(0.018,0.12,0.018),goldM);cvv.position.set(cp.x,cp.y-0.09,cp.z);g.add(cvv);
+const cvh=new THREE.Mesh(new THREE.BoxGeometry(0.06,0.018,0.018),goldM);cvh.position.set(cp.x,cp.y-0.06,cp.z);g.add(cvh);
+
+// ── Halo, radiant glory disc, and crown of twelve stars ──
+const halo=new THREE.Mesh(new THREE.TorusGeometry(0.43,0.018,12,64),new THREE.MeshBasicMaterial({color:0xffe9a6,transparent:true,opacity:0.9,blending:THREE.AdditiveBlending,depthWrite:false}));
+halo.position.set(0,2.60,0);halo.rotation.x=Math.PI/2;g.add(halo);g._halo=halo;glowParts.push(halo);
+const glow=new THREE.Mesh(new THREE.CircleGeometry(0.62,40),new THREE.MeshBasicMaterial({color:0xfff4c8,transparent:true,opacity:0.13,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));
+glow.position.set(0,2.32,-0.16);g.add(glow);glowParts.push(glow);
+const starM=new THREE.MeshBasicMaterial({color:0xfff0a0,transparent:true,opacity:0.95,blending:THREE.AdditiveBlending,depthWrite:false});
+for(let i=0;i<12;i++){const a=i/12*Math.PI*2;const st=new THREE.Mesh(new THREE.SphereGeometry(0.028,8,8),starM);
+st.position.set(Math.cos(a)*0.5,2.30+Math.sin(a)*0.5,-0.04);g.add(st);glowParts.push(st);}
+
+// ── Aura motes + radiant lights (animated by animOurLady) ──
+const il=new THREE.PointLight(0xbfd4ff,3,9);il.position.set(0,1.9,0.1);g.add(il);g._iL=il;
+const ol=new THREE.PointLight(0xfff4e0,2,16);ol.position.set(0,1.4,0);g.add(ol);g._oL=ol;
+const pN=340,pGeo=new THREE.BufferGeometry(),pPos=new Float32Array(pN*3),pCol=new Float32Array(pN*3);
+for(let i=0;i<pN;i++){const a=Math.random()*Math.PI*2,r=0.45+Math.random()*2.4,h=Math.random()*3.0;
 pPos[i*3]=Math.cos(a)*r;pPos[i*3+1]=h;pPos[i*3+2]=Math.sin(a)*r;
-pCol[i*3]=0.9+Math.random()*0.1;pCol[i*3+1]=0.88+Math.random()*0.12;pCol[i*3+2]=0.65+Math.random()*0.35;}
-pGeo.setAttribute(`position`,new THREE.BufferAttribute(pPos,3));pGeo.setAttribute(`color`,new THREE.BufferAttribute(pCol,3));
-const pts=new THREE.Points(pGeo,new THREE.PointsMaterial({size:0.042,vertexColors:true,transparent:true,opacity:0.92,sizeAttenuation:true}));
+pCol[i*3]=0.95+Math.random()*0.05;pCol[i*3+1]=0.9+Math.random()*0.1;pCol[i*3+2]=0.6+Math.random()*0.35;}
+pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));pGeo.setAttribute('color',new THREE.BufferAttribute(pCol,3));
+const pts=new THREE.Points(pGeo,new THREE.PointsMaterial({size:0.04,vertexColors:true,transparent:true,opacity:0.9,sizeAttenuation:true,blending:THREE.AdditiveBlending,depthWrite:false}));
 g.add(pts);g._pts=pts;g._pPos=pPos;g._pN=pN;
+
 g.traverse(m=>{if(m.isMesh)m.castShadow=true;});
+glowParts.forEach(m=>{m.castShadow=false;});
+pts.castShadow=false;
 return g;
 }
 function animOurLady(l,t){if(!l)return;
